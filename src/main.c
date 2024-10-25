@@ -477,6 +477,7 @@ void UnloadGame(void)
     UnloadTexture(background);
     UnloadTexture(player_assets);
     UnloadTexture(enemy_ship);
+    UnloadTexture(weapons)
     
 }
 
