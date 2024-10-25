@@ -156,8 +156,8 @@ void InitGame(void)
     alpha = 0;
 
     // Initialize player
-    player.rec.x = 20;
-    player.rec.y = 50;
+    player.rec.x = (screenWidth - player.rec.width) / 2;
+    player.rec.y = (screenHeight - player.rec.height) / 1.2;
     player.rec.width = 48;
     player.rec.height = 48;
     player.speed.x = 5;
