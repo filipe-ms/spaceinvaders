@@ -75,8 +75,10 @@ static bool smooth = false;
 
 // TEXTURES
 Texture player_ship;
+Texture enemy_ship;
 Texture background;
 Texture player_assets;
+Texture weapons;
 
 //------------------------------------------------------------------------------------
 // Module Functions Declaration (local)
@@ -102,8 +104,10 @@ int main(void)
     SearchAndSetResourceDir("resources");
 
     player_ship = LoadTexture("ships.png");
+    enemy_ship = LoadTexture("ships.png");
     background = LoadTexture("purplebg.png");
     player_assets = LoadTexture("playerassets.png");
+    weapons = LoadTexture("weapons.png");
     
 
     InitGame();
@@ -418,10 +422,16 @@ void DrawGame(void)
         else {
             fire_offset = 0;
         }
-        
+        //enemy
+        Rectangle enemy_1_texture = { 48, 8, 8, 8 };
+
+       // weapons
+        Rectangle weapon_1_texture = { 0, 8, 8, 8 };
+
+
         Rectangle player_texture2 = { player.rec.x-4, player.rec.y-8, 64, 64 };
         Rectangle thruster_position = { player.rec.x - 4 + fire_offset, player.rec.y + 48, 64, 64 };
-
+        
         thruster_cycle = fmod((thruster_cycle + 0.1f), 4.0f);
         
         DrawTexturePro(player_ship, GetPlayerRectangle(), player_texture2, player_pos, 0, WHITE);
@@ -434,12 +444,22 @@ void DrawGame(void)
 
         for (int i = 0; i < activeEnemies; i++)
         {
-            if (enemy[i].active) DrawRectangleRec(enemy[i].rec, enemy[i].color);
+            if (enemy[i].active) {
+                enemy[i].rec.height = 48;
+                enemy[i].rec.width = 48;
+                DrawTexturePro(enemy_ship, enemy_1_texture, enemy[i].rec, player_pos, 0, enemy[i].color);
+            }
         }
 
         for (int i = 0; i < NUM_SHOOTS; i++)
         {
-            if (shoot[i].active) DrawRectangleRec(shoot[i].rec, shoot[i].color);
+            if (shoot[i].active){
+                Rectangle shoot_ajuste = shoot[i].rec;
+                shoot_ajuste.y -= 5;
+                shoot_ajuste.width = 16;
+                shoot_ajuste.height= 16;
+                DrawTexturePro(weapons, weapon_1_texture, shoot_ajuste, player_pos, 0, WHITE);
+            }
         }
 
         DrawText(TextFormat("%04i", score), 20, 20, 40, GRAY);
@@ -459,6 +479,7 @@ void UnloadGame(void)
     UnloadTexture(player_ship);
     UnloadTexture(background);
     UnloadTexture(player_assets);
+    UnloadTexture(enemy_ship);
     
 }
 

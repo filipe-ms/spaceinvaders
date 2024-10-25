@@ -1,0 +1,15 @@
+﻿  raudio.c
+  rcore.c
+  rglfw.c
+C:\Users\Debora\source\repos\jogo\build\external\raylib-master\src\external\jar_xm.h(242,9): warning C4005: 'DEBUG': redefinição de macro
+  (compilando o arquivo fonte '../external/raylib-master/src/raudio.c')
+      C:\Users\Debora\source\repos\jogo\build\external\raylib-master\src\external\jar_xm.h(242,9):
+      'DEBUG' declarado anteriormente na linha de comando
+  
+  rmodels.c
+  rshapes.c
+  rtext.c
+  rtextures.c
+  utils.c
+  Gerando Código...
+  raylib.vcxproj -> C:\Users\Debora\source\repos\jogo\bin\Debug\raylib.lib

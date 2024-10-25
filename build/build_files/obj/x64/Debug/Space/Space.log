@@ -1,0 +1,14 @@
+﻿  main.c
+C:\Users\Debora\source\repos\jogo\src\main.c(172,26): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(173,57): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(173,26): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(296,72): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(296,42): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(297,42): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(341,50): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(342,81): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(342,50): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(417,31): warning C4305: '-=': truncamento de 'double' para 'float'
+C:\Users\Debora\source\repos\jogo\src\main.c(435,26): warning C4244: '=': conversão de 'double' para 'float', possível perda de dados
+C:\Users\Debora\source\repos\jogo\src\main.c(438,52): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+  Space.vcxproj -> C:\Users\Debora\source\repos\jogo\bin\Debug\Space.exe
