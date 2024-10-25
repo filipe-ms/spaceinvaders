@@ -156,8 +156,8 @@ void InitGame(void)
     alpha = 0;
 
     // Initialize player
-    player.rec.x = (screenWidth - player.rec.width) / 2;
-    player.rec.y = (screenHeight - player.rec.height) / 1.2;
+    player.rec.x = (screenWidth) / 2;
+    player.rec.y = (screenHeight - 100);
     player.rec.width = 48;
     player.rec.height = 48;
     player.speed.x = 5;
@@ -421,6 +421,9 @@ void DrawGame(void)
         }
         //enemy
         Rectangle enemy_1_texture = { 48, 8, 8, 8 };
+        Rectangle enemy_2_texture = { 32, 24, 8, 8 };
+        //Rectangle enemy_3_texture
+        //Rectangle enemy_4_texture
 
        // weapons
         Rectangle weapon_1_texture = { 0, 8, 8, 8 };
@@ -442,9 +445,17 @@ void DrawGame(void)
         for (int i = 0; i < activeEnemies; i++)
         {
             if (enemy[i].active) {
+
                 enemy[i].rec.height = 48;
                 enemy[i].rec.width = 48;
-                DrawTexturePro(enemy_ship, enemy_1_texture, enemy[i].rec, player_pos, 0, enemy[i].color);
+
+                if (i % 2 == 0) {
+                    DrawTexturePro(enemy_ship, enemy_2_texture, enemy[i].rec, player_pos, 0, enemy[i].color);
+                } else {
+                    DrawTexturePro(enemy_ship, enemy_1_texture, enemy[i].rec, player_pos, 0, enemy[i].color);
+                }
+
+
             }
         }
 
@@ -477,7 +488,7 @@ void UnloadGame(void)
     UnloadTexture(background);
     UnloadTexture(player_assets);
     UnloadTexture(enemy_ship);
-    UnloadTexture(weapons)
+    UnloadTexture(weapons);
     
 }
 
