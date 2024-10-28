@@ -1,1 +1,17 @@
-﻿  Space.vcxproj -> C:\Users\Debora\source\repos\jogo\bin\Debug\Space.exe
+﻿  main.c
+C:\Users\gabri\Developer\space\src\main.c(159,34): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(160,34): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(172,26): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(173,57): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(173,26): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(296,72): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(296,42): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(297,42): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(338,50): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(339,81): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(339,50): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(414,31): warning C4305: '-=': truncamento de 'double' para 'float'
+C:\Users\gabri\Developer\space\src\main.c(435,26): warning C4244: '=': conversão de 'double' para 'float', possível perda de dados
+C:\Users\gabri\Developer\space\src\main.c(438,52): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
+  LINK : ..\..\bin\Debug\Space.exe não encontrado ou não compilado pelo o último link incremental; executando link completo
+  Space.vcxproj -> C:\Users\gabri\Developer\space\bin\Debug\Space.exe

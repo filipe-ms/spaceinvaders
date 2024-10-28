@@ -24,6 +24,14 @@
 #define SECOND_WAVE 20
 #define THIRD_WAVE 50
 
+Rectangle enemy_textures[5] = { // array da coordenada de texturas que se usaram para os inimigos
+    { 48, 8, 8, 8 },    
+    { 32, 24, 8, 8 },   
+    { 48, 24, 8, 8 },   
+    { 32, 8, 8, 8 },    
+    { 16, 8, 8, 8 }     
+};
+
 //----------------------------------------------------------------------------------
 // Types and Structures Definition
 //----------------------------------------------------------------------------------
@@ -419,11 +427,6 @@ void DrawGame(void)
         else {
             fire_offset = 0;
         }
-        //enemy
-        Rectangle enemy_1_texture = { 48, 8, 8, 8 };
-        Rectangle enemy_2_texture = { 32, 24, 8, 8 };
-        //Rectangle enemy_3_texture
-        //Rectangle enemy_4_texture
 
        // weapons
         Rectangle weapon_1_texture = { 0, 8, 8, 8 };
@@ -449,11 +452,8 @@ void DrawGame(void)
                 enemy[i].rec.height = 48;
                 enemy[i].rec.width = 48;
 
-                if (i % 2 == 0) {
-                    DrawTexturePro(enemy_ship, enemy_2_texture, enemy[i].rec, player_pos, 0, enemy[i].color);
-                } else {
-                    DrawTexturePro(enemy_ship, enemy_1_texture, enemy[i].rec, player_pos, 0, enemy[i].color);
-                }
+                int texture_index = i % 5;  
+                DrawTexturePro(enemy_ship, enemy_textures[texture_index], enemy[i].rec, player_pos, 0, enemy[i].color);
 
 
             }
@@ -476,6 +476,7 @@ void DrawGame(void)
 
         if (pause) DrawText("GAME PAUSED", screenWidth / 2 - MeasureText("GAME PAUSED", 40) / 2, screenHeight / 2 - 40, 40, GRAY);
     }
+
     else DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 20) / 2, GetScreenHeight() / 2 - 50, 20, GRAY);
     
     EndDrawing();
