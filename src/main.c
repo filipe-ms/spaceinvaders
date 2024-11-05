@@ -57,6 +57,14 @@ typedef struct Shoot {
     Color color;
 } Shoot;
 
+typedef struct PowerUpShootRate {
+    Rectangle rec;  // Posição e tamanho do item
+    bool active;    // Estado ativo/inativo do item
+    Color color;    // Cor do item
+} PowerUpShootRate;
+
+PowerUpShootRate powerUpShootRate;  // Declaração da variável global do item
+
 //------------------------------------------------------------------------------------
 // Global Variables Declaration
 //------------------------------------------------------------------------------------
@@ -79,6 +87,8 @@ static float alpha = 0.0f;
 static int activeEnemies = 0;
 static int enemiesKill = 0;
 static bool smooth = false;
+
+static int shootInterval = 200;  // Intervalo inicial de 200 frames do shooratee
 
 
 // TEXTURES
@@ -149,10 +159,19 @@ int main(void)
 //------------------------------------------------------------------------------------
 
 // Initialize game variables
-void InitGame(void)
-{
+void InitGame(void) {
+
+    // Inicialização do item power-up de shootRate
+    powerUpShootRate.rec.width = 20;  // Define a largura do item
+    powerUpShootRate.rec.height = 20; // Define a altura do item
+    powerUpShootRate.rec.x = GetRandomValue(0, screenWidth - powerUpShootRate.rec.width);  // Posição aleatória x
+    powerUpShootRate.rec.y = GetRandomValue(0, screenHeight - powerUpShootRate.rec.height); // Posição aleatória y
+    powerUpShootRate.active = true;   // Item começa ativo
+    powerUpShootRate.color = RED;     // Define a cor do item como vermelha
+
     // Initialize game variables
     shootRate = 0;
+    shootInterval = 200;
     pause = false;
     gameOver = false;
     victory = false;
@@ -237,6 +256,12 @@ void UpdateGame(void)
                 }
             } break;
             case SECOND:
+                if (!powerUpShootRate.active) {
+                    // Ativa o item e define uma nova posição aleatória quando a segunda onda começa
+                    powerUpShootRate.rec.x = GetRandomValue(0, screenWidth - powerUpShootRate.rec.width);
+                    powerUpShootRate.rec.y = GetRandomValue(0, screenHeight - powerUpShootRate.rec.height);
+                    powerUpShootRate.active = true;
+                }
             {
                 if (!smooth)
                 {
@@ -279,6 +304,15 @@ void UpdateGame(void)
             default: break;
             }
 
+            // Verificar colisão entre o jogador e o item power-up de shootRate
+            if (powerUpShootRate.active && CheckCollisionRecs(player.rec, powerUpShootRate.rec)) {
+                // Diminui o intervalo de frame do shootRate em 20%
+                shootInterval = (int)(shootInterval * 0.5);
+
+                // Desativa o item após coleta
+                powerUpShootRate.active = false;
+            }
+
             // Player movement
             if (IsKeyDown(KEY_RIGHT)) player.rec.x += player.speed.x;
             if (IsKeyDown(KEY_LEFT)) player.rec.x -= player.speed.x;
@@ -318,10 +352,10 @@ void UpdateGame(void)
 
                 for (int i = 0; i < NUM_SHOOTS; i++)
                 {
-                    if (!shoot[i].active && shootRate % 20 == 0)
+                    if (!shoot[i].active && shootRate % shootInterval == 0)
                     {
                         shoot[i].rec.x = player.rec.x + (player.rec.width/2) - 3;
-                        shoot[i].rec.y = player.rec.y-8;
+                        shoot[i].rec.y = player.rec.y -8;
                         shoot[i].active = true;
                         break;
                     }
@@ -410,12 +444,18 @@ void DrawGame(void)
     
     Vector2 player_pos = { 4, 4 };
     Color bg_color = { 255, 255, 255, 170 };
+
+
     
     if (!gameOver)
     {
         bg_pos_y = (bg_pos_y + 5) % 2400;
         DrawTexture(background, 0, bg_pos_y, bg_color);
         DrawTexture(background, 0, bg_pos_y - 2400, bg_color);
+
+        if (powerUpShootRate.active) {
+            DrawRectangleRec(powerUpShootRate.rec, powerUpShootRate.color);
+        }
 
         if (IsKeyDown(KEY_RIGHT)) {
             fire_offset = 8;
@@ -476,7 +516,6 @@ void DrawGame(void)
 
         if (pause) DrawText("GAME PAUSED", screenWidth / 2 - MeasureText("GAME PAUSED", 40) / 2, screenHeight / 2 - 40, 40, GRAY);
     }
-
     else DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 20) / 2, GetScreenHeight() / 2 - 50, 20, GRAY);
     
     EndDrawing();
