@@ -1,17 +1,101 @@
 ﻿  main.c
-C:\Users\gabri\Developer\space\src\main.c(159,34): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(160,34): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(172,26): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(173,57): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(173,26): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(296,72): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(296,42): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(297,42): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(338,50): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(339,81): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(339,50): warning C4244: '=': conversão de 'int' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(414,31): warning C4305: '-=': truncamento de 'double' para 'float'
-C:\Users\gabri\Developer\space\src\main.c(435,26): warning C4244: '=': conversão de 'double' para 'float', possível perda de dados
-C:\Users\gabri\Developer\space\src\main.c(438,52): warning C4244: 'função': conversão de 'float' para 'int', possível perda de dados
-  LINK : ..\..\bin\Debug\Space.exe não encontrado ou não compilado pelo o último link incremental; executando link completo
-  Space.vcxproj -> C:\Users\gabri\Developer\space\bin\Debug\Space.exe
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\player.h(24,36): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\player.h(25,36): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\player.h(69,38): warning C4305: '-=': truncation from 'double' to 'float'
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\player.h(73,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\player.h(77,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\player.h(100,54): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\time_management.h(10,13): warning C4305: 'initializing': truncation from 'double' to 'const float'
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\time_management.h(17,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\time_management.h(19,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\time_management.h(42,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemies.h(33,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemies.h(34,58): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemies.h(34,26): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemies.h(53,65): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemies.h(53,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemies.h(54,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapons.h(55,170): warning C4027: function declared without formal parameter list
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapons.h(97,38): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapons.h(98,70): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapons.h(98,38): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapons.h(138,39): warning C4305: '=': truncation from 'double' to 'float'
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(21,51): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(21,20): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(22,52): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(22,20): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(31,55): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(31,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(32,56): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(32,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.h(46,46): warning C4305: '+=': truncation from 'double' to 'float'
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game_elements.h(26,27): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game_elements.h(31,48): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game_elements.h(32,61): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  (compiling source file '../../src/main.c')
+  
+  Space.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders\bin\Debug\Space.exe

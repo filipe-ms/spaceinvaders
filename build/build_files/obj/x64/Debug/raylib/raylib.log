@@ -1,15 +1,2 @@
-﻿  raudio.c
-  rcore.c
-  rglfw.c
-C:\Users\gabri\Developer\space\build\external\raylib-master\src\external\jar_xm.h(242,9): warning C4005: 'DEBUG': redefinição de macro
-  (compilando o arquivo fonte '../external/raylib-master/src/raudio.c')
-      C:\Users\gabri\Developer\space\build\external\raylib-master\src\external\jar_xm.h(242,9):
-      'DEBUG' declarado anteriormente na linha de comando
-  
-  rmodels.c
-  rshapes.c
-  rtext.c
-  rtextures.c
-  utils.c
-  Gerando Código...
-  raylib.vcxproj -> C:\Users\gabri\Developer\space\bin\Debug\raylib.lib
+﻿  rtextures.c
+  raylib.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders\bin\Debug\raylib.lib
