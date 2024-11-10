@@ -25,40 +25,16 @@
 #include "math.h"
 
 // Nossos próprios includes
+#include "game_constants.h"
+
 #include "player.h"
 #include "enemies.h"
 #include "weapons.h"
 #include "power_ups.h"
-#include "game_behavior.h"
-#include "time_management.h"
 #include "game_elements.h"
 
-//--------------------------------------------------------------
-//
-//                         DEFINES
-// 
-//--------------------------------------------------------------
-
-// Tamanho da tela
-#define SCREEN_WIDTH 800    // Largura
-#define SCREEN_HEIGHT 1200  // Altura
-
-// Elementos de tela
-#define NUM_MAX_ENEMIES 50  // Número máximo de inimigos na tela
-
-// Timers
-#define FIRST_WAVE 10
-#define SECOND_WAVE 20
-#define THIRD_WAVE 50
-
-// Waves
-typedef enum { 
-    FIRST = 0, 
-    SECOND = 1, 
-    THIRD = 2
-} EnemyWave;
-
-
+#include "menu_screen.h"
+#include "select_ship.h"
 
 //--------------------------------------------------------------
 //
@@ -67,7 +43,7 @@ typedef enum {
 //--------------------------------------------------------------
 
 // GAME STATE
-static bool game_over = false;
+static GameScreen game_screen = START;
 static bool pause = false;
 static bool pause_flag = false;
 static bool victory = false;
@@ -121,13 +97,72 @@ static void ThirdWave(void);
 //--------------------------------------------------------------
 int main(void)
 {
-    
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Space Invaders"); // Inicializa a janela do jogo
+    SetTargetFPS(144);
     InitTextures();         // Inicializa o diretório de recursos/assets e as texturas
-    InitGame();             // Inicializa variáveis de jogo
-    GameLoop();             // Loop de jogo
-    UnloadGame();           // Encerramento
-    CloseWindow();          // Close window and OpenGL context
+    InitMenu();
+
+    while (game_screen != EXIT)
+    {
+        if (WindowShouldClose()) game_screen = EXIT;
+
+        switch (game_screen) {
+        case START:
+            UpdateMenu(&game_screen);
+            DrawMenu();
+            break;
+
+        case SELECT_TRANSITION:
+            if (MenuTransition()) {
+                game_screen = SELECT_SHIP;
+                SetTransitionFalse();
+                InitSelectMenu();
+            }
+            break;
+
+        case SELECT_SHIP:
+            UpdateSelectMenu(&game_screen);
+            DrawSelectMenu();
+            break;
+
+        case TUTORIAL_TRANSITION:
+            if (SelectMenuTransition()) {
+                game_screen = GAME;
+                SetSelectTransitionFalse();
+                InitGame(); // Inicializa variáveis de jogo
+            }
+            break;
+
+        case TUTORIAL:
+
+            break;
+
+        case GAME:
+            GameLoop();     // Loop de jogo
+            break;
+
+        case WINNER:
+            break;
+
+        case GAME_OVER:
+            break;
+
+        case ENTER_NAME:
+            break;
+
+        case RANKING:
+            break;
+
+        default:
+            UnloadGame();
+            CloseWindow();
+        }
+
+
+    }
+    
+    UnloadGame();           // Free
+    CloseWindow();          // Fecha a janela
 
     return 0;
 }
@@ -143,7 +178,6 @@ void InitGame(void) {
 
     // Initialize game variables
     pause = false;
-    game_over = false;
     victory = false;
     smooth = false;
     wave = FIRST;
@@ -152,17 +186,17 @@ void InitGame(void) {
     score = 0;
     alpha = 0;
     
-    InitShootRatePowerUp(&shootRatePower, SCREEN_WIDTH, SCREEN_HEIGHT); // Inicialização do item power-up de shootRate
-    InitPlayer(&player, SCREEN_WIDTH, SCREEN_HEIGHT);                   // Initialize player
-    InitEnemies(enemy, NUM_MAX_ENEMIES, SCREEN_WIDTH, SCREEN_HEIGHT);   // Initialize enemies
-    InitWeapon(weapon, player);                                         // Initialize weapons
-    InitBackground(&background);                                        // Initialize Background
+    InitShootRatePowerUp(&shootRatePower);  // Inicialização do item power-up de shootRate
+    InitPlayer(&player);                    // Initialize player
+    InitEnemies(enemy);                     // Initialize enemies
+    InitWeapon(weapon, player);             // Initialize weapons
+    InitBackground(&background);            // Initialize Background
 }
 
 // Update game (one frame)
 void UpdateGame(void)
 {
-    if (!game_over)
+    if (game_screen == GAME)
     {
         if (IsKeyPressed('P') && !pause_flag) {
             pause = !pause;
@@ -181,18 +215,22 @@ void UpdateGame(void)
             else if (wave == THIRD)
                 ThirdWave();
 
-            UpdatePowerUp(&shootRatePower, weapon, player);                                                                 // Verificar colisão entre o jogador e o item power-up de shootRate
-            MovePlayer(&player, GetUpdatedDelta());                                                                 // Player movement
-            UpdateEnemies(enemy, activeEnemies, SCREEN_WIDTH, SCREEN_HEIGHT);                                       // Enemy behavior
-            CheckEnemyCollision(&player, enemy, activeEnemies, &game_over);                                         // Colisão com um inimigo
-            WallBehavior(&player, SCREEN_WIDTH, SCREEN_HEIGHT);                                                     // Colisão com uma parede
-            PlayerShoot(weapon, player, enemy, activeEnemies, &enemiesKill, &score, SCREEN_WIDTH, SCREEN_HEIGHT);    // Shoot
+            UpdateDrawPlayer(&player);
+            UpdatePowerUp(&shootRatePower, weapon, player);                          // Verificar colisão entre o jogador e o item power-up de shootRate
+            MovePlayer(&player, GetFrameTime());                                     // Player movement
+            UpdateEnemies(enemy, activeEnemies);                                     // Enemy behavior
+            
+            WallBehavior(&player);                                                   // Colisão com uma parede
+            PlayerShoot(weapon, player, enemy, activeEnemies, &enemiesKill, &score); // Shoot
+            UpdateBackground(&background);
+
+            if (CheckEnemyCollision(player, enemy, activeEnemies)) game_screen = GAME_OVER;
         }
     } else {
         if (IsKeyPressed(KEY_ENTER))
         {
             InitGame();
-            game_over = false;
+            game_screen = GAME;
         }
     }
 }
@@ -204,10 +242,9 @@ void DrawGame(void)
 
     ClearBackground(BLACK);
 
-    if (!game_over)
+    if (game_screen == GAME)
     {
-        
-        UpdateAndDrawBackground(&background);
+        DrawBackground(&background);
         DrawPowerUps(shootRatePower);
         DrawPlayer(&player);
         DrawEnemies(enemy, activeEnemies);
@@ -232,37 +269,34 @@ void DrawGame(void)
 // Inicializa as texturas no jogo
 void InitTextures() {
     SearchAndSetResourceDir("resources");
+    
+    LoadMenuBackgroundTexture();
+    LoadSelectMenuTextures();
 
-    LoadWeaponTextures();
-    LoadPlayerTextures();
+    LoadPlayerTextures(&player);
+    LoadWeaponTextures(weapon);
     LoadEnemyTextures();
     LoadBackgroundTexture(&background);
+    
 }
 
 
 // Unload game variables
 void UnloadGame(void)
 {
-    UnloadWeaponTextures();
-    UnloadPlayerTextures();
+    UnloadPlayerTextures(&player);
+    UnloadWeaponTextures(weapon);
+    
     UnloadEnemyTextures();
     UnloadBackgroundTexture(&background);
+    
+    UnloadSelectMenuTextures();
+    UnloadMenuBackgroundTexture();
 }
 
 void GameLoop(void) {
-
-    InitUpdateStart();
-  
-    while (!WindowShouldClose()) 
-    {
-        do {
-            UpdateGame();
-            UpdateTime();
-        } while (!IsItTimeToDraw());
-        GameLoopUpdate();
-
-        DrawGame(); 
-    } 
+    UpdateGame();
+    DrawGame();
 }
 
 
@@ -276,12 +310,12 @@ void GameLoop(void) {
 void FirstWave() {
     if (!smooth)
     {
-        alpha += 0.02f;
+        alpha += 0.02f * GetFrameTime();
 
         if (alpha >= 1.0f) smooth = true;
     }
 
-    if (smooth) alpha -= 0.02f;
+    if (smooth) alpha -= 0.02f * GetFrameTime();
 
     if (enemiesKill == activeEnemies)
     {
@@ -305,12 +339,12 @@ void SecondWave() {
 
     if (!smooth)
     {
-        alpha += 0.02f;
+        alpha += 0.02f * GetFrameTime();
 
         if (alpha >= 1.0f) smooth = true;
     }
 
-    if (smooth) alpha -= 0.02f;
+    if (smooth) alpha -= 0.02f * GetFrameTime();
 
     if (enemiesKill == activeEnemies)
     {
@@ -331,12 +365,12 @@ void SecondWave() {
 void ThirdWave() {
     if (!smooth)
     {
-        alpha += 0.02f;
+        alpha += 0.02f * GetFrameTime();
 
         if (alpha >= 1.0f) smooth = true;
     }
 
-    if (smooth) alpha -= 0.02f;
+    if (smooth) alpha -= 0.02f * GetFrameTime();
 
     if (enemiesKill == activeEnemies) victory = true;
 }

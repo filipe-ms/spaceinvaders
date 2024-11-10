@@ -7,39 +7,18 @@
 #ifndef TIME_MANAGEMENT_H
 #define TIME_MANAGEMENT_H
 
-const float update_time_s = 1.0 / 60.0;
-static float elapsed_time_s = 0;
-float game_loop_remains_s = 0;
-float update_delta_s = 0;
-float updateStart = 0;
+extern const float update_time_s;
+extern float elapsed_time_s;
+extern float game_loop_remains_s;
+extern float update_delta_s;
+extern float updateStart;
 
-void UpdateTime() {
-    update_delta_s = GetTime() - updateStart;
-    game_loop_remains_s += update_delta_s;
-    updateStart = GetTime();
-}
-
-float GetElapsedTime() {
-    return game_loop_remains_s;
-}
-
-void GameLoopUpdate() {
-    game_loop_remains_s -= update_time_s;
-}
-
-float GetFrameUpdateTime() {
-    return update_time_s;
-}
-float GetUpdatedDelta() {
-    return update_delta_s;
-}
-
-bool IsItTimeToDraw() {
-    return game_loop_remains_s >= update_time_s;
-}
-
-void InitUpdateStart() {
-    updateStart = GetTime();
-}
+void UpdateTime();
+float GetElapsedTime();
+void GameLoopUpdate();
+float GetFrameUpdateTime();
+float GetUpdatedDelta();
+bool IsItTimeToDraw();
+void InitUpdateStart();
 
 #endif // TIME_MANAGEMENT_H
