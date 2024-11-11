@@ -6,8 +6,8 @@
 void InitShootRatePowerUp(struct PowerUpShootRate* power) {
     power->rec.width = 20;  // Define a largura do item
     power->rec.height = 20; // Define a altura do item
-    power->rec.x = GetRandomValue(0, SCREEN_WIDTH - power->rec.width);  // Posição aleatória x
-    power->rec.y = GetRandomValue(0, SCREEN_HEIGHT - power->rec.height); // Posição aleatória y
+    power->rec.x = (float)GetRandomValue(0, SCREEN_WIDTH - (int)(power->rec.width));  // Posição aleatória x
+    power->rec.y = (float)GetRandomValue(0, SCREEN_HEIGHT - (int)(power->rec.height)); // Posição aleatória y
     power->active = true;   // Item começa ativo
     power->color = RED;     // Define a cor do item como vermelha
 }
@@ -15,8 +15,8 @@ void InitShootRatePowerUp(struct PowerUpShootRate* power) {
 void SpawnShootRatePowerUp(struct PowerUpShootRate* power) {
     if (!power->active) {
         // Ativa o item e define uma nova posição aleatória quando a segunda onda começa
-        power->rec.x = GetRandomValue(0, SCREEN_WIDTH - power->rec.width);
-        power->rec.y = GetRandomValue(0, SCREEN_HEIGHT - power->rec.height);
+        power->rec.x = (float)GetRandomValue(0, SCREEN_WIDTH - (int)(power->rec.width));
+        power->rec.y = (float)GetRandomValue(0, SCREEN_HEIGHT - (int)(power->rec.height));
         power->active = true;
     }
 }
@@ -28,9 +28,9 @@ void DrawPowerUps(struct PowerUpShootRate power) {
 }
 
 void UpdatePowerUp(struct PowerUpShootRate* power, struct Weapon* weapon, struct Player player) {
-    if (power->active && CheckCollisionRecs(player.rec, power->rec)) {
+    if (power->active && CheckCollisionRecs(player.position, power->rec)) {
         // Diminui o intervalo de frame do shootRate em 20%
-        weapon[0].charge_time_modifier += 0.2;
+        weapon[0].charge_time_modifier += 0.2f;
 
         // Desativa o item após coleta
         power->active = false;

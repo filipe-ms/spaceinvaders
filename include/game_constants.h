@@ -1,4 +1,5 @@
 // game_constants.h
+#include "weapons.h" // Para saber quantas armas implementadas existem
 
 #ifndef GAME_CONSTANTS_H
 #define GAME_CONSTANTS_H
@@ -15,27 +16,15 @@
 #define SECOND_WAVE 20
 #define THIRD_WAVE 50
 
+// Armas
+#define NUMBER_OF_WEAPONS 1 // LEMBRAR DE ATUALIZAR QUANDO TIVER ARMA NOVA
+
 // Waves
 typedef enum {
     FIRST = 0,
     SECOND = 1,
     THIRD = 2
 } EnemyWave;
-
-// Screens
-typedef enum {
-    START = 0,
-    SELECT_TRANSITION,
-    SELECT_SHIP,
-    TUTORIAL_TRANSITION,
-    TUTORIAL,
-    GAME,
-    WINNER,
-    GAME_OVER,
-    ENTER_NAME,
-    RANKING,
-    EXIT
-} GameScreen;
 
 
 #endif // GAME_CONSTANTS_H

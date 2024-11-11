@@ -2,105 +2,94 @@
 
 #include "player.h"
 #include "game_constants.h"
+#include "draw_object.h"
 #include "math.h"
 
-InitShipOne(Player* player) {
-    player->ship.texture_position = (Rectangle){ player->rec.x, player->rec.y, 64, 64 };
-    player->ship.offset = (Vector2){ 0, 0 }; // 4, 4
-    player->ship.thruster_offset = 0;
-    player->ship.thruster_texture_position = (Rectangle){ player->rec.x + player->ship.thruster_offset, player->rec.y + 56, 64, 64 }; // player->rec.y + 48
-    player->ship.thruster_cycle = 0;
-    player->ship.speed.x = 360;
-    player->ship.speed.y = 360;
+// Possible Ships
+Orion orion;
+
+void InitPlayer(Player *player, int ship_id) {
+    player->ship = ship_id;
+
+    player->position.x = SCREEN_WIDTH / 2 - 32;
+    player->position.y = (SCREEN_HEIGHT - 100);
+
+    player->position.width = 48;
+    player->position.height = 48;
+
+    player->direction = CENTER;
+
+    player->speed.x = 360;
+    player->speed.y = 360;
+
+    player->animation_cycle = 0;
+
+    player->color = WHITE;
+    player->alpha = 1.0f;
 }
 
-void InitPlayer(struct Player* player) {
-    player->ship.id = 0;
-    player->rec.x = SCREEN_WIDTH / 2 - 32;
-    player->rec.y = (SCREEN_HEIGHT - 100);
-    player->rec.width = 48;
-    player->rec.height = 48;
+// Update related
 
-    player->color = BLACK;
-
-    switch (player->ship.id) {
-    default:
-        InitShipOne(player);
-    }
+void UpdatePlayerDirection(Player* player) {
+    if (IsKeyDown(KEY_RIGHT)) player->direction = RIGHT;
+    else if (IsKeyDown(KEY_LEFT)) player->direction = LEFT;
+    else player->direction = CENTER;
 }
 
-Rectangle GetPlayerRectangle() {
+void WallBehavior(Player* player) {
+    if (player->position.x <= 0) player->position.x = 0;
+    if (player->position.x + player->position.width >= SCREEN_WIDTH) player->position.x = SCREEN_WIDTH - player->position.width;
+    if (player->position.y <= 0) player->position.y = 0;
+    if (player->position.y + player->position.height >= SCREEN_HEIGHT) player->position.y = SCREEN_HEIGHT - player->position.height;
+}
+
+void UpdatePlayerPosition(Player* player) {
+    if (IsKeyDown(KEY_RIGHT)) player->position.x += player->speed.x * GetFrameTime();
+    if (IsKeyDown(KEY_LEFT)) player->position.x -= player->speed.x * GetFrameTime();
+    if (IsKeyDown(KEY_UP)) player->position.y -= player->speed.y * GetFrameTime();
+    if (IsKeyDown(KEY_DOWN)) player->position.y += player->speed.y * GetFrameTime();
+    WallBehavior(player);
+}
+
+void UpdatePlayerAnimationCycle(Player* player) {
+    player->animation_cycle += 0.2f * GetFrameTime();
+    if (player->animation_cycle > 1.0f) player->animation_cycle -= 1.0f;
+}
+
+int GetThrusterAnimationCycle(Player *player) {
     if (IsKeyDown(KEY_RIGHT)) {
-        Rectangle ship_texture_right = { 16, 0, 8, 8 };
-        return ship_texture_right;
-    }
-    else if (IsKeyDown(KEY_LEFT)) {
-        Rectangle ship_texture_left = { 0, 0, 8, 8 };
-        return ship_texture_left;
-    }
-    Rectangle ship_texture_center = { 8, 0, 8, 8 };
-    return ship_texture_center;
-}
-
-Rectangle GetThrusters(int cycle) {
-    switch (abs(cycle)) {
-    case 1:
-        return (Rectangle) { 40, 8, 8, 8 };
-    case 2:
-        return (Rectangle) { 48, 8, 8, 8 };
-    case 3:
-        return (Rectangle) { 56, 8, 8, 8 };
-    default:
-        return (Rectangle) { 64, 8, 8, 8 };
-    }
-}
-
-void UpdateThrusters(struct Player* player) {
-    if (IsKeyDown(KEY_RIGHT)) {
-        player->ship.thruster_offset = 8;
-        player->ship.thruster_cycle -= 1*GetFrameTime();
-    }
-    else if (IsKeyDown(KEY_LEFT)) {
-        player->ship.thruster_offset = -8;
+        if (player->animation_cycle < 0.25f) return 4;
+        if (player->animation_cycle < 0.5f) return 3;
+        if (player->animation_cycle < 0.75f) return 2;
+        return 1;
     }
     else {
-        player->ship.thruster_offset = 0;
+        if (player->animation_cycle < 0.25f) return 1;
+        if (player->animation_cycle < 0.5f) return 2;
+        if (player->animation_cycle < 0.75f) return 3;
+        return 4;
     }
-    player->ship.thruster_cycle = fmod((player->ship.thruster_cycle + 10*GetFrameTime()), 4.0f);
 }
 
-void MovePlayer(struct Player* player, float delta_time) {
-    if (IsKeyDown(KEY_RIGHT)) player->rec.x += player->ship.speed.x * delta_time;
-    if (IsKeyDown(KEY_LEFT)) player->rec.x -= player->ship.speed.x * delta_time;
-    if (IsKeyDown(KEY_UP)) player->rec.y -= player->ship.speed.y * delta_time;
-    if (IsKeyDown(KEY_DOWN)) player->rec.y += player->ship.speed.y * delta_time;
+void UpdateOrion(Player *player) {
+    orion.destination = player->position;
+    orion.direction = player->direction;
+    orion.thruster_cycle = GetThrusterAnimationCycle(player);
+    orion.color = player->color;
+    orion.alpha = player->alpha;
 }
 
-void UpdateDrawPlayer(Player* player) {
-    player->ship.texture_position = (Rectangle){ player->rec.x, player->rec.y, 64, 64 }; //(Rectangle){ player->rec.x - 4, player->rec.y - 8, 64, 64 };
-    player->ship.thruster_texture_position = (Rectangle){ player->rec.x + player->ship.thruster_offset, player->rec.y + 56, 64, 64 }; //(Rectangle){ player->rec.x - 4 + player->ship.thruster_offset, player->rec.y + 48, 64, 64 };
-    UpdateThrusters(player);
+void UpdatePlayer(Player *player) {
+    // General updates
+    UpdatePlayerDirection(player);
+    UpdatePlayerPosition(player);
+    UpdatePlayerAnimationCycle(player);
+
+    // Ship updates
+    if (player->ship == ORION) UpdateOrion(player);
 }
 
-void DrawPlayer(struct Player* player) {
-    DrawTexturePro(player->ship.thruster_texture, GetThrusters(player->ship.thruster_cycle), player->ship.thruster_texture_position, player->ship.offset, 0, WHITE);
-    DrawTexturePro(player->ship.texture, GetPlayerRectangle(), player->ship.texture_position, player->ship.offset, 0, WHITE);
-    
-}
-
-void WallBehavior(struct Player* player) {
-    if (player->rec.x <= 0) player->rec.x = 0;
-    if (player->rec.x + player->rec.width >= SCREEN_WIDTH) player->rec.x = SCREEN_WIDTH - player->rec.width;
-    if (player->rec.y <= 0) player->rec.y = 0;
-    if (player->rec.y + player->rec.height >= SCREEN_HEIGHT) player->rec.y = SCREEN_HEIGHT - player->rec.height;
-}
-
-void LoadPlayerTextures(Player *player) {
-    player->ship.texture = LoadTexture("ships.png");
-    player->ship.thruster_texture = LoadTexture("playerassets.png");
-}
-
-void UnloadPlayerTextures(Player *player) {
-    UnloadTexture(player->ship.texture);
-    UnloadTexture(player->ship.thruster_texture);
+// Draw related
+void DrawPlayer(Player player) {
+    if (player.ship == ORION) DrawOrion(&orion);
 }

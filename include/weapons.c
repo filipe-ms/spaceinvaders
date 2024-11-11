@@ -1,6 +1,7 @@
 // weapons.c
 
 #include "weapons.h"
+#include "game_constants.h"
 
 void LoadWeaponTextures(Weapon *weapon) {
     for(int i=0; i < NUMBER_OF_WEAPONS; i++)
@@ -13,11 +14,11 @@ void UnloadWeaponTextures(Weapon *weapon) {
     }
 }
 
-void InitWeapon(struct Weapon* weapons, struct Player player) {
+void InitWeapon(Weapon* weapons, Player player) {
     InitPhoton(&weapons[0]);
 }
 
-void InitPhoton(struct Weapon* weapon) {
+void InitPhoton(Weapon* weapon) {
 
     weapon->id = PHOTON;
     weapon->active = true;
@@ -39,10 +40,10 @@ void InitPhoton(struct Weapon* weapon) {
     }
 }
 
-void InitWeaponShoot(struct ActiveShoot* shoot, struct Player player) {
+void InitWeaponShoot(ActiveShoot* shoot, Player player) {
     shoot->active = true;
-    shoot->rec.x = (player.rec.x + 30);
-    shoot->rec.y = (player.rec.y - 4);
+    shoot->rec.x = (player.position.x + 30);
+    shoot->rec.y = (player.position.y - 4);
 }
 
 void PlayerShoot(Weapon* weapon, Player player, Enemy* enemy, int activeEnemies, int* enemiesKill, int* score) {
@@ -50,7 +51,7 @@ void PlayerShoot(Weapon* weapon, Player player, Enemy* enemy, int activeEnemies,
     UpdateShootPosition(&weapon[0], enemy, activeEnemies, enemiesKill, score);
 }
 
-void CheckWeaponCooldownAndShoot(struct Weapon* weapon, struct Player player) {
+void CheckWeaponCooldownAndShoot(Weapon* weapon, Player player) {
     weapon->cooldown_charge_s += weapon->charge_time_modifier * GetFrameTime();
     if (weapon->cooldown_charge_s >= weapon->cooldown_time_s) {
         for (int i = 0; i < weapon->max_active_shoots; i++) {
@@ -63,7 +64,7 @@ void CheckWeaponCooldownAndShoot(struct Weapon* weapon, struct Player player) {
     }
 }
 
-void UpdateShootPosition(struct Weapon* weapon, struct Enemy enemy[], int active_enemies, int* enemy_kill, int* score) {
+void UpdateShootPosition(Weapon* weapon, Enemy *enemy, int active_enemies, int* enemy_kill, int* score) {
     for (int i = 0; i < weapon->max_active_shoots; i++) {
         if (!weapon->shoot[i].active) continue;
 
@@ -80,8 +81,8 @@ void UpdateShootPosition(struct Weapon* weapon, struct Enemy enemy[], int active
             if (enemy[j].active) {
                 if (CheckCollisionRecs(weapon->shoot[i].rec, enemy[j].rec)) {
                     weapon->shoot[i].active = false;
-                    enemy[j].rec.x = GetRandomValue(SCREEN_WIDTH, SCREEN_WIDTH + 1000);
-                    enemy[j].rec.y = GetRandomValue(0, SCREEN_HEIGHT - enemy[j].rec.height);
+                    enemy[j].rec.x = (float)GetRandomValue(SCREEN_WIDTH, SCREEN_WIDTH + 1000);
+                    enemy[j].rec.y = (float)GetRandomValue(0, SCREEN_HEIGHT - enemy[j].rec.height);
                     (*enemy_kill)++;
                     (*score) += 100;
                 }
@@ -90,7 +91,7 @@ void UpdateShootPosition(struct Weapon* weapon, struct Enemy enemy[], int active
     }
 }
 
-void DrawWeaponShoot(struct Weapon weapon) {
+void DrawWeaponShoot(Weapon weapon) {
     for (int i = 0; i < weapon.max_active_shoots; i++) {
         if (weapon.shoot[i].active) {
             Rectangle drawn_shoot = weapon.shoot[i].rec;

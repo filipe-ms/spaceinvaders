@@ -1,6 +1,2 @@
-﻿  main.c
-D:\Projects\Space Invaders\update\Space\spaceinvaders\src\main.c(131,17): warning C4013: 'SetSelectTransitionFalse' undefined; assuming extern returning int
-D:\Projects\Space Invaders\update\Space\spaceinvaders\src\main.c(218,13): warning C4013: 'UpdateDrawPlayer' undefined; assuming extern returning int
-D:\Projects\Space Invaders\update\Space\spaceinvaders\src\main.c(247,9): warning C4013: 'DrawBackground' undefined; assuming extern returning int
-D:\Projects\Space Invaders\update\Space\spaceinvaders\src\main.c(338,44): warning C4020: 'SpawnShootRatePowerUp': too many actual parameters
+﻿  scene_manager.c
   Space.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders\bin\Debug\Space.exe

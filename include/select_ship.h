@@ -15,14 +15,6 @@ typedef enum {
     SELECT_MENU_OPTION_COUNT
 } SelectMenuOption;
 
-typedef struct SelectMenuBackground {
-    Texture texture;
-    Color color;
-    float alpha;
-    float y_offset;
-
-} SelectMenuBackground;
-
 typedef struct SelectMenuShip {
     Texture texture;
     Rectangle sprite_location;
@@ -32,10 +24,9 @@ typedef struct SelectMenuShip {
 } SelectMenuShip;
 
 void InitSelectMenu(void);
-void UpdateSelectMenu(GameScreen* game_screen);
+void UpdateShipSelectMenu(void);
 void DrawSelectMenu(void);
 void LoadSelectMenuTextures(void);
 void UnloadSelectMenuTextures(void);
-bool SelectMenuTransition(void);
 
 #endif // SELECT_SHIP_H

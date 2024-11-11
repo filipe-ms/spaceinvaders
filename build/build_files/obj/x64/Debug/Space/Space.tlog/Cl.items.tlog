@@ -1,9 +1,12 @@
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemies.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\enemies.obj
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\draw_object.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\draw_object.obj
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\enemy.obj
 D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game_constants.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\game_constants.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game_elements.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\game_elements.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\menu_screen.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\menu_screen.obj
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\main_menu.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\main_menu.obj
 D:\Projects\Space Invaders\update\Space\spaceinvaders\include\player.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\player.obj
 D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\power_ups.obj
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\scene_manager.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\scene_manager.obj
 D:\Projects\Space Invaders\update\Space\spaceinvaders\include\select_ship.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\select_ship.obj
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\game.obj
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\tutorial.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\tutorial.obj
 D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapons.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\weapons.obj
 D:\Projects\Space Invaders\update\Space\spaceinvaders\src\main.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\main.obj

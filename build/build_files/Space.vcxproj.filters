@@ -21,19 +21,31 @@
     <ClInclude Include="..\..\include\power_ups.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\enemies.h">
+    <ClInclude Include="..\..\include\enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\game_constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\game_elements.h">
+    <ClInclude Include="..\..\include\commons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\menu_screen.h">
+    <ClInclude Include="..\..\include\main_menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\select_ship.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\tutorial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\draw_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\scene_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,10 +59,7 @@
     <ClCompile Include="..\..\include\weapons.c">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\enemies.c">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\include\game_elements.c">
+    <ClCompile Include="..\..\include\enemy.c">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\player.c">
@@ -59,10 +68,22 @@
     <ClCompile Include="..\..\include\game_constants.c">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\menu_screen.c">
+    <ClCompile Include="..\..\include\main_menu.c">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\select_ship.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\tutorial.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\draw_object.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\scene_manager.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\game.c">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
