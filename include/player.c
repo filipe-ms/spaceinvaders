@@ -7,6 +7,7 @@
 
 // Possible Ships
 Orion orion;
+Aurea aurea;
 
 void InitPlayer(Player *player, int ship_id) {
     player->ship = ship_id;
@@ -52,7 +53,7 @@ void UpdatePlayerPosition(Player* player) {
 }
 
 void UpdatePlayerAnimationCycle(Player* player) {
-    player->animation_cycle += 0.2f * GetFrameTime();
+    player->animation_cycle += 1.0f * GetFrameTime();
     if (player->animation_cycle > 1.0f) player->animation_cycle -= 1.0f;
 }
 
@@ -71,12 +72,26 @@ int GetThrusterAnimationCycle(Player *player) {
     }
 }
 
+// Ship updates
+
 void UpdateOrion(Player *player) {
     orion.destination = player->position;
+    orion.destination.height = 64;
+    orion.destination.width = 64;
     orion.direction = player->direction;
     orion.thruster_cycle = GetThrusterAnimationCycle(player);
     orion.color = player->color;
     orion.alpha = player->alpha;
+}
+
+void UpdateAurea(Player* player) {
+    aurea.destination = player->position;
+    aurea.destination.height = 64;
+    aurea.destination.width = 64;
+    aurea.direction = player->direction;
+    aurea.thruster_cycle = GetThrusterAnimationCycle(player);
+    aurea.color = player->color;
+    aurea.alpha = player->alpha;
 }
 
 void UpdatePlayer(Player *player) {
@@ -86,10 +101,14 @@ void UpdatePlayer(Player *player) {
     UpdatePlayerAnimationCycle(player);
 
     // Ship updates
+    if (player->ship == AUREA) UpdateAurea(player);
     if (player->ship == ORION) UpdateOrion(player);
+
 }
 
 // Draw related
 void DrawPlayer(Player player) {
+    if (player.ship == AUREA) DrawAurea(&aurea);
     if (player.ship == ORION) DrawOrion(&orion);
+
 }

@@ -20,19 +20,33 @@
 #define LEFT 1
 #define RIGHT 2
 
-#define ORION 0
+#define AUREA 0
+#define ORION 1
+
 
 // Específicos
 
+// Orion
 typedef struct Orion {
     Rectangle destination;  // O local em que vai ser desenhado
     int direction;        // Para que lado está andando
-    int thruster_cycle;     // Em que ciclo o thsuter está
+    int thruster_cycle;     // Em que ciclo o thruster está
     Color color;            // Cor
     float alpha;            // Transparência
 } Orion;
 
 void DrawOrion(Orion *orion);
+
+// Aurea
+typedef struct Aurea {
+    Rectangle destination;  // O local em que vai ser desenhado
+    int direction;        // Para que lado está andando
+    int thruster_cycle;     // Em que ciclo o thruster está
+    Color color;            // Cor
+    float alpha;            // Transparência
+} Aurea;
+
+void DrawAurea(Aurea *aurea);
 
 // Genéricos
 

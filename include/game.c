@@ -17,6 +17,7 @@ static int score = 0;
 static Player player = { 0 };
 static Enemy enemy[NUM_MAX_ENEMIES] = { 0 };
 
+
 // BACKGROUND
 static Background background;
 
@@ -35,7 +36,7 @@ static PowerUpShootRate shootRatePower;
 static Weapon weapon[NUMBER_OF_WEAPONS];
 
 
-void InitGame(void) {
+void InitGame(int ship_id) {
 
     // Initialize game variables
     pause = false;
@@ -46,10 +47,12 @@ void InitGame(void) {
     enemiesKill = 0;
     score = 0;
     alpha = 0;
-
+    
+    InitPlayer(&player, ship_id);
     InitShootRatePowerUp(&shootRatePower);  // Inicialização do item power-up de shootRate
     InitEnemies(enemy);                     // Initialize enemies
     InitWeapon(&weapon, player);             // Initialize weapons
+    
 
     background.position_y = -1200;
     background.color = (Color){ 255, 255, 255, 170 };
@@ -190,7 +193,7 @@ void DrawGame(void)
 
     ClearBackground(BLACK);
 
-    DrawBackground(&background);
+    DrawBackground();
     DrawPowerUps(shootRatePower);
     DrawWeaponShoot(weapon[0]);
     DrawPlayer(player);

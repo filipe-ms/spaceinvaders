@@ -17,6 +17,8 @@ typedef struct Player {
     float alpha;
 } Player;
 
+extern int ship_id;
+
 void InitPlayer(Player* player, int ship_id);
 void UpdatePlayer(Player* player);
 void DrawPlayer(Player player);

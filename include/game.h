@@ -4,7 +4,7 @@
 #include "raylib.h"
 #include "player.h"
 
-void InitGame(void);         // Initialize game
+void InitGame(int ship_id);         // Initialize game
 void UpdateGame(void);       // Update game (one frame)
 void DrawGame(void);         // Draw game (one frame)
 

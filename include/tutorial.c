@@ -1,105 +1,41 @@
 // tutorial.c
 
-/*
+
 #include "select_ship.h"
 #include "math.h"
 #include "player.h"
+#include "commons.h"
+#include "scene_manager.h"
 
-SelectMenuShip ship_1;
-SelectMenuBackground select_menu_background;
-SelectMenuOption current_select_menu_option;
+Background tutorial;
+int id;
 
-bool select_alpha_flag = true;
-bool select_transition_complete = false;
-
-// Transition variables
-float select_transition_duration_s = 5;
-float select_transition_acceleration = 75;
-float select_transition_speed = 75;
-float select_transition_count = 0;
-float select_transition_alpha_text = 0;
-float select_transition_alpha_increment = 0.2;
-
-void InitTutorial() {
-    current_select_menu_option = MIDDLE_SHIP;
-    select_menu_background.color = WHITE;
-    select_menu_background.alpha = 0.0f;
-    select_menu_background.y_offset = 0;
-
-    ship_1.alpha = 0.0f;
-    ship_1.color = WHITE;
-    ship_1.sprite_location = (Rectangle){ 8, 0, 8, 8 };
-    ship_1.sprite_destination = (Rectangle){ SCREEN_WIDTH / 2 - 32, 400, 64, 64 };
+void InitTutorial(int ship_id) {
+    id = ship_id;
+    tutorial.position_y = 0;
+    tutorial.position_x = 0;
+    tutorial.color = WHITE;
+    tutorial.alpha = 1;
 }
 
-void UpdateTutorial(GameScreen* game_screen) {
-    if (select_menu_background.alpha < 1) select_menu_background.alpha += 0.25f * GetFrameTime();
-    if (ship_1.alpha < 1) ship_1.alpha += 0.25f * GetFrameTime();
-    if (select_transition_alpha_text < 1) select_transition_alpha_text += 0.25f * GetFrameTime();
-
-    select_menu_background.y_offset = fmod(select_menu_background.y_offset + 75 * GetFrameTime(), 1200);
-    if (IsKeyPressed(KEY_LEFT)) {
-        current_select_menu_option = (current_select_menu_option - 1 + SELECT_MENU_OPTION_COUNT) % SELECT_MENU_OPTION_COUNT;
-    }
-    else if (IsKeyPressed(KEY_RIGHT)) {
-        current_select_menu_option = (current_select_menu_option + 1) % SELECT_MENU_OPTION_COUNT;
-    }
-    else if (IsKeyPressed(KEY_ENTER)) {
-        *game_screen = TUTORIAL_TRANSITION;
+void UpdateTutorial(void) {
+    if (IsKeyPressed(KEY_ENTER)) {
+        ChangeSceneArgs(GAME, id);
     }
 }
 
 void DrawTutorial() {
     BeginDrawing();
-
     ClearBackground(BLACK);
-
-    DrawSelectMenuBackground();
-
-    Color titleColor = Fade(RAYWHITE, select_transition_alpha_text);
-
-    Color colorStart = (current_select_menu_option == LEFT_SHIP) ? Fade(RED, select_transition_alpha_text) : Fade(GRAY, select_transition_alpha_text);
-    Color colorRanking = (current_select_menu_option == MIDDLE_SHIP) ? Fade(RED, select_transition_alpha_text) : Fade(GRAY, select_transition_alpha_text);
-    Color colorExit = (current_select_menu_option == RIGHT_SHIP) ? Fade(RED, select_transition_alpha_text) : Fade(GRAY, select_transition_alpha_text);
-
-    DrawTexturePro(ship_1.texture, ship_1.sprite_location, ship_1.sprite_destination, (Vector2) { 0, 0 }, 0, Fade(WHITE, ship_1.alpha));
-
-    DrawText("Unavailable", SCREEN_WIDTH*0.25 - MeasureText("Unavailable", 20) / 2, 500, 20, colorStart);
-    DrawText("NomeNave", SCREEN_WIDTH/2 - MeasureText("NomeNave", 20) / 2, 500, 20, colorRanking);
-    DrawText("Unavailable", SCREEN_WIDTH*0.75 - MeasureText("Unavailable", 20) / 2, 500, 20, colorExit);
+    DrawTexture(tutorial.texture, (int)(tutorial.position_x), (int)(tutorial.position_y), Fade(tutorial.color, tutorial.alpha));
     EndDrawing();
 }
 
+
 void LoadTutorialTextures() {
-    select_menu_background.texture = LoadTexture("shipselectbg.png");
-    ship_1.texture = LoadTexture("ships.png");
+    tutorial.texture = LoadTexture("tutorial.png");
 }
 
 void UnloadTutorialTextures() {
-    UnloadTexture(select_menu_background.texture);
+    UnloadTexture(tutorial.texture);
 }
-
-void UpdateTutorialTransition() {
-    select_transition_count += GetFrameTime();
-    select_transition_speed += select_transition_acceleration * GetFrameTime();
-    select_transition_acceleration += select_transition_acceleration * GetFrameTime();
-    select_menu_background.y_offset = fmod(select_menu_background.y_offset + select_transition_speed * GetFrameTime(), 1200);
-    select_transition_alpha_text -= select_transition_alpha_increment * 2 * GetFrameTime();
-    select_menu_background.alpha -= select_transition_alpha_increment * GetFrameTime();
-    
-    if (ship_1.sprite_destination.y <= SCREEN_HEIGHT - 100) {
-        ship_1.sprite_destination.y += 180 * GetFrameTime();
-    }
-        
-
-    if (select_transition_count >= 5) select_transition_complete = true;
-}
-
-bool TutorialTransition() {
-    UpdateSelectMenuTransition();
-    DrawSelectMenu();
-    return select_transition_complete;
-}
-void SetTutorialTransitionFalse() {
-    select_transition_complete = false;
-}*/

@@ -4,6 +4,7 @@
 #include "select_ship.h"
 #include "main_menu.h"
 #include "game.h"
+#include "tutorial.h"
 
 Scene current_scene;
 Scene main_menu;
@@ -13,10 +14,13 @@ void InitSceneManager(Scene scene) {
 }
 
 void ChangeScene(Scene scene) {
+    ChangeSceneArgs(scene, 0);
+}
+
+void ChangeSceneArgs(Scene scene, int id) {
     current_scene = scene;
 
     switch (current_scene) {
-
     case START:
         InitMenu();
         break;
@@ -25,11 +29,16 @@ void ChangeScene(Scene scene) {
         InitSelectMenu();
         break;
 
+    case TUTORIAL:
+        InitTutorial(id);
+        break;
+
     case GAME:
-        InitGame();
+        InitGame(id);
         break;
     }
 }
+
 
 void UpdateCurrentScene(void) {
 
@@ -41,6 +50,10 @@ void UpdateCurrentScene(void) {
 
     case SELECT_SHIP:
         UpdateShipSelectMenu();
+        break;
+
+    case TUTORIAL:
+        UpdateTutorial();
         break;
 
     case GAME:
@@ -59,6 +72,10 @@ void DrawCurrentScene(void) {
 
     case SELECT_SHIP:
         DrawSelectMenu();
+        break;
+
+    case TUTORIAL:
+        DrawTutorial();
         break;
 
     case GAME:

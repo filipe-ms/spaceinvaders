@@ -29,7 +29,7 @@ typedef enum {
 
 void InitSceneManager(Scene scene);
 void ChangeScene(Scene scene);
+void ChangeSceneArgs(Scene scene, int id);
 void LoopScene(void);
-
 
 #endif // SCENE_MANAGER_H

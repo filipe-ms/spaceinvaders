@@ -39,6 +39,7 @@
 #include "main_menu.h"
 #include "select_ship.h"
 
+#include "tutorial.h"
 #include "game.h"
 
 static Scene starting_scene = START;
@@ -80,6 +81,7 @@ void LoadGame() {
     LoadObjectTextures();
     LoadEnemyTextures();
     LoadGameTextures();
+    LoadTutorialTextures();
 }
 
 
@@ -90,4 +92,5 @@ void UnloadGame(void)
     UnloadEnemyTextures();
     UnloadSelectMenuTextures();
     UnloadMenuBackgroundTexture();
+    UnloadTutorialTextures();
 }
