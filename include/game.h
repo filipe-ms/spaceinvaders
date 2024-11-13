@@ -3,6 +3,7 @@
 
 #include "raylib.h"
 #include "player.h"
+#include "weapons.h"
 
 void InitGame(int ship_id);         // Initialize game
 void UpdateGame(void);       // Update game (one frame)

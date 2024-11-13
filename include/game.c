@@ -2,7 +2,7 @@
 #include "enemy.h"
 #include "commons.h"
 #include "weapons.h"
-
+#include "xp_bar.h"
 #include "power_ups.h"
 #include "game_constants.h"
 #include "scene_manager.h"
@@ -13,47 +13,67 @@
 static bool pause = false;
 static bool pause_flag = false;
 static bool victory = false;
-static int score = 0;
-static Player player = { 0 };
-static Enemy enemy[NUM_MAX_ENEMIES] = { 0 };
 
+static Player player = { 0 };
+static Enemy enemy[50] = { 0 };
 
 // BACKGROUND
 static Background background;
 
 // WAVE
-static EnemyWave wave = { 0 };
-static float alpha = 0.0f;
-static bool smooth = false;
+int active_wave;
+bool wave_completed;
+float wave_message_alpha;
+bool wave_message_alpha_flag;
+
+// WAVE COUNTERS
+float wave_3_enemy_cooldown_s = 1;
+float wave_3_enemy_cooldown_charge_s = 0;
 
 // COUNTS
-static int activeEnemies = 0;
-static int enemiesKill = 0;
+int player_score;
+int enemies_killed;
 
-// POWERS
+// BUFFS AND POWERS
+
+float shoot_cooldown_modifier = 1.0f;
+
 static PowerUpShootRate shootRatePower;
 
 static Weapon weapon[NUMBER_OF_WEAPONS];
 
-
 void InitGame(int ship_id) {
 
-    // Initialize game variables
+    static bool pause = false;
+    static bool pause_flag = false;
+    static bool victory = false;
+
+    // Special Conditions
     pause = false;
+    pause_flag = false;
     victory = false;
-    smooth = false;
-    wave = FIRST;
-    activeEnemies = FIRST_WAVE;
-    enemiesKill = 0;
-    score = 0;
-    alpha = 0;
     
+    // Wave
+    active_wave = THIRD_WAVE;
+    wave_completed = false;
+    wave_message_alpha = 0.0f;
+    wave_message_alpha_flag = false;
+
+    // Enemies
+    enemies_killed = 0;
+    player_score = 0;
+
+    // Buffs
+    shoot_cooldown_modifier = 1.0f;
+
+    // Other inits
     InitPlayer(&player, ship_id);
     InitShootRatePowerUp(&shootRatePower);  // Inicialização do item power-up de shootRate
     InitEnemies(enemy);                     // Initialize enemies
-    InitWeapon(&weapon, player);             // Initialize weapons
-    
+    InitWeapon(&player);           // Initialize weapons
+    InitExpBar();
 
+	// Background
     background.position_y = -1200;
     background.color = (Color){ 255, 255, 255, 170 };
     background.alpha = 0;
@@ -65,75 +85,94 @@ void InitGame(int ship_id) {
 // 
 //--------------------------------------------------------------
 
+void UpdateWaveAlpha() {
+    if (wave_message_alpha >= 1.0f) wave_message_alpha = true;
+    if (!wave_message_alpha_flag && !wave_completed) wave_message_alpha += 0.5f * GetFrameTime();
+    else if (wave_message_alpha > 0) wave_message_alpha -= 0.5f * GetFrameTime();
+}
+
 void FirstWave() {
-    if (!smooth)
-    {
-        alpha += 0.02f * GetFrameTime();
+    
+    // Wave Message Alpha
+    UpdateWaveAlpha();
 
-        if (alpha >= 1.0f) smooth = true;
-    }
-
-    if (smooth) alpha -= 0.02f * GetFrameTime();
-
-    if (enemiesKill == activeEnemies)
-    {
-        enemiesKill = 0;
-
-        for (int i = 0; i < activeEnemies; i++)
-        {
-            if (!enemy[i].active) enemy[i].active = true;
-        }
-
-        activeEnemies = SECOND_WAVE;
-        wave = SECOND;
-        smooth = false;
-        alpha = 0.0f;
+    // Condition for next wave
+    if (wave_completed) {
+        active_wave = SECOND_WAVE;
+        wave_completed = false;
     }
 }
 
 void SecondWave() {
 
-    SpawnShootRatePowerUp(&shootRatePower);
+    // Wave Message Alpha
+    UpdateWaveAlpha();
 
-    if (!smooth)
-    {
-        alpha += 0.02f * GetFrameTime();
-
-        if (alpha >= 1.0f) smooth = true;
-    }
-
-    if (smooth) alpha -= 0.02f * GetFrameTime();
-
-    if (enemiesKill == activeEnemies)
-    {
-        enemiesKill = 0;
-
-        for (int i = 0; i < activeEnemies; i++)
-        {
-            if (!enemy[i].active) enemy[i].active = true;
-        }
-
-        activeEnemies = THIRD_WAVE;
-        wave = THIRD;
-        smooth = false;
-        alpha = 0.0f;
+    // Condition for next wave
+    if (wave_completed){
+        active_wave = THIRD_WAVE;
+        wave_completed = false;
     }
 }
 
 void ThirdWave() {
-    if (!smooth)
-    {
-        alpha += 0.02f * GetFrameTime();
 
-        if (alpha >= 1.0f) smooth = true;
+    // Wave Message Alpha
+    UpdateWaveAlpha();
+
+    wave_3_enemy_cooldown_charge_s += GetFrameTime();
+    if (wave_3_enemy_cooldown_charge_s >= wave_3_enemy_cooldown_s) {
+        SpawnEnemies(enemy, 10, 0);
+		wave_3_enemy_cooldown_charge_s =- wave_3_enemy_cooldown_s;
     }
 
-    if (smooth) alpha -= 0.02f * GetFrameTime();
 
-    if (enemiesKill == activeEnemies) victory = true;
+    // Condition for next wave
+    if (wave_completed) {
+        victory = true;
+        active_wave = VICTORY;
+        wave_completed = false;
+    }
 }
 
+void UpdateWave() {
+	if (active_wave == FIRST_WAVE) FirstWave();
+	else if (active_wave == SECOND_WAVE) SecondWave();
+	else if (active_wave == THIRD_WAVE) ThirdWave();
+}
 
+//--------------------------------------------------------------
+//
+//                      ENEMY KILLS
+// 
+//--------------------------------------------------------------
+
+
+// Function to check and handle bullet and enemy collisions
+void CheckBulletAndEnemyCollision(Enemy* enemy) {
+    for (int i = 0; i < 50; i++) {
+        if (!enemy[i].active) continue;
+
+        for (int j = 0; j < 50; j++) {
+            Shoot* temp = GetPulseShoot(j);
+            if (!temp->active) continue;
+
+            // PULSE
+            if (CheckPulseCollision(j, &enemy[i])) {
+                enemy[i].hp -= temp->damage;
+                temp->active = false;
+            }
+
+            // HP CHECK
+            if (enemy[i].hp <= 0) {
+                enemy[i].active = false;
+                enemies_killed++;
+                AddToExp(10);
+                player_score += 10;
+            }
+        }
+    }
+}
 
 //--------------------------------------------------------------
 //
@@ -143,9 +182,8 @@ void ThirdWave() {
 
 void UpdateBackground(Background* background) {
     if (background->alpha < 0.7) background->alpha += 0.2f * GetFrameTime();
-    background->position_y = fmod(background->position_y + 75 * GetFrameTime(), 2400);
+    background->position_y = (float)(fmod(background->position_y + 75 * GetFrameTime(), 2400));
 }
-
 
 void UpdateGame(void)
 {
@@ -159,22 +197,25 @@ void UpdateGame(void)
 
     if (!pause)
     {
-        if (wave == FIRST)
-            FirstWave();
-        else if (wave == SECOND)
-            SecondWave();
-        else if (wave == THIRD)
-            ThirdWave();
-
-        UpdatePlayer(&player);
-        UpdatePowerUp(&shootRatePower, weapon, player);                          // Verificar colisão entre o jogador e o item power-up de shootRate
-        UpdateEnemies(enemy, activeEnemies);                                     // Enemy behavior
-        PlayerShoot(weapon, player, enemy, activeEnemies, &enemiesKill, &score); // Shoot
+        UpdateWave();
         UpdateBackground(&background);
 
-        if (CheckEnemyCollision(player, enemy, activeEnemies)) ChangeScene(GAME_OVER);
+        UpdatePlayer(&player);
+        UpdateWeapon(&player);
+        UpdateEnemies(enemy);
+		CheckBulletAndEnemyCollision(enemy); // Enemy, kills and score
+        UpdateExpBar();
+
+        if (IsKeyPressed(KEY_SPACE)) { 
+            printf("opa\n"); 
+        }
+
+        UpdatePowerUp(&shootRatePower, weapon, player);
+
+        if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(START);
     }
 }
+
 
 //--------------------------------------------------------------
 //
@@ -183,7 +224,7 @@ void UpdateGame(void)
 //--------------------------------------------------------------
 
 void DrawBackground() {
-    DrawTexture(background.texture, background.position_x, background.position_y, Fade(background.color, background.alpha));
+    DrawTexture(background.texture, (int)background.position_x, (int)background.position_y, Fade(background.color, background.alpha));
     DrawTexture(background.texture, (int)(background.position_x), (int)(background.position_y) - 2400, Fade(background.color, background.alpha));
 }
 
@@ -195,15 +236,16 @@ void DrawGame(void)
 
     DrawBackground();
     DrawPowerUps(shootRatePower);
-    DrawWeaponShoot(weapon[0]);
+	DrawWeapon(&player);
     DrawPlayer(player);
-    DrawEnemies(enemy, activeEnemies);
+    DrawEnemies(enemy);
+    DrawExpBar();
 
-    if (wave == FIRST) DrawText("FIRST WAVE", SCREEN_WIDTH / 2 - MeasureText("FIRST WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 40, 40, Fade(WHITE, alpha));
-    else if (wave == SECOND) DrawText("SECOND WAVE", SCREEN_WIDTH / 2 - MeasureText("SECOND WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 40, 40, Fade(WHITE, alpha));
-    else if (wave == THIRD) DrawText("THIRD WAVE", SCREEN_WIDTH / 2 - MeasureText("THIRD WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 40, 40, Fade(WHITE, alpha));
+    if (active_wave == FIRST_WAVE) DrawText("FIRST WAVE", SCREEN_WIDTH / 2 - MeasureText("FIRST WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 100, 40, Fade(WHITE, wave_message_alpha));
+    else if (active_wave == SECOND_WAVE) DrawText("SECOND WAVE", SCREEN_WIDTH / 2 - MeasureText("SECOND WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 100, 40, Fade(WHITE, wave_message_alpha));
+    else if (active_wave == THIRD_WAVE) DrawText("THIRD WAVE", SCREEN_WIDTH / 2 - MeasureText("THIRD WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 100, 40, Fade(WHITE, wave_message_alpha));
 
-    DrawText(TextFormat("%04i", score), 20, 20, 40, GRAY);
+    DrawText(TextFormat("%04i", player_score), 20, 20, 40, GRAY);
 
     if (victory) DrawText("YOU WIN", SCREEN_WIDTH / 2 - MeasureText("YOU WIN", 40) / 2, SCREEN_HEIGHT / 2 - 40, 40, WHITE);
 
@@ -211,8 +253,6 @@ void DrawGame(void)
 
     EndDrawing();
 }
-
-
 
 //--------------------------------------------------------------
 //
@@ -222,12 +262,8 @@ void DrawGame(void)
 
 void LoadGameTextures(void) {
     background.texture = LoadTexture("purplebg.png");
-
-    LoadWeaponTextures(weapon);
 }
 
 void UnloadGameTextures(void) {
     UnloadTexture(background.texture);
-
-    UnloadWeaponTextures(weapon);
 }

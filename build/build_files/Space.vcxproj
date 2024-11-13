@@ -278,6 +278,7 @@
     <ClInclude Include="..\..\include\player.h" />
     <ClInclude Include="..\..\include\power_ups.h" />
     <ClInclude Include="..\..\include\resource_dir.h" />
+    <ClInclude Include="..\..\include\xp_bar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\draw_object.c" />
@@ -291,6 +292,7 @@
     <ClCompile Include="..\..\include\game.c" />
     <ClCompile Include="..\..\include\tutorial.c" />
     <ClCompile Include="..\..\include\weapons.c" />
+    <ClCompile Include="..\..\include\xp_bar.c" />
     <ClCompile Include="..\..\src\main.c" />
   </ItemGroup>
   <ItemGroup>

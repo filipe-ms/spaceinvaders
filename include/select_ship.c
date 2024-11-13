@@ -9,22 +9,24 @@
 
 Background select_ship_menu_background;
 SelectMenuOption select_ship_menu_option;
+SelectMenuOption selected_ship;
 
 bool select_ship_alpha_flag = true;
 
 Orion orion;
 Aurea aurea;
+Nebula nebula;
 float anim_cycle;
 
 Scene scene;
 
 // Transition variables
-float select_ship_transition_duration_s = 5.0f;
-float select_ship_transition_acceleration = 75.0f;
-float select_ship_transition_speed = 75.0f;
+float select_ship_transition_duration_s = 1.7f;
+float select_ship_transition_acceleration = 200.0f;
+float select_ship_transition_speed = 120.0f;
 float select_ship_transition_count = 0.0f;
 float select_ship_transition_alpha_text = 0.0f;
-float select_ship_transition_alpha_increment = 0.2f;
+float select_ship_transition_alpha_increment = 0.4f;
 bool select_ship_menu_is_transitioning = false;
 bool select_ship_menu_transition_complete = false;
 
@@ -35,25 +37,34 @@ void InitSelectMenu() {
     select_ship_menu_background.position_x = 0;
     select_ship_menu_background.position_y = 0;
     
-    select_ship_transition_acceleration = 75.0f;
-    select_ship_transition_speed = 75.0f;
+    select_ship_transition_acceleration = 200.0f;
+    select_ship_transition_speed = 120.0f;
     select_ship_transition_count = 0.0f;
     select_ship_transition_alpha_text = 0.0f;
-    select_ship_transition_alpha_increment = 0.2f;
+    select_ship_transition_alpha_increment = 0.5f;
     select_ship_menu_is_transitioning = false;
     select_ship_menu_transition_complete = false;
 
-    orion.destination = (Rectangle){ SCREEN_WIDTH / 2 - 23, 410, 64, 64 };
+    // Init Aurea
+    aurea.destination = (Rectangle){ SCREEN_WIDTH * 0.25 - 22, 308, 64, 64 };
+    aurea.direction = 0;
+    aurea.thruster_cycle = 0;
+    aurea.color = WHITE;
+    aurea.alpha = 0.0f;
+
+	// Init Orion
+    orion.destination = (Rectangle){ SCREEN_WIDTH / 2 - 23, 310, 64, 64 };
     orion.direction = 0;
     orion.thruster_cycle = 0;
     orion.color = WHITE;
     orion.alpha = 0.0f;
 
-    aurea.destination = (Rectangle){ SCREEN_WIDTH * 0.25 - 22, 408, 64, 64 };
-    aurea.direction = 0;
-    aurea.thruster_cycle = 0;
-    aurea.color = WHITE;
-    aurea.alpha = 0.0f;
+    // Init Nebula
+    nebula.destination = (Rectangle){ SCREEN_WIDTH * 0.75 - 22, 308, 64, 64 };
+    nebula.direction = 0;
+    nebula.thruster_cycle = 0;
+    nebula.color = WHITE;
+    nebula.alpha = 0.0f;
 }
 
 void UpdateSelectShipMenuAnimationCycle() {
@@ -76,6 +87,9 @@ void UpdateSelectShipMenuAurea() {
     aurea.thruster_cycle = GetSelectShipMenuThrusterAnimationCycle();
 }
 
+void UpdateSelectShipMenuNebula() {
+    nebula.thruster_cycle = GetSelectShipMenuThrusterAnimationCycle();
+}
 
 void UpdateShipSelectMenuTransition() {
     select_ship_transition_count += GetFrameTime();
@@ -85,11 +99,29 @@ void UpdateShipSelectMenuTransition() {
     select_ship_transition_alpha_text -= select_ship_transition_alpha_increment * 2 * GetFrameTime();
     select_ship_menu_background.alpha -= select_ship_transition_alpha_increment * GetFrameTime();
 
-    if (orion.destination.y <= SCREEN_HEIGHT - 100) {
-        orion.destination.y += 180 * GetFrameTime();
-    }
+	if (selected_ship == ORION) {
+		if (orion.destination.y >= -1 * SCREEN_HEIGHT) {
+			orion.destination.y -= 1000 * GetFrameTime();
+			aurea.alpha -= 1.0f * GetFrameTime();
+			nebula.alpha -= 1.0f * GetFrameTime();
+		}
+	}
+	else if (selected_ship == AUREA) {
+		if (aurea.destination.y >= -1 * SCREEN_HEIGHT) {
+			aurea.destination.y -= 1000 * GetFrameTime();
+			orion.alpha -= 1.0f * GetFrameTime();
+			nebula.alpha -= 1.0f * GetFrameTime();
+		}
+	}
+	else if (selected_ship == NEBULA) {
+        if (nebula.destination.y >= -1 * SCREEN_HEIGHT) {
+			nebula.destination.y -= 1000 * GetFrameTime();
+            aurea.alpha -= 1.0f * GetFrameTime();
+			orion.alpha -= 1.0f * GetFrameTime();
+		}
+	}
 
-    if (select_ship_transition_count >= 5) select_ship_menu_transition_complete = true;
+    if (select_ship_transition_count >= select_ship_transition_duration_s) select_ship_menu_transition_complete = true;
 }
 
 void UpdateShipSelectMenu() {
@@ -97,9 +129,10 @@ void UpdateShipSelectMenu() {
     UpdateSelectShipMenuAnimationCycle();
     UpdateSelectShipMenuOrion();
     UpdateSelectShipMenuAurea();
+    UpdateSelectShipMenuNebula();
 
     if (select_ship_menu_transition_complete) {
-        ChangeSceneArgs(scene, select_ship_menu_option);
+        ChangeSceneArgs(scene, selected_ship);
         return;
     }
 
@@ -108,12 +141,17 @@ void UpdateShipSelectMenu() {
         return;
     }
 
-    if (select_ship_menu_background.alpha < 1) select_ship_menu_background.alpha += 0.25f * GetFrameTime();
-    if (orion.alpha < 1) orion.alpha += 0.25f * GetFrameTime();
-    if (aurea.alpha < 1) aurea.alpha += 0.25f * GetFrameTime();
+
+    select_ship_menu_background.position_y = (float)fmod(select_ship_menu_background.position_y + 100 * GetFrameTime(), 1200);
+    if (select_ship_menu_background.alpha < 0.8f) select_ship_menu_background.alpha += 0.25f * GetFrameTime();
+
+    if (orion.alpha < 1) orion.alpha += 0.75f * GetFrameTime();
+    if (aurea.alpha < 1) aurea.alpha += 0.75f * GetFrameTime();
+    if (nebula.alpha < 1) nebula.alpha += 0.75f * GetFrameTime();
+
     if (select_ship_transition_alpha_text < 1) select_ship_transition_alpha_text += 0.25f * GetFrameTime();
 
-    select_ship_menu_background.position_y = (float)fmod(select_ship_menu_background.position_y + 75 * GetFrameTime(), 1200);
+    
     if (IsKeyPressed(KEY_LEFT)) {
         select_ship_menu_option = (select_ship_menu_option - 1 + SELECT_MENU_OPTION_COUNT) % SELECT_MENU_OPTION_COUNT;
     }
@@ -121,6 +159,7 @@ void UpdateShipSelectMenu() {
         select_ship_menu_option = (select_ship_menu_option + 1) % SELECT_MENU_OPTION_COUNT;
     }
     else if (IsKeyPressed(KEY_ENTER)) {
+		selected_ship = select_ship_menu_option;
         select_ship_menu_is_transitioning = true;
         scene = TUTORIAL;
     }
@@ -151,16 +190,17 @@ void DrawSelectMenu() {
     Color colorRanking = (select_ship_menu_option == MIDDLE_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
     Color colorExit = (select_ship_menu_option == RIGHT_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
 
-    DrawOrion(&orion);
     DrawAurea(&aurea);
+    DrawOrion(&orion);
+	DrawNebula(&nebula);
 
-    char* aurea = "Aurea";
-    char* unavailable = "Unavailable";
-    char* orion = "Orion"; 
+    char* left_ship = "Aurea";
+    char* middle_ship = "Orion";
+    char* right_ship = "Nebula";
 
-    DrawText(aurea, (int)(SCREEN_WIDTH*0.25f - MeasureText(aurea, 20) / 2.0f), 500, 20, colorStart);
-    DrawText(orion, (int)(SCREEN_WIDTH/2.0f - MeasureText(orion, 20) / 2.0f), 500, 20, colorRanking);
-    DrawText(unavailable, (int)(SCREEN_WIDTH*0.75f - MeasureText(unavailable, 20) / 2.0f), 500, 20, colorExit);
+    DrawText(left_ship, (int)(SCREEN_WIDTH*0.25f - MeasureText(left_ship, 20) / 2.0f), 400, 20, colorStart);
+    DrawText(middle_ship, (int)(SCREEN_WIDTH/2.0f - MeasureText(middle_ship, 20) / 2.0f), 400, 20, colorRanking);
+    DrawText(right_ship, (int)(SCREEN_WIDTH*0.75f - MeasureText(right_ship, 20) / 2.0f), 400, 20, colorExit);
     EndDrawing();
 }
 

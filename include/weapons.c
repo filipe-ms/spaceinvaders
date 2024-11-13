@@ -2,103 +2,305 @@
 
 #include "weapons.h"
 #include "game_constants.h"
+#include "draw_object.h"
+#include "math.h"
 
-void LoadWeaponTextures(Weapon *weapon) {
-    for(int i=0; i < NUMBER_OF_WEAPONS; i++)
-        weapon[i].texture = LoadTexture("weapons.png");
-}
+Texture texture;
 
-void UnloadWeaponTextures(Weapon *weapon) {
-    for (int i=0; i < NUMBER_OF_WEAPONS; i++){
-        UnloadTexture(weapon[i].texture);
+//--------------------------------------------------------------
+//
+//                         PULSE
+// 
+//--------------------------------------------------------------
+
+Pulse pulse;
+float speed_factor = 5.0f;
+
+InitPulse() {
+    pulse.weapon.id = PULSE;
+    pulse.weapon.active = false;
+    
+    pulse.weapon.source = (Rectangle){ 42, 0, 8, 8 };
+    pulse.weapon.pivot = (Vector2){ 20, 9 };
+    pulse.weapon.color = WHITE;
+
+    pulse.weapon.damage = 1.0f;
+
+    pulse.weapon.cooldown_time_s = 1.0 / 2.0f;
+    pulse.weapon.cooldown_charge_s = 0;
+    pulse.weapon.charge_time_modifier = 1;
+
+    pulse.weapon.max_active_shoots = 50;
+	
+    pulse.speed_1 = (Vector2){ -25.88f * speed_factor, -100 * speed_factor };
+    pulse.speed_2 = (Vector2){ 25.88f * speed_factor, -100 * speed_factor };
+    pulse.speed_3 = (Vector2){ 0, -100 * speed_factor };
+
+    pulse.rotation_1 = -15;
+    pulse.rotation_2 = 15;
+
+    pulse.weapon_cycle = 0;
+
+	pulse.weapon.speed = (Vector2){ 0, 0 }; // Unused
+
+    for (int i = 0; i < 50; i++) {
+        
+		pulse.pulse_shoot->shoot.active = false;
+		pulse.pulse_shoot->shoot.damage = pulse.weapon.damage;
+		
+        pulse.pulse_shoot[i].shoot.draw_position.height = 72;
+        pulse.pulse_shoot[i].shoot.draw_position.width = 72;
+
+        pulse.pulse_shoot[i].shoot.position.width = 36;
+        pulse.pulse_shoot[i].shoot.position.height = 32;
     }
 }
 
-void InitWeapon(Weapon* weapons, Player player) {
-    InitPhoton(&weapons[0]);
-}
+InitPulseShoot(Player *player) {
 
-void InitPhoton(Weapon* weapon) {
+    for (int i = 0; i < 50; i++) {
+		if (!pulse.pulse_shoot[i].shoot.active) {
 
-    weapon->id = PHOTON;
-    weapon->active = true;
+            pulse.pulse_shoot[i].shoot.active = true;
 
-    weapon->source = (Rectangle){ 0, 8, 8, 8 };
-    weapon->pivot = (Vector2){ 4, 4 };
+            if (pulse.weapon_cycle == 0) {
+                pulse.pulse_shoot[i].shoot.position.x = player->position.x + 6;
+                pulse.pulse_shoot[i].shoot.position.y = player->position.y;
 
-    weapon->cooldown_time_s = 1.0 / 3.0f;
-    weapon->cooldown_charge_s = 0;
-    weapon->charge_time_modifier = 1;
+                pulse.pulse_shoot[i].shoot.draw_position.x = player->position.x + 16;
+                pulse.pulse_shoot[i].shoot.draw_position.y = player->position.y - 16;
+                pulse.pulse_shoot[i].shoot_cycle = pulse.weapon_cycle;
+                pulse.weapon_cycle++;
+            }
 
-    weapon->max_active_shoots = 50;
+            else if (pulse.weapon_cycle == 1) {
+                pulse.pulse_shoot[i].shoot.position.x = player->position.x + 6;
+                pulse.pulse_shoot[i].shoot.position.y = player->position.y;
 
-    weapon->shoot_speed = (Vector2){ 0, 720 };
-    weapon->shoot_color = RED;
+                pulse.pulse_shoot[i].shoot.draw_position.x = player->position.x + 32;
+                pulse.pulse_shoot[i].shoot.draw_position.y = player->position.y - 16;
 
-    for (int i = 0; i < weapon->max_active_shoots; ++i) {
-        weapon->shoot[i].active = false;
+                pulse.pulse_shoot[i].shoot_cycle = pulse.weapon_cycle;
+                pulse.weapon_cycle++;
+			}
+
+            else {
+                pulse.pulse_shoot[i].shoot.position.x = player->position.x + 6;
+                pulse.pulse_shoot[i].shoot.position.y = player->position.y;
+
+                pulse.pulse_shoot[i].shoot.draw_position.x = player->position.x + 26;
+                pulse.pulse_shoot[i].shoot.draw_position.y = player->position.y - 18;
+
+                pulse.pulse_shoot[i].shoot_cycle = pulse.weapon_cycle;
+                pulse.weapon_cycle = 0;
+            }
+
+			break;
+		}
     }
 }
 
-void InitWeaponShoot(ActiveShoot* shoot, Player player) {
-    shoot->active = true;
-    shoot->rec.x = (player.position.x + 30);
-    shoot->rec.y = (player.position.y - 4);
-}
+void UpdatePulseShoot() {
+    for (int i = 0; i < 50; i++) {
+        if (!pulse.pulse_shoot[i].shoot.active) continue;
 
-void PlayerShoot(Weapon* weapon, Player player, Enemy* enemy, int activeEnemies, int* enemiesKill, int* score) {
-    CheckWeaponCooldownAndShoot(&weapon[0], player);
-    UpdateShootPosition(&weapon[0], enemy, activeEnemies, enemiesKill, score);
-}
+        if (pulse.pulse_shoot[i].shoot_cycle == 0) {
+            pulse.pulse_shoot[i].shoot.position.x += pulse.speed_1.x * GetFrameTime();
+            pulse.pulse_shoot[i].shoot.position.y += pulse.speed_1.y * GetFrameTime();
 
-void CheckWeaponCooldownAndShoot(Weapon* weapon, Player player) {
-    weapon->cooldown_charge_s += weapon->charge_time_modifier * GetFrameTime();
-    if (weapon->cooldown_charge_s >= weapon->cooldown_time_s) {
-        for (int i = 0; i < weapon->max_active_shoots; i++) {
-            if (!weapon->shoot[i].active) {
-                InitWeaponShoot(&weapon->shoot[i], player);
-                break;
+            pulse.pulse_shoot[i].shoot.draw_position.x += pulse.speed_1.x * GetFrameTime();
+            pulse.pulse_shoot[i].shoot.draw_position.y += pulse.speed_1.y * GetFrameTime();
+
+            if (pulse.pulse_shoot[i].shoot.position.y < -80) {
+                pulse.pulse_shoot[i].shoot.active = false;
+            }
+
+        } else if (pulse.pulse_shoot[i].shoot_cycle == 1) {
+            pulse.pulse_shoot[i].shoot.position.x += pulse.speed_2.x * GetFrameTime();
+            pulse.pulse_shoot[i].shoot.position.y += pulse.speed_2.y * GetFrameTime();
+
+            pulse.pulse_shoot[i].shoot.draw_position.x += pulse.speed_2.x * GetFrameTime();
+            pulse.pulse_shoot[i].shoot.draw_position.y += pulse.speed_2.y * GetFrameTime();
+
+            if (pulse.pulse_shoot[i].shoot.position.y < -80) {
+                pulse.pulse_shoot[i].shoot.active = false;
+            }
+
+        } else {
+            pulse.pulse_shoot[i].shoot.position.x += pulse.speed_3.x * GetFrameTime();
+            pulse.pulse_shoot[i].shoot.position.y += pulse.speed_3.y * GetFrameTime();
+
+            pulse.pulse_shoot[i].shoot.draw_position.x += pulse.speed_3.x * GetFrameTime();
+            pulse.pulse_shoot[i].shoot.draw_position.y += pulse.speed_3.y * GetFrameTime();
+
+            if (pulse.pulse_shoot[i].shoot.position.y < -80) {
+                pulse.pulse_shoot[i].shoot.active = false;
             }
         }
-        weapon->cooldown_charge_s -= weapon->cooldown_time_s;
     }
 }
 
-void UpdateShootPosition(Weapon* weapon, Enemy *enemy, int active_enemies, int* enemy_kill, int* score) {
-    for (int i = 0; i < weapon->max_active_shoots; i++) {
-        if (!weapon->shoot[i].active) continue;
+void UpdatePulse(Player *player) {
+	if (!pulse.weapon.active) return;
 
-        if (weapon->shoot[i].rec.y < -10) {
-            weapon->shoot[i].active = false;
+    UpdatePulseShoot();
+
+    pulse.weapon.cooldown_charge_s += pulse.weapon.charge_time_modifier * GetFrameTime();
+
+    if (pulse.weapon.cooldown_charge_s >= pulse.weapon.cooldown_time_s) {
+		InitPulseShoot(player);
+        pulse.weapon.cooldown_charge_s -= pulse.weapon.cooldown_time_s;
+    }
+}
+
+void DrawPulseShoot() {
+    for (int i = 0; i < 50; i++) {
+        if (pulse.pulse_shoot[i].shoot.active) {
+            if (pulse.pulse_shoot[i].shoot_cycle == 0) {
+                DrawTexturePro(texture, pulse.weapon.source, pulse.pulse_shoot[i].shoot.draw_position, pulse.weapon.pivot, pulse.rotation_1, WHITE);
+            }
+            else if (pulse.pulse_shoot[i].shoot_cycle == 1) {
+                DrawTexturePro(texture, pulse.weapon.source, pulse.pulse_shoot[i].shoot.draw_position, pulse.weapon.pivot, pulse.rotation_2, WHITE);
+            }
+            else {
+                DrawTexturePro(texture, pulse.weapon.source, pulse.pulse_shoot[i].shoot.draw_position, pulse.weapon.pivot, 0, WHITE);
+            }
+        }
+    }
+}
+
+Shoot* GetPulseShoot(int index) {
+    return &pulse.pulse_shoot[index].shoot;
+}
+
+bool CheckPulseCollision(int index, Enemy *enemy) {
+    if (!pulse.pulse_shoot[index].shoot.active) return false;;
+        
+    if (CheckCollisionRecs(pulse.pulse_shoot[index].shoot.position, enemy->position))
+    {
+        return true;
+    }
+	return false;
+}
+
+//--------------------------------------------------------------
+
+Photon photon;
+
+void InitPhoton() {
+
+    photon.weapon.id = PHOTON;
+    photon.weapon.active = false;
+
+    photon.weapon.source = (Rectangle){ 0, 8, 8, 8 };
+    photon.weapon.pivot = (Vector2){ 4, 4 };
+
+    photon.weapon.cooldown_time_s = (float)(1.0f / 3.0f);
+    photon.weapon.cooldown_charge_s = 0;
+    photon.weapon.charge_time_modifier = 1;
+
+    photon.weapon.max_active_shoots = 50;
+
+    photon.weapon.speed = (Vector2){ 0, 720 };
+    photon.weapon.color = RED;
+
+    for (int i = 0; i < photon.weapon.max_active_shoots; ++i) {
+        photon.shoot[i].active = false;
+        photon.shoot[i].damage = photon.weapon.damage;
+
+        photon.shoot[i].position.width = 36;
+        photon.shoot[i].position.height = 36;
+    }
+}
+
+void InitPhotonShoot(Player *player) {
+    for (int i = 0; i < photon.weapon.max_active_shoots; i++) {
+		if (photon.shoot[i].active) continue;
+
+        photon.shoot[i].active = true;
+        photon.shoot[i].position.x = (player->position.x) + 6;
+        photon.shoot[i].position.y = (player->position.y - 4);
+
+        photon.shoot[i].draw_position.x = (player->position.x) + 27;
+        photon.shoot[i].draw_position.y = (player->position.y - 20);
+        break;
+    }
+}
+
+
+void UpdatePhotonCooldownAndShoot(Player* player) {
+	if (!photon.weapon.active) return;
+
+	photon.weapon.cooldown_charge_s += photon.weapon.charge_time_modifier * GetFrameTime();
+
+	if (photon.weapon.cooldown_charge_s >= photon.weapon.cooldown_time_s) {
+		InitPhotonShoot(player);
+        photon.weapon.cooldown_charge_s -= photon.weapon.cooldown_time_s;
+    }
+}
+
+void UpdatePhotonShootPosition() {
+    for (int i = 0; i < 50; i++) {
+        if (!photon.shoot[i].active) continue;
+
+        if (photon.shoot[i].position.y < -80) {
+            photon.shoot[i].active = false;
             continue;
         }
 
-        // Movement
-        weapon->shoot[i].rec.y -= weapon->shoot_speed.y * GetFrameTime();
+        photon.shoot[i].position.y -= photon.weapon.speed.y * GetFrameTime();
+        photon.shoot[i].position.x += photon.weapon.speed.x * GetFrameTime();
+        photon.shoot[i].draw_position.y -= photon.weapon.speed.y * GetFrameTime();
+        photon.shoot[i].draw_position.x += photon.weapon.speed.x * GetFrameTime();
+    }
+}
 
-        // Collision with enemy
-        for (int j = 0; j < active_enemies; j++) {
-            if (enemy[j].active) {
-                if (CheckCollisionRecs(weapon->shoot[i].rec, enemy[j].rec)) {
-                    weapon->shoot[i].active = false;
-                    enemy[j].rec.x = (float)GetRandomValue(SCREEN_WIDTH, SCREEN_WIDTH + 1000);
-                    enemy[j].rec.y = (float)GetRandomValue(0, SCREEN_HEIGHT - enemy[j].rec.height);
-                    (*enemy_kill)++;
-                    (*score) += 100;
-                }
-            }
+void DrawPhotonShoot() {
+    for (int i = 0; i < NUMBER_OF_WEAPONS; i++) {
+        if (photon.shoot[i].active) {
+            DrawTexturePro(texture, photon.weapon.source, photon.shoot[i].draw_position, photon.weapon.pivot, 0, WHITE);
         }
     }
 }
 
-void DrawWeaponShoot(Weapon weapon) {
-    for (int i = 0; i < weapon.max_active_shoots; i++) {
-        if (weapon.shoot[i].active) {
-            Rectangle drawn_shoot = weapon.shoot[i].rec;
-            drawn_shoot.y -= 5;
-            drawn_shoot.width = 16;
-            drawn_shoot.height = 16;
-            DrawTexturePro(weapon.texture, weapon.source, drawn_shoot, weapon.pivot, 0, WHITE);
-        }
-    }
+void UpdatePhoton(Player* player) {
+    UpdatePhotonShootPosition();
+	UpdatePhotonCooldownAndShoot(player);
 }
+
+//--------------------------------------------------------------
+
+void InitAllWeapons() {
+    InitPulse();
+    InitPhoton();
+}
+
+void InitWeapon(Player* player) {
+    InitAllWeapons();
+
+    if (player->ship_id == AUREA) pulse.weapon.active = true;
+    if (player->ship_id == ORION) photon.weapon.active = true;
+    if (player->ship_id == NEBULA) photon.weapon.active = true;
+}
+
+void UpdateWeapon(Player *player) {
+    UpdatePhoton(player);
+    UpdatePulse(player);
+}
+
+void DrawWeapon() {
+    DrawPhotonShoot();
+    DrawPulseShoot();
+}
+
+void LoadWeaponTextures(void) {
+    texture = LoadTexture("weapons.png");
+}
+
+void UnloadWeaponTextures(void) {
+    UnloadTexture(texture);
+}
+
+
+
+

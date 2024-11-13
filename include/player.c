@@ -8,9 +8,10 @@
 // Possible Ships
 Orion orion;
 Aurea aurea;
+Nebula nebula;
 
 void InitPlayer(Player *player, int ship_id) {
-    player->ship = ship_id;
+    player->ship_id = ship_id;
 
     player->position.x = SCREEN_WIDTH / 2 - 32;
     player->position.y = (SCREEN_HEIGHT - 100);
@@ -74,16 +75,6 @@ int GetThrusterAnimationCycle(Player *player) {
 
 // Ship updates
 
-void UpdateOrion(Player *player) {
-    orion.destination = player->position;
-    orion.destination.height = 64;
-    orion.destination.width = 64;
-    orion.direction = player->direction;
-    orion.thruster_cycle = GetThrusterAnimationCycle(player);
-    orion.color = player->color;
-    orion.alpha = player->alpha;
-}
-
 void UpdateAurea(Player* player) {
     aurea.destination = player->position;
     aurea.destination.height = 64;
@@ -94,6 +85,26 @@ void UpdateAurea(Player* player) {
     aurea.alpha = player->alpha;
 }
 
+void UpdateOrion(Player *player) {
+    orion.destination = player->position;
+    orion.destination.height = 64;
+    orion.destination.width = 64;
+    orion.direction = player->direction;
+    orion.thruster_cycle = GetThrusterAnimationCycle(player);
+    orion.color = player->color;
+    orion.alpha = player->alpha;
+}
+
+void UpdateNebula(Player* player) {
+	nebula.destination = player->position;
+	nebula.destination.height = 64;
+	nebula.destination.width = 64;
+	nebula.direction = player->direction;
+	nebula.thruster_cycle = GetThrusterAnimationCycle(player);
+	nebula.color = player->color;
+	nebula.alpha = player->alpha;
+}
+
 void UpdatePlayer(Player *player) {
     // General updates
     UpdatePlayerDirection(player);
@@ -101,14 +112,15 @@ void UpdatePlayer(Player *player) {
     UpdatePlayerAnimationCycle(player);
 
     // Ship updates
-    if (player->ship == AUREA) UpdateAurea(player);
-    if (player->ship == ORION) UpdateOrion(player);
+    if (player->ship_id == AUREA) UpdateAurea(player);
+    if (player->ship_id == ORION) UpdateOrion(player);
+	if (player->ship_id == NEBULA) UpdateNebula(player);
 
 }
 
 // Draw related
 void DrawPlayer(Player player) {
-    if (player.ship == AUREA) DrawAurea(&aurea);
-    if (player.ship == ORION) DrawOrion(&orion);
-
+    if (player.ship_id == AUREA) DrawAurea(&aurea);
+    if (player.ship_id == ORION) DrawOrion(&orion);
+    if (player.ship_id == NEBULA) DrawNebula(&nebula);
 }

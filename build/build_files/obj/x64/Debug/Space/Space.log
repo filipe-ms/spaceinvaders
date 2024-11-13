@@ -1,2 +1,3 @@
-﻿  tutorial.c
+﻿  game.c
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game.c(210,13): warning C4013: 'printf' undefined; assuming extern returning int
   Space.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders\bin\Debug\Space.exe

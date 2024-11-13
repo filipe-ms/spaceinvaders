@@ -22,9 +22,21 @@
 
 #define AUREA 0
 #define ORION 1
+#define NEBULA 2
 
 
 // Específicos
+
+// Aurea
+typedef struct Aurea {
+    Rectangle destination;  // O local em que vai ser desenhado
+    int direction;        // Para que lado está andando
+    int thruster_cycle;     // Em que ciclo o thruster está
+    Color color;            // Cor
+    float alpha;            // Transparência
+} Aurea;
+
+void DrawAurea(Aurea* aurea);
 
 // Orion
 typedef struct Orion {
@@ -37,16 +49,16 @@ typedef struct Orion {
 
 void DrawOrion(Orion *orion);
 
-// Aurea
-typedef struct Aurea {
+// Nebula
+typedef struct Nebula {
     Rectangle destination;  // O local em que vai ser desenhado
     int direction;        // Para que lado está andando
     int thruster_cycle;     // Em que ciclo o thruster está
     Color color;            // Cor
     float alpha;            // Transparência
-} Aurea;
+} Nebula;
 
-void DrawAurea(Aurea *aurea);
+void DrawNebula(Nebula* nebula);
 
 // Genéricos
 

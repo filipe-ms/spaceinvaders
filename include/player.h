@@ -8,7 +8,7 @@
 #define PLAYER_H
 
 typedef struct Player {
-    int ship;
+    int ship_id;
     Rectangle position;
     int direction;
     Vector2 speed;
@@ -16,8 +16,6 @@ typedef struct Player {
     Color color;
     float alpha;
 } Player;
-
-extern int ship_id;
 
 void InitPlayer(Player* player, int ship_id);
 void UpdatePlayer(Player* player);

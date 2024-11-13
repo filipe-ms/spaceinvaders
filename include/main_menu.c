@@ -15,26 +15,26 @@ MenuOption current_option;
 Scene scene;
 
 // Transition variables
-float transition_duration_s = 4.0f;
-float transition_acceleration = 75.0f;
-float transition_speed = 75.0f;
+float transition_duration_s = 2.0f;
+float transition_acceleration = 200.0f;
+float transition_speed = 120.0f;
 float transition_count = 0.0f;
 float transition_alpha_text = 1.0f;
-float transition_alpha_increment = 0.2f;
+float transition_alpha_increment = 0.6f;
 bool transition_complete = false;
 bool is_transitioning = false;
 
 void InitMenu() {
     current_option = MENU_OPTION_START;
     background.color = WHITE;
-    background.alpha = 0.4f;
+    background.alpha = 0.6f;
     background.position_y = 0;
 
-    transition_acceleration = 75.0f;
-    transition_speed = 75.0f;
+    transition_acceleration = 200.0f;
+    transition_speed = 120.0f;
     transition_count = 0.0f;
     transition_alpha_text = 1.0f;
-    transition_alpha_increment = 0.2f;
+    transition_alpha_increment = 0.6f;
 
     transition_complete = false;
     is_transitioning = false;
@@ -53,12 +53,12 @@ void UpdateMenuTransition() {
 
 void UpdateMainMenuBackground() {
     if (alpha_flag) {
-        background.alpha += 0.1f * GetFrameTime();
+        background.alpha += 0.2f * GetFrameTime();
         if (background.alpha >= 0.8f) alpha_flag = false;
     }
     else {
-        background.alpha -= 0.1f * GetFrameTime();
-        if (background.alpha <= 0.6f) alpha_flag = true;
+        background.alpha -= 0.2f * GetFrameTime();
+        if (background.alpha <= 0.4f) alpha_flag = true;
     }
 }
 
@@ -76,7 +76,7 @@ void UpdateMenu() {
 
     UpdateMainMenuBackground();
 
-    background.position_y = (float)fmod(background.position_y + 75 * GetFrameTime(), 1200);
+    background.position_y = (float)fmod(background.position_y + 100 * GetFrameTime(), 1200);
 
     if (IsKeyPressed(KEY_UP)) {
         current_option = (current_option - 1 + MENU_OPTION_COUNT) % MENU_OPTION_COUNT;
@@ -114,15 +114,15 @@ void DrawMenu() {
     DrawMenuBackground();
 
     Color titleColor = Fade(RAYWHITE, transition_alpha_text);
-    DrawText("SPACE INVADERS", SCREEN_WIDTH / 2 - MeasureText("SPACE INVADERS", 50) / 2, 400, 50, titleColor);
+    DrawText("SPACE INVADERS", SCREEN_WIDTH / 2 - MeasureText("SPACE INVADERS", 50) / 2, 300, 50, titleColor);
 
     Color colorStart = (current_option == MENU_OPTION_START) ? Fade(RED, transition_alpha_text) : Fade(GRAY, transition_alpha_text);
     Color colorRanking = (current_option == MENU_OPTION_RANKING) ? Fade(RED, transition_alpha_text) : Fade(GRAY, transition_alpha_text);
     Color colorExit = (current_option == MENU_OPTION_EXIT) ? Fade(RED, transition_alpha_text) : Fade(GRAY, transition_alpha_text);
 
-    DrawText("Game Start", SCREEN_WIDTH / 2 - MeasureText("Game Start", 30) / 2, 500, 30, colorStart);
-    DrawText("Ranking", SCREEN_WIDTH / 2 - MeasureText("Ranking", 30) / 2, 550, 30, colorRanking);
-    DrawText("Exit", SCREEN_WIDTH / 2 - MeasureText("Exit", 30) / 2, 600, 30, colorExit);
+    DrawText("Game Start", SCREEN_WIDTH / 2 - MeasureText("Game Start", 30) / 2, 400, 30, colorStart);
+    DrawText("Ranking", SCREEN_WIDTH / 2 - MeasureText("Ranking", 30) / 2, 450, 30, colorRanking);
+    DrawText("Exit", SCREEN_WIDTH / 2 - MeasureText("Exit", 30) / 2, 500, 30, colorExit);
 
     EndDrawing();
 }

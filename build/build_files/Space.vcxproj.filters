@@ -48,6 +48,9 @@
     <ClInclude Include="..\..\include\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\xp_bar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.c">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\game.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\xp_bar.c">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

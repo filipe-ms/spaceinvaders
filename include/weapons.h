@@ -9,42 +9,87 @@
 #ifndef WEAPONS_H
 #define WEAPONS_H
 
-#define PHOTON 0
+#define PULSE 0 // Aurea starting weapon
+#define PHOTON 1 // Orion starting weapon
 
-typedef struct ActiveShoot {
-    Rectangle rec;
+
+//--------------------------------------------------------------
+//
+//                         GENERIC
+// 
+//--------------------------------------------------------------
+
+typedef struct Shoot {
     bool active;
-} ActiveShoot;
+    float damage;
+    Rectangle position;
+    Rectangle draw_position;
+} Shoot;
 
 typedef struct Weapon {
     int id;
     bool active;
-
-    Texture texture;
     Rectangle source;
-
     Vector2 pivot;
+    Vector2 speed;
+    Color color;
+    
+    float damage;
 
     float cooldown_time_s;
     float cooldown_charge_s;
     float charge_time_modifier;
-
+    
     int max_active_shoots;
-
-    Vector2 shoot_speed;
-    Color shoot_color;
-
-    ActiveShoot shoot[50];
 } Weapon;
 
-void LoadWeaponTextures(Weapon *weapon);
-void UnloadWeaponTextures(Weapon* weapon);
-void InitWeapon(Weapon* weapons, Player player);
-void InitWeaponShoot(ActiveShoot* shoot, Player player);
-void PlayerShoot(Weapon* weapon, Player player, Enemy* enemy, int activeEnemies, int* enemiesKill, int* score);
-void CheckWeaponCooldownAndShoot(Weapon* weapon, Player player);
-void UpdateShootPosition(Weapon* weapon, Enemy *enemy, int active_enemies, int* enemy_kill, int* score);
-void DrawWeaponShoot(Weapon weapon);
-void InitPhoton(Weapon* weapon);
+//--------------------------------------------------------------
+//
+//                         Pulse
+// 
+//--------------------------------------------------------------
+
+typedef struct PulseShoot {
+    Shoot shoot;
+    int shoot_cycle;
+} PulseShoot;
+
+typedef struct Pulse {
+    Weapon weapon;
+    int weapon_cycle;
+
+    Vector2 speed_1;
+    Vector2 speed_2;
+    Vector2 speed_3;
+    float rotation_1;
+    float rotation_2;
+    
+    PulseShoot pulse_shoot[50];
+} Pulse;
+
+
+// Specific
+Shoot* GetPulseShoot(int index);
+bool CheckPulseCollision(int index, Enemy* enemy);
+
+//--------------------------------------------------------------
+//
+//                         Photon
+// 
+//--------------------------------------------------------------
+
+typedef struct Photon {
+	Weapon weapon;
+    Shoot shoot[50];
+} Photon;
+
+// General
+void InitWeapon(Player* player);
+void UpdateWeapon(Player* player);
+void DrawWeapon();
+void LoadWeaponTextures(void);
+void UnloadWeaponTextures(void);
+
+
 
 #endif // WEAPONS_H

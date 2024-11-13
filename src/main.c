@@ -57,7 +57,7 @@ int main(void)
 {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Space Invaders"); // Inicializa a janela do jogo
 
-    SetTargetFPS(144);
+    SetTargetFPS(240);
 
     LoadGame();         // Inicializa o diretório de recursos/assets e as texturas
     
@@ -82,6 +82,7 @@ void LoadGame() {
     LoadEnemyTextures();
     LoadGameTextures();
     LoadTutorialTextures();
+    LoadWeaponTextures();
 }
 
 
@@ -93,4 +94,5 @@ void UnloadGame(void)
     UnloadSelectMenuTextures();
     UnloadMenuBackgroundTexture();
     UnloadTutorialTextures();
+    UnloadWeaponTextures();
 }
