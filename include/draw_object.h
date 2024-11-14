@@ -11,8 +11,6 @@
 
 #pragma once
 
-#include "raylib.h"
-
 #ifndef DRAW_OBJECT_H
 #define DRAW_OBJECT_H
 
@@ -23,6 +21,10 @@
 #define AUREA 0
 #define ORION 1
 #define NEBULA 2
+
+#include "raylib.h"
+
+
 
 
 // Específicos

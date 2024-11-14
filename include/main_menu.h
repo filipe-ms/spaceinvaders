@@ -2,11 +2,10 @@
 
 #pragma once
 
-#include "raylib.h"
-#include "game_constants.h"
-
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
+
+#include "raylib.h"
 
 typedef enum {
     MENU_OPTION_START,

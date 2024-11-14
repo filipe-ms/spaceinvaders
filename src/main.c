@@ -25,16 +25,15 @@
 #include "math.h"
 
 // Nossos próprios includes
-#include "game_constants.h"
+#include "common.h"
 #include "draw_object.h"
 
 #include "scene_manager.h"
 
 #include "player.h"
 #include "enemy.h"
-#include "weapons.h"
+#include "weapon.h"
 #include "power_ups.h"
-#include "commons.h"
 
 #include "main_menu.h"
 #include "select_ship.h"
@@ -42,7 +41,7 @@
 #include "tutorial.h"
 #include "game.h"
 
-static Scene starting_scene = START;
+static Scene starting_scene = SELECT_SHIP;
 
 void LoadGame(void);
 void UnloadGame(void);
@@ -83,6 +82,7 @@ void LoadGame() {
     LoadGameTextures();
     LoadTutorialTextures();
     LoadWeaponTextures();
+    LoadPowerUpTextures();
 }
 
 
@@ -95,4 +95,5 @@ void UnloadGame(void)
     UnloadMenuBackgroundTexture();
     UnloadTutorialTextures();
     UnloadWeaponTextures();
+    UnloadPowerUpTextures();
 }

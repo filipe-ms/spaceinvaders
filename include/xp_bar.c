@@ -1,5 +1,4 @@
 #include "xp_bar.h"
-#include "raylib.h"
 #include <math.h>  
 #include <stdio.h> 
 
@@ -24,14 +23,16 @@ void InitExpBar(void) {
     filled_width = 0;
 }
 
-void AddToExp(int experience) {
+bool AddToExp(int experience) {
 	exp_count += experience;
 
     if (exp_count >= exp_to_level_up) {
         level++;
         exp_count = 0;
         exp_to_level_up += exp_increment_per_level_up;
+        return true;
     }
+    return false;
 }
 
 void UpdateExpBar(void) {

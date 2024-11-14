@@ -1,3 +1,7 @@
-﻿  game.c
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game.c(210,13): warning C4013: 'printf' undefined; assuming extern returning int
+﻿  weapon.c
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(52,40): warning C4305: '=': truncation from 'double' to 'float'
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(86,70): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(91,78): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(107,56): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(137,119): warning C4244: 'function': conversion from 'int' to 'float', possible loss of data
   Space.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders\bin\Debug\Space.exe

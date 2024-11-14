@@ -2,11 +2,10 @@
 
 #pragma once
 
-#include "raylib.h"
-#include "game_constants.h"
-
 #ifndef TUTORIAL_H
 #define TUTORIAL_H
+
+#include "raylib.h"
 
 void InitTutorial(int ship_id);
 void UpdateTutorial(void);

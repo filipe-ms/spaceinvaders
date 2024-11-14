@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include "raylib.h"
-
 #ifndef SCENE_MANAGER_H
 #define SCENE_MANAGER_H
+
+#include "raylib.h"
 
 typedef enum {
     VOID = 0,

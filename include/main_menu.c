@@ -1,10 +1,10 @@
 // main_menu.c
 
-#include "draw_object.h"
 #include "main_menu.h"
-#include "commons.h"
+#include "draw_object.h"
+#include "common.h"
 #include "scene_manager.h"
-#include "math.h"
+#include <math.h>
 
 // Background
 Background background;

@@ -1,5 +1,5 @@
 #include "enemy.h"
-#include "game_constants.h"
+#include "common.h"
 
 Rectangle enemy_rectangles[5] = {
     { 48, 8, 8, 8 },
@@ -26,7 +26,7 @@ void InitEnemies(Enemy *enemy) {
         enemy[i].active = false;
         enemy[i].color = GRAY;
         enemy[i].hp = 3.0f;
-		enemy[i].exp = 1.0f;
+		enemy[i].exp = 10.0f;
     }
 }
 

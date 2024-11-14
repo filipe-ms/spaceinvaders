@@ -12,7 +12,7 @@
     <ClInclude Include="..\..\include\resource_dir.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\weapons.h">
+    <ClInclude Include="..\..\include\weapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\player.h">
@@ -24,10 +24,7 @@
     <ClInclude Include="..\..\include\enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\game_constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\commons.h">
+    <ClInclude Include="..\..\include\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\main_menu.h">
@@ -59,16 +56,13 @@
     <ClCompile Include="..\..\include\power_ups.c">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\weapons.c">
+    <ClCompile Include="..\..\include\weapon.c">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\enemy.c">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\player.c">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\include\game_constants.c">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\main_menu.c">
@@ -90,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\xp_bar.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\common.c">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

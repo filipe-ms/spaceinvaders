@@ -2,7 +2,6 @@
 
 #include "draw_object.h"
 #include "player.h"
-#include "string.h"
 
 // Texturas
 Texture ships;
@@ -61,9 +60,9 @@ void DrawAurea(Aurea* aurea) {
         break;
     }
 
-    DrawTexturePro(ships, aurea_sprite, aurea->destination, (Vector2) { 9, 10 }, 0, Fade(aurea->color, aurea->alpha));
-    DrawTexturePro(thrusters, aurea_thruster_1, thruster_1_destination, (Vector2) { 9, 10 }, 0, Fade(aurea->color, aurea->alpha));
-    DrawTexturePro(thrusters, aurea_thruster_2, thruster_2_destination, (Vector2) { 9, 10 }, 0, Fade(aurea->color, aurea->alpha));
+    DrawTexturePro(ships, aurea_sprite, aurea->destination, (Vector2) { 0, 0 }, 0, Fade(aurea->color, aurea->alpha));
+    DrawTexturePro(thrusters, aurea_thruster_1, thruster_1_destination, (Vector2) { 0, 0 }, 0, Fade(aurea->color, aurea->alpha));
+    DrawTexturePro(thrusters, aurea_thruster_2, thruster_2_destination, (Vector2) { 0, 0 }, 0, Fade(aurea->color, aurea->alpha));
 }
 
 //--------------------------------------------------------------

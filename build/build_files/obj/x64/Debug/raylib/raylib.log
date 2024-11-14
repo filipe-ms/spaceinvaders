@@ -1,8 +1,8 @@
 ﻿  raudio.c
-D:\Projects\Space Invaders\update\Space\spaceinvaders\build\external\raylib-master\src\external\jar_xm.h(242,1): warning C4005: 'DEBUG': macro redefinition
+D:\Projects\Space Invaders\update\Space\spaceinvaders\build\external\raylib-master\src\external\jar_xm.h(242,9): warning C4005: 'DEBUG': macro redefinition
   (compiling source file '../external/raylib-master/src/raudio.c')
-  D:\Projects\Space Invaders\update\Space\spaceinvaders\build\external\raylib-master\src\external\jar_xm.h(242,1):
-  'DEBUG' previously declared on the command line
+      D:\Projects\Space Invaders\update\Space\spaceinvaders\build\external\raylib-master\src\external\jar_xm.h(242,9):
+      'DEBUG' previously declared on the command line
   
   rcore.c
   rglfw.c

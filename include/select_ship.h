@@ -2,11 +2,10 @@
 
 #pragma once
 
-#include "raylib.h"
-#include "game_constants.h"
-
 #ifndef SELECT_SHIP_H
 #define SELECT_SHIP_H
+
+#include "raylib.h"
 
 typedef enum {
     LEFT_SHIP,

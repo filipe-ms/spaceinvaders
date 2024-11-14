@@ -1,7 +1,7 @@
 // player.c
 
 #include "player.h"
-#include "game_constants.h"
+#include "common.h"
 #include "draw_object.h"
 #include "math.h"
 
@@ -13,11 +13,14 @@ Nebula nebula;
 void InitPlayer(Player *player, int ship_id) {
     player->ship_id = ship_id;
 
-    player->position.x = SCREEN_WIDTH / 2 - 32;
-    player->position.y = (SCREEN_HEIGHT - 100);
+    player->center.x = player->position.x = SCREEN_WIDTH / 2;
+    player->center.y = player->position.y = (SCREEN_HEIGHT - 100);
 
     player->position.width = 48;
     player->position.height = 48;
+  
+    player->position.x = player->center.x + player->position.width / 2;
+    player->position.y = player->center.y + player->position.height / 2;
 
     player->direction = CENTER;
 
@@ -51,6 +54,8 @@ void UpdatePlayerPosition(Player* player) {
     if (IsKeyDown(KEY_UP)) player->position.y -= player->speed.y * GetFrameTime();
     if (IsKeyDown(KEY_DOWN)) player->position.y += player->speed.y * GetFrameTime();
     WallBehavior(player);
+    player->center.x = (player->position.x + player->position.width / 2);
+    player->center.y = (player->position.y + player->position.height / 2);
 }
 
 void UpdatePlayerAnimationCycle(Player* player) {
@@ -75,8 +80,16 @@ int GetThrusterAnimationCycle(Player *player) {
 
 // Ship updates
 
+Rectangle GetAureaPosition() {
+    return aurea.destination;
+}
+
 void UpdateAurea(Player* player) {
-    aurea.destination = player->position;
+
+    aurea.destination.x = player->position.x - 8;
+    aurea.destination.y = player->position.y - 8;
+
+
     aurea.destination.height = 64;
     aurea.destination.width = 64;
     aurea.direction = player->direction;

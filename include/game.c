@@ -1,13 +1,23 @@
 #include "game.h"
 #include "enemy.h"
-#include "commons.h"
-#include "weapons.h"
+#include "common.h"
+#include "weapon.h"
 #include "xp_bar.h"
 #include "power_ups.h"
-#include "game_constants.h"
 #include "scene_manager.h"
 
-#include "math.h"
+#include <math.h>
+
+// Waves
+#define FIRST_WAVE 0
+#define SECOND_WAVE 1
+#define THIRD_WAVE 2
+#define VICTORY 3
+
+// Wave Threshold
+#define FIRST_WAVE_THRESHOLD 10
+#define SECOND_WAVE_THRESHOLD 20
+#define THIRD_WAVE_THRESHOLD 50
 
 // GAME STATE
 static bool pause = false;
@@ -35,12 +45,7 @@ int player_score;
 int enemies_killed;
 
 // BUFFS AND POWERS
-
-float shoot_cooldown_modifier = 1.0f;
-
-static PowerUpShootRate shootRatePower;
-
-static Weapon weapon[NUMBER_OF_WEAPONS];
+bool level_up_flag = false;
 
 void InitGame(int ship_id) {
 
@@ -64,11 +69,10 @@ void InitGame(int ship_id) {
     player_score = 0;
 
     // Buffs
-    shoot_cooldown_modifier = 1.0f;
+    level_up_flag = false;
 
     // Other inits
     InitPlayer(&player, ship_id);
-    InitShootRatePowerUp(&shootRatePower);  // Inicialização do item power-up de shootRate
     InitEnemies(enemy);                     // Initialize enemies
     InitWeapon(&player);           // Initialize weapons
     InitExpBar();
@@ -86,15 +90,22 @@ void InitGame(int ship_id) {
 //--------------------------------------------------------------
 
 void UpdateWaveAlpha() {
-    if (wave_message_alpha >= 1.0f) wave_message_alpha = true;
-    if (!wave_message_alpha_flag && !wave_completed) wave_message_alpha += 0.5f * GetFrameTime();
-    else if (wave_message_alpha > 0) wave_message_alpha -= 0.5f * GetFrameTime();
+    if (wave_message_alpha >= 1.0f) {
+        wave_message_alpha_flag = true;
+    }
+
+    if (!wave_message_alpha_flag && !wave_completed) {
+        wave_message_alpha += 0.5f * GetFrameTime();
+        if (wave_message_alpha > 1.0f) wave_message_alpha = 1.0f;
+    }
+    else if (wave_message_alpha_flag || wave_completed) {
+        wave_message_alpha -= 0.5f * GetFrameTime();
+        if (wave_message_alpha < 0.0f) wave_message_alpha = 0.0f;
+    }
 }
 
+
 void FirstWave() {
-    
-    // Wave Message Alpha
-    UpdateWaveAlpha();
 
     // Condition for next wave
     if (wave_completed) {
@@ -105,9 +116,6 @@ void FirstWave() {
 
 void SecondWave() {
 
-    // Wave Message Alpha
-    UpdateWaveAlpha();
-
     // Condition for next wave
     if (wave_completed){
         active_wave = THIRD_WAVE;
@@ -116,9 +124,6 @@ void SecondWave() {
 }
 
 void ThirdWave() {
-
-    // Wave Message Alpha
-    UpdateWaveAlpha();
 
     wave_3_enemy_cooldown_charge_s += GetFrameTime();
     if (wave_3_enemy_cooldown_charge_s >= wave_3_enemy_cooldown_s) {
@@ -148,27 +153,37 @@ void UpdateWave() {
 //--------------------------------------------------------------
 
 
+void CheckCollision(Shoot* shoot, Enemy* enemy) {
+	if (CheckCollisionRecs(shoot->position, enemy->position)) {
+		enemy->hp -= shoot->damage;
+		shoot->active = false;
+		if (enemy->hp <= 0) {
+			enemy->active = false;
+			enemies_killed++;
+			level_up_flag = AddToExp(enemy->exp);
+            if (level_up_flag) PowerRandomizer();
+			player_score += 10;
+		}
+	}
+}
+
 // Function to check and handle bullet and enemy collisions
 void CheckBulletAndEnemyCollision(Enemy* enemy) {
     for (int i = 0; i < 50; i++) {
         if (!enemy[i].active) continue;
 
         for (int j = 0; j < 50; j++) {
-            Shoot* temp = GetPulseShoot(j);
-            if (!temp->active) continue;
-
+ 
             // PULSE
-            if (CheckPulseCollision(j, &enemy[i])) {
-                enemy[i].hp -= temp->damage;
-                temp->active = false;
+            if (IsPulseActive()) {
+				Shoot* shoot = GetPulseShoot(j);
+				if (shoot->active) CheckCollision(shoot, &enemy[i]);
             }
-
-            // HP CHECK
-            if (enemy[i].hp <= 0) {
-                enemy[i].active = false;
-                enemies_killed++;
-                AddToExp(10);
-                player_score += 10;
+            
+			// PHOTON
+            if (IsPhotonActive()) {
+				Shoot* shoot = GetPhotonShoot(j);
+				if (shoot->active) CheckCollision(shoot, &enemy[i]);
             }
         }
     }
@@ -197,22 +212,25 @@ void UpdateGame(void)
 
     if (!pause)
     {
-        UpdateWave();
-        UpdateBackground(&background);
-
-        UpdatePlayer(&player);
-        UpdateWeapon(&player);
-        UpdateEnemies(enemy);
-		CheckBulletAndEnemyCollision(enemy); // Enemy, kills and score
-        UpdateExpBar();
-
-        if (IsKeyPressed(KEY_SPACE)) { 
-            printf("opa\n"); 
+        if (IsKeyPressed(KEY_SPACE)) {
+            printf("opa\n");
         }
+        UpdateWaveAlpha();
 
-        UpdatePowerUp(&shootRatePower, weapon, player);
+        if (level_up_flag) {
+            UpdateLevelUpSelectMenu(&level_up_flag);
+        } else {
+            UpdateWave();
+            UpdateBackground(&background);
 
-        if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(START);
+            UpdatePlayer(&player);
+            UpdateWeapon(&player);
+            UpdateEnemies(enemy);
+            CheckBulletAndEnemyCollision(enemy); // Enemy, kills and score
+            UpdateExpBar();
+
+            if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(START);
+        }
     }
 }
 
@@ -235,24 +253,31 @@ void DrawGame(void)
     ClearBackground(BLACK);
 
     DrawBackground();
-    DrawPowerUps(shootRatePower);
 	DrawWeapon(&player);
     DrawPlayer(player);
     DrawEnemies(enemy);
     DrawExpBar();
+    DrawLevelUpSelectMenu(level_up_flag);
 
     if (active_wave == FIRST_WAVE) DrawText("FIRST WAVE", SCREEN_WIDTH / 2 - MeasureText("FIRST WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 100, 40, Fade(WHITE, wave_message_alpha));
     else if (active_wave == SECOND_WAVE) DrawText("SECOND WAVE", SCREEN_WIDTH / 2 - MeasureText("SECOND WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 100, 40, Fade(WHITE, wave_message_alpha));
     else if (active_wave == THIRD_WAVE) DrawText("THIRD WAVE", SCREEN_WIDTH / 2 - MeasureText("THIRD WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 100, 40, Fade(WHITE, wave_message_alpha));
 
     DrawText(TextFormat("%04i", player_score), 20, 20, 40, GRAY);
-
+    
     if (victory) DrawText("YOU WIN", SCREEN_WIDTH / 2 - MeasureText("YOU WIN", 40) / 2, SCREEN_HEIGHT / 2 - 40, 40, WHITE);
-
     if (pause) DrawText("GAME PAUSED", SCREEN_WIDTH / 2 - MeasureText("GAME PAUSED", 40) / 2, SCREEN_HEIGHT / 2 - 40, 40, GRAY);
 
     EndDrawing();
 }
+
+//--------------------------------------------------------------
+//
+//                     LEVEL UP
+// 
+//--------------------------------------------------------------
+
+
 
 //--------------------------------------------------------------
 //

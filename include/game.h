@@ -1,9 +1,22 @@
+//--------------------------------------------------------------
+//
+//							game.h
+// 
+//--------------------------------------------------------------
+// 
+//			Toda a lógica de jogo acontece aqui.
+// 
+//--------------------------------------------------------------
+
+
+#pragma once
+
 #ifndef GAME_H
 #define GAME_H
 
 #include "raylib.h"
 #include "player.h"
-#include "weapons.h"
+#include "weapon.h"
 
 void InitGame(int ship_id);         // Initialize game
 void UpdateGame(void);       // Update game (one frame)

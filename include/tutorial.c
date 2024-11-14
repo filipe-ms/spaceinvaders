@@ -1,11 +1,12 @@
 // tutorial.c
 
-
-#include "select_ship.h"
-#include "math.h"
-#include "player.h"
-#include "commons.h"
+#include "tutorial.h"
 #include "scene_manager.h"
+#include "common.h"
+#include "select_ship.h"
+
+
+
 
 Background tutorial;
 int id;

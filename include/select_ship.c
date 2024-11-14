@@ -1,11 +1,12 @@
 // select_ship.c
 
 #include "select_ship.h"
-#include "math.h"
+#include "common.h"
 #include "player.h"
 #include "scene_manager.h"
 #include "draw_object.h"
-#include "commons.h"
+#include <math.h>
+
 
 Background select_ship_menu_background;
 SelectMenuOption select_ship_menu_option;
@@ -151,7 +152,6 @@ void UpdateShipSelectMenu() {
 
     if (select_ship_transition_alpha_text < 1) select_ship_transition_alpha_text += 0.25f * GetFrameTime();
 
-    
     if (IsKeyPressed(KEY_LEFT)) {
         select_ship_menu_option = (select_ship_menu_option - 1 + SELECT_MENU_OPTION_COUNT) % SELECT_MENU_OPTION_COUNT;
     }
@@ -186,9 +186,9 @@ void DrawSelectMenu() {
 
     DrawSelectMenuBackground();
 
-    Color colorStart = (select_ship_menu_option == LEFT_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
-    Color colorRanking = (select_ship_menu_option == MIDDLE_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
-    Color colorExit = (select_ship_menu_option == RIGHT_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
+    Color ship_1 = (select_ship_menu_option == LEFT_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
+    Color ship_2 = (select_ship_menu_option == MIDDLE_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
+    Color ship_3 = (select_ship_menu_option == RIGHT_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
 
     DrawAurea(&aurea);
     DrawOrion(&orion);
@@ -198,9 +198,9 @@ void DrawSelectMenu() {
     char* middle_ship = "Orion";
     char* right_ship = "Nebula";
 
-    DrawText(left_ship, (int)(SCREEN_WIDTH*0.25f - MeasureText(left_ship, 20) / 2.0f), 400, 20, colorStart);
-    DrawText(middle_ship, (int)(SCREEN_WIDTH/2.0f - MeasureText(middle_ship, 20) / 2.0f), 400, 20, colorRanking);
-    DrawText(right_ship, (int)(SCREEN_WIDTH*0.75f - MeasureText(right_ship, 20) / 2.0f), 400, 20, colorExit);
+    DrawText(left_ship, (int)(SCREEN_WIDTH*0.25f - MeasureText(left_ship, 20) / 2.0f), 400, 20, ship_1);
+    DrawText(middle_ship, (int)(SCREEN_WIDTH/2.0f - MeasureText(middle_ship, 20) / 2.0f), 400, 20, ship_2);
+    DrawText(right_ship, (int)(SCREEN_WIDTH*0.75f - MeasureText(right_ship, 20) / 2.0f), 400, 20, ship_3);
     EndDrawing();
 }
 

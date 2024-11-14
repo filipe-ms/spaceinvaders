@@ -267,23 +267,22 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\draw_object.h" />
     <ClInclude Include="..\..\include\enemy.h" />
-    <ClInclude Include="..\..\include\game_constants.h" />
-    <ClInclude Include="..\..\include\commons.h" />
+    <ClInclude Include="..\..\include\common.h" />
     <ClInclude Include="..\..\include\main_menu.h" />
     <ClInclude Include="..\..\include\scene_manager.h" />
     <ClInclude Include="..\..\include\select_ship.h" />
     <ClInclude Include="..\..\include\game.h" />
     <ClInclude Include="..\..\include\tutorial.h" />
-    <ClInclude Include="..\..\include\weapons.h" />
+    <ClInclude Include="..\..\include\weapon.h" />
     <ClInclude Include="..\..\include\player.h" />
     <ClInclude Include="..\..\include\power_ups.h" />
     <ClInclude Include="..\..\include\resource_dir.h" />
     <ClInclude Include="..\..\include\xp_bar.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\common.c" />
     <ClCompile Include="..\..\include\draw_object.c" />
     <ClCompile Include="..\..\include\enemy.c" />
-    <ClCompile Include="..\..\include\game_constants.c" />
     <ClCompile Include="..\..\include\main_menu.c" />
     <ClCompile Include="..\..\include\player.c" />
     <ClCompile Include="..\..\include\power_ups.c" />
@@ -291,7 +290,7 @@
     <ClCompile Include="..\..\include\select_ship.c" />
     <ClCompile Include="..\..\include\game.c" />
     <ClCompile Include="..\..\include\tutorial.c" />
-    <ClCompile Include="..\..\include\weapons.c" />
+    <ClCompile Include="..\..\include\weapon.c" />
     <ClCompile Include="..\..\include\xp_bar.c" />
     <ClCompile Include="..\..\src\main.c" />
   </ItemGroup>

@@ -2,23 +2,41 @@
 
 #pragma once
 
-#include "raylib.h"  // Importando para utilizar os rectangles.
-#include "player.h"
-#include "weapons.h"
-
 #ifndef POWER_UPS_H
 #define POWER_UPS_H
 
-// Shoot Rate Power Up
-typedef struct PowerUpShootRate {
-    Rectangle rec;  // Posição e tamanho do item
-    bool active;    // Estado ativo/inativo do item
-    Color color;    // Cor do item
-} PowerUpShootRate;
+#include "raylib.h"
+#include "weapon.h"
+#include "player.h"
 
-void InitShootRatePowerUp(struct PowerUpShootRate* power);
-void SpawnShootRatePowerUp(struct PowerUpShootRate* power);
-void DrawPowerUps(struct PowerUpShootRate power);
-void UpdatePowerUp(struct PowerUpShootRate* power, struct Weapon* weapon, struct Player player);
+typedef enum {
+    SHOOT_COOLDOWN,
+    SHOOT_DAMAGE,
+    SHOOT_SIZE,
+    SHOOT_PIERCE,
+    SHOOT_SPEED,
+
+    WEAPON_BUFF,
+    NEW_WEAPON,
+
+    NONE = 99
+} PowerUpType;
+
+typedef struct PowerUp {
+    int effect;
+    float value;
+    
+    Texture texture;
+    char description_line_1[20];
+    char description_line_2[20];
+    char description_line_3[20];
+    Color color;
+} PowerUp;
+
+void PowerRandomizer(void);
+PowerUp UpdateLevelUpSelectMenu(bool* flag);
+void DrawLevelUpSelectMenu(bool flag);
+void LoadPowerUpTextures(void);
+void UnloadPowerUpTextures(void);
 
 #endif // POWER_UPS_H
