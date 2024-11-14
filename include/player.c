@@ -12,7 +12,6 @@ Nebula nebula;
 
 void InitPlayer(Player *player, int ship_id) {
     player->ship_id = ship_id;
-
     player->center.x = player->position.x = SCREEN_WIDTH / 2;
     player->center.y = player->position.y = (SCREEN_HEIGHT - 100);
 

@@ -1,13 +1,15 @@
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\common.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\common.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\draw_object.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\draw_object.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\enemy.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\main_menu.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\main_menu.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\player.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\player.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\power_ups.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\scene_manager.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\scene_manager.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\select_ship.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\select_ship.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\game.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\tutorial.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\tutorial.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\weapon.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\xp_bar.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\xp_bar.obj
-D:\Projects\Space Invaders\update\Space\spaceinvaders\src\main.c;D:\Projects\Space Invaders\update\Space\spaceinvaders\build\build_files\obj\x64\Debug\Space\main.obj
+C:\Users\gabri\Developer\spaceinvaders\include\common.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\common.obj
+C:\Users\gabri\Developer\spaceinvaders\include\draw_object.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\draw_object.obj
+C:\Users\gabri\Developer\spaceinvaders\include\enemy.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\enemy.obj
+C:\Users\gabri\Developer\spaceinvaders\include\enter_name.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\enter_name.obj
+C:\Users\gabri\Developer\spaceinvaders\include\main_menu.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\main_menu.obj
+C:\Users\gabri\Developer\spaceinvaders\include\player.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\player.obj
+C:\Users\gabri\Developer\spaceinvaders\include\power_ups.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\power_ups.obj
+C:\Users\gabri\Developer\spaceinvaders\include\ranking.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\ranking.obj
+C:\Users\gabri\Developer\spaceinvaders\include\scene_manager.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\scene_manager.obj
+C:\Users\gabri\Developer\spaceinvaders\include\select_ship.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\select_ship.obj
+C:\Users\gabri\Developer\spaceinvaders\include\game.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\game.obj
+C:\Users\gabri\Developer\spaceinvaders\include\tutorial.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\tutorial.obj
+C:\Users\gabri\Developer\spaceinvaders\include\weapon.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\weapon.obj
+C:\Users\gabri\Developer\spaceinvaders\include\xp_bar.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\xp_bar.obj
+C:\Users\gabri\Developer\spaceinvaders\src\main.c;C:\Users\gabri\Developer\spaceinvaders\build\build_files\obj\x64\Debug\Space\main.obj

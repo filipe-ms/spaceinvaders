@@ -268,7 +268,9 @@
     <ClInclude Include="..\..\include\draw_object.h" />
     <ClInclude Include="..\..\include\enemy.h" />
     <ClInclude Include="..\..\include\common.h" />
+    <ClInclude Include="..\..\include\enter_name.h" />
     <ClInclude Include="..\..\include\main_menu.h" />
+    <ClInclude Include="..\..\include\ranking.h" />
     <ClInclude Include="..\..\include\scene_manager.h" />
     <ClInclude Include="..\..\include\select_ship.h" />
     <ClInclude Include="..\..\include\game.h" />
@@ -283,9 +285,11 @@
     <ClCompile Include="..\..\include\common.c" />
     <ClCompile Include="..\..\include\draw_object.c" />
     <ClCompile Include="..\..\include\enemy.c" />
+    <ClCompile Include="..\..\include\enter_name.c" />
     <ClCompile Include="..\..\include\main_menu.c" />
     <ClCompile Include="..\..\include\player.c" />
     <ClCompile Include="..\..\include\power_ups.c" />
+    <ClCompile Include="..\..\include\ranking.c" />
     <ClCompile Include="..\..\include\scene_manager.c" />
     <ClCompile Include="..\..\include\select_ship.c" />
     <ClCompile Include="..\..\include\game.c" />

@@ -1,11 +1,9 @@
 // player.h
 
-#pragma once
-
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "raylib.h" // Importando para utilizar os rectangles.
+#include "raylib.h"
 
 typedef struct Player {
     int ship_id;

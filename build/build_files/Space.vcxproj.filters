@@ -48,6 +48,12 @@
     <ClInclude Include="..\..\include\xp_bar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\ranking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\enter_name.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.c">
@@ -87,6 +93,12 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\common.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\ranking.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\enter_name.c">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

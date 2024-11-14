@@ -4,9 +4,8 @@
 #include "weapon.h"
 #include "xp_bar.h"
 #include "power_ups.h"
-#include "scene_manager.h"
-
 #include <math.h>
+#include "scene_manager.h"
 
 // Waves
 #define FIRST_WAVE 0
@@ -229,7 +228,7 @@ void UpdateGame(void)
             CheckBulletAndEnemyCollision(enemy); // Enemy, kills and score
             UpdateExpBar();
 
-            if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(START);
+            if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(ENTER_NAME);
         }
     }
 }
