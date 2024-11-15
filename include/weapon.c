@@ -38,7 +38,7 @@ void IncrementSizeModifier(float value) {
 Pulse pulse;
 float speed_factor = 5.0f;
 
-InitPulse() {
+static void InitPulse(void) {
     pulse.weapon.id = PULSE;
     pulse.weapon.active = false;
     
@@ -61,13 +61,15 @@ InitPulse() {
 
 	pulse.weapon.speed = (Vector2){ 0, -500 }; // Baseline speed
 
+
+
     for (int i = 0; i < 50; i++) {
 		pulse.pulse_shoot[i].shoot.active = false;
 		pulse.pulse_shoot[i].shoot.damage = pulse.weapon.damage;
     }
 }
 
-void InitPulseShoot(Player *player) {
+static void InitPulseShoot(Player *player) {
 
     for (int i = 0; i < 50; i++) {
         if (pulse.pulse_shoot[i].shoot.active) continue;
@@ -79,32 +81,31 @@ void InitPulseShoot(Player *player) {
         pulse.pulse_shoot[i].shoot.draw_position.height = 64 * size_modifier;
         pulse.pulse_shoot[i].shoot.draw_position.width = 64 * size_modifier;
 
-        pulse.pulse_shoot[i].shoot.position.width = 32 * size_modifier;
         pulse.pulse_shoot[i].shoot.position.height = 32 * size_modifier;
-
-        Vector2 shoot_position = { player->position.x + player->position.width / 2, player->position.y + player->position.height / 2 };
-        Vector2 rotation_offset = Vector2Rotate(pulse.weapon.offset, degToRad(pulse.weapon_cycle * pulse.rotation + M_PI_2));
-            
-        pulse.pulse_shoot[i].shoot.position.x = rotation_offset.x + shoot_position.x - pulse.pulse_shoot[i].shoot.position.width / 2;
-        pulse.pulse_shoot[i].shoot.position.y = rotation_offset.y + shoot_position.y - pulse.pulse_shoot[i].shoot.position.height / 2;
+        pulse.pulse_shoot[i].shoot.position.width = 32 * size_modifier;
         
-        pulse.pulse_shoot[i].shoot.speed = Vector2Rotate(pulse.weapon.speed, degToRad(pulse.weapon_cycle * pulse.rotation + M_PI_2));
+        Vector2 rotation_offset = Vector2Rotate(pulse.weapon.offset, (float)(degToRad(pulse.weapon_cycle * pulse.rotation)));
+            
+        pulse.pulse_shoot[i].shoot.position.x = rotation_offset.x + player->center.x - pulse.pulse_shoot[i].shoot.position.width / 2.0f;
+        pulse.pulse_shoot[i].shoot.position.y = rotation_offset.y + player->center.y - pulse.pulse_shoot[i].shoot.position.height / 2.0f;
+        
+        pulse.pulse_shoot[i].shoot.speed = Vector2Rotate(pulse.weapon.speed, (float)(degToRad(pulse.weapon_cycle * pulse.rotation)));
         
         pulse.pulse_shoot[i].shoot_cycle = pulse.weapon_cycle;
 
         pulse.weapon_cycle--;
         if (pulse.weapon_cycle == -2) pulse.weapon_cycle = 1;
             
-        return;
+        break;
     }
 }
 
-void UpdatePulseShoot() {
+static void UpdatePulseShoot() {
     for (int i = 0; i < 50; i++) {
         if (!pulse.pulse_shoot[i].shoot.active) continue;
 
         Vector2 offset = (Vector2){ pulse.weapon.offset.x / 2, pulse.weapon.offset.y / 2 };
-        Vector2 rotationOffset = Vector2Rotate(offset, degToRad(pulse.pulse_shoot[i].shoot_cycle * pulse.rotation + M_PI_2));
+        Vector2 rotationOffset = Vector2Rotate(offset, (float)(degToRad(pulse.pulse_shoot[i].shoot_cycle * pulse.rotation)));
         
         pulse.pulse_shoot[i].shoot.position.x += pulse.pulse_shoot[i].shoot.speed.x * GetFrameTime();
         pulse.pulse_shoot[i].shoot.position.y += pulse.pulse_shoot[i].shoot.speed.y * GetFrameTime();
@@ -118,10 +119,8 @@ void UpdatePulseShoot() {
     }
 }
 
-void UpdatePulse(Player *player) {
+static void UpdatePulse(Player *player) {
 	if (!pulse.weapon.active) return;
-
-    UpdatePulseShoot();
 
     pulse.weapon.cooldown_charge_s += (pulse.weapon.charge_time_modifier + cooldown_modifier) * GetFrameTime();
 
@@ -129,12 +128,14 @@ void UpdatePulse(Player *player) {
 		InitPulseShoot(player);
         pulse.weapon.cooldown_charge_s -= pulse.weapon.cooldown_time_s;
     }
+    
+    UpdatePulseShoot();
 }
 
-void DrawPulseShoot() {
+static void DrawPulseShoot() {
     for (int i = 0; i < 50; i++) {
         if (!pulse.pulse_shoot[i].shoot.active) continue;
-        DrawTexturePro(texture, pulse.weapon.source, pulse.pulse_shoot[i].shoot.draw_position, pulse.weapon.pivot, 15 * pulse.pulse_shoot[i].shoot_cycle, WHITE);
+        DrawTexturePro(texture, pulse.weapon.source, pulse.pulse_shoot[i].shoot.draw_position, pulse.weapon.pivot, 15.0f * pulse.pulse_shoot[i].shoot_cycle, WHITE);
     }
 }
 
@@ -155,7 +156,7 @@ bool IsPulseActive(void) {
 
 Photon photon;
 
-void InitPhoton(void) {
+static void InitPhoton(void) {
 
     photon.weapon.id = PHOTON;
     photon.weapon.active = false;
@@ -185,7 +186,7 @@ void InitPhoton(void) {
     }
 }
 
-void InitPhotonShoot(Player *player) {
+static void InitPhotonShoot(Player *player) {
     for (int i = 0; i < photon.weapon.max_active_shoots; i++) {
 		if (photon.shoot[i].active) continue;
 
@@ -198,13 +199,11 @@ void InitPhotonShoot(Player *player) {
 		photon.shoot[i].speed = photon.weapon.speed;
 		photon.shoot[i].damage = photon.weapon.damage + damage_modifier;
 
-        
         break;
     }
 }
 
-
-void UpdatePhotonCooldownAndShoot(Player* player) {
+static void UpdatePhotonCooldownAndShoot(Player* player) {
 	if (!photon.weapon.active) return;
 
 	photon.weapon.cooldown_charge_s += (photon.weapon.charge_time_modifier + cooldown_modifier) * GetFrameTime();
@@ -215,7 +214,7 @@ void UpdatePhotonCooldownAndShoot(Player* player) {
     }
 }
 
-void UpdatePhotonShootPosition() {
+static void UpdatePhotonShootPosition() {
     for (int i = 0; i < 50; i++) {
         if (!photon.shoot[i].active) continue;
 
@@ -228,7 +227,7 @@ void UpdatePhotonShootPosition() {
     }
 }
 
-void DrawPhotonShoot() {
+static void DrawPhotonShoot() {
     for (int i = 0; i < 50; i++) {
         if (photon.shoot[i].active) {
             DrawTexturePro(texture, photon.weapon.source, photon.shoot[i].position, photon.weapon.pivot, 0, WHITE);
@@ -236,13 +235,13 @@ void DrawPhotonShoot() {
     }
 }
 
-bool IsPhotonActive() {
-	return photon.weapon.active;
-}
-
-void UpdatePhoton(Player* player) {
+static void UpdatePhoton(Player* player) {
     UpdatePhotonCooldownAndShoot(player);
     UpdatePhotonShootPosition();
+}
+
+bool IsPhotonActive() {
+	return photon.weapon.active;
 }
 
 Shoot* GetPhotonShoot(int index) {
@@ -250,10 +249,159 @@ Shoot* GetPhotonShoot(int index) {
 }
 
 //--------------------------------------------------------------
+//
+//                         SHOTGUN
+// 
+//--------------------------------------------------------------
 
-void InitAllWeapons() {
+Shotgun shotgun;
+
+static void InitShotgun(void) {
+    shotgun.weapon.id = SHOTGUN;
+    shotgun.weapon.active = false;
+
+    shotgun.weapon.offset = (Vector2){ 0, -32 };
+    shotgun.weapon.pivot = (Vector2){ 4, 4 };
+
+    shotgun.weapon.color = WHITE;
+
+    shotgun.weapon.damage = 0.5f;
+
+    shotgun.weapon.cooldown_time_s = 1.0f / 1.0f;
+
+    shotgun.weapon.cooldown_charge_s = 0;
+    shotgun.weapon.charge_time_modifier = 1;
+
+    shotgun.weapon.max_active_shoots = 50;
+
+    shotgun.arc = 45;
+
+    shotgun.weapon.speed = (Vector2){ 0, -1000 }; // Baseline speed
+
+
+
+    for (int i = 0; i < 50; i++) {
+        shotgun.shotgun_shoot[i].shoot.active = false;
+        shotgun.shotgun_shoot[i].shoot.damage = shotgun.weapon.damage;
+    }
+}
+
+static void InitShotgunShoot(Player* player) {
+    float lifespan[6] = { 0 };
+    int shells = GetRandomValue(0, 3);
+    for (int i = 0; i < 3 + shells; i++) {
+        lifespan[i] = (float)(GetRandomValue(1, 3) / 10.0f);
+    }
+
+    for (int j = 0; j < 3 + shells; j++) {
+        for (int i = 0; i < 50; i++) {
+            if (shotgun.shotgun_shoot[i].shoot.active) continue;
+
+            shotgun.shotgun_shoot[i].shoot.active = true;
+            shotgun.shotgun_shoot[i].shoot.damage = shotgun.weapon.damage + damage_modifier / 2; // Balance
+
+            shotgun.shotgun_shoot[i].shoot.draw_position.height = 64 * size_modifier;
+            shotgun.shotgun_shoot[i].shoot.draw_position.width = 64 * size_modifier;
+
+            shotgun.shotgun_shoot[i].shoot.position.height = 32 * size_modifier;
+            shotgun.shotgun_shoot[i].shoot.position.width = 32 * size_modifier;
+
+            float draw_angle = GetRandomValue(-45, 45);
+            float orientation = degToRad(draw_angle);
+
+			shotgun.shotgun_shoot[i].orientation = draw_angle;
+            Vector2 rotation_offset = Vector2Rotate(shotgun.weapon.offset, orientation);
+
+            shotgun.shotgun_shoot[i].shoot.position.x = rotation_offset.x + player->center.x - shotgun.shotgun_shoot[i].shoot.position.width / 2.0f;
+            shotgun.shotgun_shoot[i].shoot.position.y = rotation_offset.y + player->center.y - shotgun.shotgun_shoot[i].shoot.position.height / 2.0f;
+
+
+            Vector2 speed = { 0, shotgun.weapon.speed.y + GetRandomValue(0, -500) };
+
+            shotgun.shotgun_shoot[i].lifespan = lifespan[j];
+            shotgun.shotgun_shoot[i].alpha = lifespan[j];
+
+            if (speed.y < -1300) {
+                shotgun.shotgun_shoot[i].source = (Rectangle){ 16, 0, 8, 8 };
+            }
+            else {
+                shotgun.shotgun_shoot[i].source = (Rectangle) { 24, 0, 8, 8 };
+            }
+
+            shotgun.shotgun_shoot[i].shoot.speed = Vector2Rotate(speed, orientation);
+
+            break;
+        }
+    }
+}
+
+static void UpdateShotgunShoot() {
+    for (int i = 0; i < 50; i++) {
+        if (!shotgun.shotgun_shoot[i].shoot.active) continue;
+
+        Vector2 offset = (Vector2){ shotgun.weapon.offset.y / 2, shotgun.weapon.offset.y / 2 };
+        Vector2 rotation_offset = Vector2Rotate(offset, (float)(degToRad(shotgun.shotgun_shoot[i].orientation)));
+
+        shotgun.shotgun_shoot[i].shoot.position.x += shotgun.shotgun_shoot[i].shoot.speed.x * GetFrameTime();
+        shotgun.shotgun_shoot[i].shoot.position.y += shotgun.shotgun_shoot[i].shoot.speed.y * GetFrameTime();
+
+        shotgun.shotgun_shoot[i].shoot.draw_position.x = shotgun.shotgun_shoot[i].shoot.position.x + rotation_offset.x;
+        shotgun.shotgun_shoot[i].shoot.draw_position.y = shotgun.shotgun_shoot[i].shoot.position.y + rotation_offset.y;
+
+		shotgun.shotgun_shoot[i].lifespan -= GetFrameTime();
+        shotgun.shotgun_shoot[i].alpha = shotgun.shotgun_shoot[i].lifespan;
+
+        if (shotgun.shotgun_shoot[i].shoot.position.y < -80 || shotgun.shotgun_shoot[i].lifespan <= 0) {
+            shotgun.shotgun_shoot[i].shoot.active = false;
+            shotgun.shotgun_shoot[i].lifespan = 0;
+        }
+    }
+}
+
+
+static void UpdateShotgun(Player* player) {
+    if (!shotgun.weapon.active) return;
+
+    shotgun.weapon.cooldown_charge_s += (shotgun.weapon.charge_time_modifier + cooldown_modifier) * GetFrameTime();
+
+    if (shotgun.weapon.cooldown_charge_s >= shotgun.weapon.cooldown_time_s) {
+        InitShotgunShoot(player);
+        shotgun.weapon.cooldown_charge_s -= shotgun.weapon.cooldown_time_s;
+    }
+
+    UpdateShotgunShoot();
+}
+
+static void DrawShotgunShoot() {
+    for (int i = 0; i < 50; i++) {
+        if (!shotgun.shotgun_shoot[i].shoot.active) continue;
+		//DrawRectangleRec(shotgun.shotgun_shoot[i].shoot.position, WHITE);
+        DrawTexturePro(texture, shotgun.shotgun_shoot[i].source, shotgun.shotgun_shoot[i].shoot.draw_position, shotgun.weapon.pivot, shotgun.shotgun_shoot[i].orientation, WHITE);
+    }
+}
+
+Shoot* GetShotgunShoot(int index) {
+    return &shotgun.shotgun_shoot[index].shoot;
+}
+
+bool IsShotgunActive(void) {
+    return shotgun.weapon.active;
+}
+
+
+
+//--------------------------------------------------------------
+//
+//                         OTHERS
+// 
+//--------------------------------------------------------------
+
+
+
+static void InitAllWeapons(void) {
     InitPulse();
     InitPhoton();
+    InitShotgun();
 }
 
 void InitWeapon(Player* player) {
@@ -265,18 +413,19 @@ void InitWeapon(Player* player) {
 
     if (player->ship_id == AUREA) pulse.weapon.active = true;
     if (player->ship_id == ORION) photon.weapon.active = true;
-    if (player->ship_id == NEBULA) photon.weapon.active = true;
+    if (player->ship_id == NEBULA) shotgun.weapon.active = true;
 }
 
-void UpdateWeapon(Player *player) {
+void UpdateWeapon(Player* player) {
     UpdatePhoton(player);
     UpdatePulse(player);
+    UpdateShotgun(player);
 }
 
 void DrawWeapon() {
     DrawPulseShoot();
     DrawPhotonShoot();
-    
+    DrawShotgunShoot();
 }
 
 void LoadWeaponTextures(void) {
@@ -286,7 +435,3 @@ void LoadWeaponTextures(void) {
 void UnloadWeaponTextures(void) {
     UnloadTexture(texture);
 }
-
-
-
-

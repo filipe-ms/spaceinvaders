@@ -7,7 +7,6 @@
 #include "draw_object.h"
 #include <math.h>
 
-
 Background select_ship_menu_background;
 SelectMenuOption select_ship_menu_option;
 SelectMenuOption selected_ship;

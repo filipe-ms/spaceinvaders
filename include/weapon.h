@@ -11,6 +11,7 @@
 
 #define PULSE 0 // Aurea starting weapon
 #define PHOTON 1 // Orion starting weapon
+#define SHOTGUN 2 // Nebula starting weapon
 
 
 //--------------------------------------------------------------
@@ -86,6 +87,29 @@ typedef struct Photon {
 Shoot* GetPhotonShoot(int index);
 bool IsPhotonActive(void);
 
+
+//--------------------------------------------------------------
+//
+//                         Shotgun
+// 
+//--------------------------------------------------------------
+typedef struct ShotgunShoot {
+	Shoot shoot;
+    Rectangle source;
+    float lifespan;
+    float orientation;
+    float alpha;
+} ShotgunShoot;
+
+typedef struct Shotgun {
+	Weapon weapon;
+    float arc;
+	ShotgunShoot shotgun_shoot[50];
+} Shotgun;
+
+Shoot* GetShotgunShoot(int index);
+bool IsShotgunActive(void);
+
 // General
 void InitWeapon(Player* player);
 void UpdateWeapon(Player* player);
@@ -93,6 +117,7 @@ void DrawWeapon();
 void LoadWeaponTextures(void);
 void UnloadWeaponTextures(void);
 
+// Power Modifiers
 void IncrementCooldownModifier(float value);
 void IncrementDamageModifier(float value);
 void IncrementSizeModifier(float value);

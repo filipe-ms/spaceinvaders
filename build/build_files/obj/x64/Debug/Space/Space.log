@@ -1,7 +1,6 @@
-﻿  weapon.c
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(52,40): warning C4305: '=': truncation from 'double' to 'float'
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(86,70): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(91,78): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(107,56): warning C4244: 'function': conversion from 'double' to 'float', possible loss of data
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\weapon.c(137,119): warning C4244: 'function': conversion from 'int' to 'float', possible loss of data
+﻿  enemy.c
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c(45,73): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c(60,73): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c(87,42): warning C4013: 'sin' undefined; assuming extern returning int
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c(121,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
   Space.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders\bin\Debug\Space.exe

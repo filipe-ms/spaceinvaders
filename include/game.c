@@ -36,9 +36,7 @@ bool wave_completed;
 float wave_message_alpha;
 bool wave_message_alpha_flag;
 
-// WAVE COUNTERS
-float wave_3_enemy_cooldown_s = 1;
-float wave_3_enemy_cooldown_charge_s = 0;
+
 
 // COUNTS
 int player_score;
@@ -123,14 +121,18 @@ void SecondWave() {
     }
 }
 
+// WAVE COUNTERS
+float wave_3_enemy_cooldown_s = 1.0f;
+float wave_3_enemy_cooldown_charge_s = 0.0f;
+
 void ThirdWave() {
 
     wave_3_enemy_cooldown_charge_s += GetFrameTime();
     if (wave_3_enemy_cooldown_charge_s >= wave_3_enemy_cooldown_s) {
-        SpawnEnemies(enemy, 10, 0);
+        //SpawnEnemies(enemy, 10, 3);
+        SpawnRandomEnemies(enemy, 3);
 		wave_3_enemy_cooldown_charge_s =- wave_3_enemy_cooldown_s;
     }
-
 
     // Condition for next wave
     if (wave_completed) {
@@ -185,6 +187,12 @@ void CheckBulletAndEnemyCollision(Enemy* enemy) {
 				Shoot* shoot = GetPhotonShoot(j);
 				if (shoot->active) CheckCollision(shoot, &enemy[i]);
             }
+
+            // SHOTGUN
+            if (IsShotgunActive()) {
+                Shoot* shoot = GetShotgunShoot(j);
+                if (shoot->active) CheckCollision(shoot, &enemy[i]);
+            }
         }
     }
 }
@@ -225,7 +233,7 @@ void UpdateGame(void)
 
             UpdatePlayer(&player);
             UpdateWeapon(&player);
-            UpdateEnemies(enemy);
+            UpdateEnemies(enemy, &player);
             CheckBulletAndEnemyCollision(enemy); // Enemy, kills and score
             UpdateExpBar();
 
@@ -270,14 +278,6 @@ void DrawGame(void)
 
     EndDrawing();
 }
-
-//--------------------------------------------------------------
-//
-//                     LEVEL UP
-// 
-//--------------------------------------------------------------
-
-
 
 //--------------------------------------------------------------
 //

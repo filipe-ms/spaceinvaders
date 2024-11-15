@@ -4,6 +4,11 @@
 #include "raylib.h"
 #include "player.h"
 
+typedef enum {
+    LEIGO
+
+} EnemyName;
+
 typedef struct Behavior {
 	Vector2 position[10];
 	Vector2 speed[10];
@@ -23,14 +28,17 @@ typedef struct Enemy {
     float hp;
     float exp;
     Behavior behavior;
+    float move_time;
+    bool action_flag;
 } Enemy;
 
 void InitEnemies(Enemy* enemy);
-void UpdateEnemies(Enemy* enemy);
+void UpdateEnemies(Enemy* enemy, Player *player);
 void DrawEnemies(Enemy* enemy);
 bool CheckEnemyCollisionWithPlayer(Player player, Enemy* enemy);
 
 void SpawnEnemies(Enemy* enemy, int amount, int id);
+void SpawnRandomEnemies(Enemy* enemy, int amount);
 
 void LoadEnemyTextures();
 void UnloadEnemyTextures();
