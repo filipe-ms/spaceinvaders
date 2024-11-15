@@ -73,15 +73,15 @@ void EnemyParedao(Enemy* enemy) {
 
     if(enemy->action_flag == false) {
         enemy->exp = 15.0f;
-        enemy->position.x = (float)GetRandomValue(SCREEN_WIDTH, SCREEN_WIDTH + 1000);
-        enemy->position.y = (float)GetRandomValue(0, (int)(SCREEN_HEIGHT-150));
+        enemy->position.x = GetRandomValue(0, 1) ? SCREEN_WIDTH : 0;
+        enemy->position.y = (float)GetRandomValue(0, SCREEN_HEIGHT+200);
 		enemy->action_flag = true;
     }
 
     static float f = 0;
     
-    float amplitude = 6;
-    float velocidade = 20;
+    float amplitude = 3;
+    float velocidade = 5;
 
     if (enemy->speed.x == 0) enemy->speed.x = velocidade;
 

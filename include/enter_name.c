@@ -13,12 +13,13 @@ extern int player_score; // Declaração da variável global
 static char playerName[MAX_NAME_LENGTH + 1] = "";  
 static int charIndex = 0;                          
 
-void InitEnterName() {
+//test
+void InitEnterName(void) {
     memset(playerName, 0, sizeof(playerName));  
-    charIndex = 0;                              
+    charIndex = 0;
 }
 
-void UpdateEnterName() {
+void UpdateEnterName(void) {
     int key = GetCharPressed();
 
     while (key > 0) {
@@ -42,7 +43,7 @@ void UpdateEnterName() {
     }
 }
 
-void DrawEnterName() {
+void DrawEnterName(void) {
 	BeginDrawing();
     ClearBackground(BLACK);
     DrawText("Enter your name:", 100, 100, 30, WHITE);

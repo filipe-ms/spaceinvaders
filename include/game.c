@@ -37,7 +37,7 @@ float wave_enemy_cooldown_s = 5.0f;
 float wave_enemy_charge_s = 0.0f;
 
 // COUNTS
-int player_score;
+int player_score = 0;
 int enemies_killed;
 int enemy_hp;
 
@@ -96,7 +96,7 @@ void UpdateWaveAlpha() {
     if (wave_message_alpha >= 1.0f) {
         wave_message_alpha_flag = true;
     }
-    if (!wave_message_alpha_flag && wave_message_alpha>0) {
+    if (!wave_message_alpha_flag && wave_message_alpha >= 0.0f) {
         wave_message_alpha += 0.5f * GetFrameTime();
         if (wave_message_alpha > 1.0f) wave_message_alpha = 1.0f;
     }
@@ -108,6 +108,16 @@ void UpdateWaveAlpha() {
         }
     }
 }
+
+void StartNewWave() {
+    if (wave_duration_s <= 0) {
+        wave_duration_s = 60.0f;
+        wave_completed = true;
+        wave_message_alpha = 0.0f;
+        wave_message_alpha_flag = false;
+    }
+}
+
 
 void FirstWave() {
     UpdateWaveAlpha();
@@ -153,9 +163,7 @@ void FirstWave() {
 
     if (wave_duration_s <= 0) {
         active_wave = SECOND_WAVE;
-		wave_duration_s = 60.0f;
-        wave_completed = true;
-        wave_message_alpha = 0.1f;
+        StartNewWave();
     }
 }
 
@@ -211,9 +219,7 @@ void SecondWave() {
 
     if (wave_duration_s <= 0) {
         active_wave = THIRD_WAVE;
-        wave_duration_s = 60.0f;
-        wave_completed = true;
-        wave_message_alpha = 0.1f;
+        StartNewWave();
     }
 }
 
@@ -243,9 +249,7 @@ void ThirdWave() {
     if (wave_duration_s<=0) {
         victory = true;
         active_wave = VICTORY;
-        wave_completed = false;
-        wave_completed = true;
-        wave_message_alpha = 0.1f;
+        StartNewWave();
     }
 }
 
@@ -327,14 +331,15 @@ void UpdateGame(void)
 
     if (!pause)
     {
-        if (IsKeyPressed(KEY_SPACE)) {
-            printf("opa\n");
-        }
         UpdateWaveAlpha();
 
         if (level_up_flag) {
             UpdateLevelUpSelectMenu(&level_up_flag);
         } else {
+
+            if (IsKeyPressed(KEY_SPACE)) {
+                printf("Aeeee\n");
+            }
             UpdateWave();
             UpdateBackground(&background);
 
@@ -344,7 +349,7 @@ void UpdateGame(void)
             CheckBulletAndEnemyCollision(enemy); // Enemy, kills and score
             UpdateExpBar();
 
-            if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(START);
+            if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(RANKING);
         }
     }
 }

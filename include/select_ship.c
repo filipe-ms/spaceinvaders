@@ -164,7 +164,7 @@ void UpdateShipSelectMenu() {
     }
 }
 
-void DrawSelectMenuBackground() {
+void DrawSelectMenuBackground(void) {
     if (select_ship_alpha_flag) {
         select_ship_menu_background.alpha += 0.1f * GetFrameTime();
         if (select_ship_menu_background.alpha >= 0.8f) select_ship_alpha_flag = false;

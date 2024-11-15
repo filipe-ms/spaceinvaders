@@ -1,4 +1,14 @@
-﻿  game.c
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game.c(269,34): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game.c(328,13): warning C4013: 'printf' undefined; assuming extern returning int
+﻿  power_ups.c
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(152,21): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(152,24): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(153,21): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(153,37): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(154,21): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(154,26): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(174,82): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(175,82): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(176,82): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(182,81): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(183,81): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\power_ups.c(184,81): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Space.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders\bin\Debug\Space.exe

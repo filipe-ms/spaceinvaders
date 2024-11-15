@@ -5,6 +5,8 @@
 #include "main_menu.h"
 #include "game.h"
 #include "tutorial.h"
+#include "ranking.h"
+#include "enter_name.h"
 
 Scene current_scene;
 Scene main_menu;
@@ -25,6 +27,10 @@ void ChangeSceneArgs(Scene scene, int id) {
         InitMenu();
         break;
 
+    case RANKING:
+        InitRanking();
+        break;
+
     case SELECT_SHIP:
         InitSelectMenu();
         break;
@@ -35,6 +41,10 @@ void ChangeSceneArgs(Scene scene, int id) {
 
     case GAME:
         InitGame(id);
+        break;
+
+    case ENTER_NAME:
+        InitEnterName();
         break;
     }
 }
@@ -48,6 +58,10 @@ void UpdateCurrentScene(void) {
         UpdateMenu();
         break;
 
+	case RANKING:
+		UpdateRanking();
+		break;
+
     case SELECT_SHIP:
         UpdateShipSelectMenu();
         break;
@@ -58,6 +72,10 @@ void UpdateCurrentScene(void) {
 
     case GAME:
         UpdateGame();
+        break;
+
+    case ENTER_NAME:
+        UpdateEnterName();
         break;
     }
 }
@@ -70,6 +88,10 @@ void DrawCurrentScene(void) {
         DrawMenu();
         break;
 
+    case RANKING:
+        DrawRanking(100, 100);
+        break;
+
     case SELECT_SHIP:
         DrawSelectMenu();
         break;
@@ -80,6 +102,10 @@ void DrawCurrentScene(void) {
 
     case GAME:
         DrawGame();
+        break;
+
+	case ENTER_NAME:
+        DrawEnterName();
         break;
     }
 }

@@ -10,9 +10,6 @@ typedef struct {
 } RankingEntry;
 
 void InitRanking();               // Inicializa o ranking (carrega se já existir)
-void AddToRanking(const char* name, int score);  // Adiciona nova entrada e ordena
-void LoadRanking();               // Carrega o ranking de um arquivo
-void SaveRanking();               // Salva o ranking para um arquivo
 void UpdateRanking();             // Atualiza a tela de ranking
 void DrawRanking(int posX, int posY); // Desenha a tela de ranking
 

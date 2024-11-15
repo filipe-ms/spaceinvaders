@@ -3,9 +3,21 @@
 #include <stdio.h>
 #include <string.h>
 #include "scene_manager.h"
+#include "select_ship.h"
 
 static RankingEntry entries[MAX_ENTRIES];
 static int playerCount = 0;
+
+void LoadRanking(void) {
+    FILE* file = fopen("ranking.txt", "r");
+    if (file) {
+        fscanf(file, "%d", &playerCount);
+        for (int i = 0; i < playerCount; i++) {
+            fscanf(file, "%s %d", entries[i].name, &entries[i].score);
+        }
+        fclose(file);
+    }
+}
 
 void InitRanking() {
     // Inicializa o ranking e tenta carregar do arquivo
@@ -15,6 +27,17 @@ void InitRanking() {
     }
     playerCount = 0;
     LoadRanking();  // Carrega o ranking salvo
+}
+
+void SaveRanking(void) {
+    FILE* file = fopen("ranking.txt", "w");
+    if (file) {
+        fprintf(file, "%d\n", playerCount);
+        for (int i = 0; i < playerCount; i++) {
+            fprintf(file, "%s %d\n", entries[i].name, entries[i].score);
+        }
+        fclose(file);
+    }
 }
 
 void AddToRanking(const char* name, int score) {
@@ -37,28 +60,6 @@ void AddToRanking(const char* name, int score) {
     SaveRanking();  // Salva o ranking atualizado
 }
 
-void SaveRanking() {
-    FILE* file = fopen("ranking.txt", "w");
-    if (file) {
-        fprintf(file, "%d\n", playerCount);
-        for (int i = 0; i < playerCount; i++) {
-            fprintf(file, "%s %d\n", entries[i].name, entries[i].score);
-        }
-        fclose(file);
-    }
-}
-
-void LoadRanking() {
-    FILE* file = fopen("ranking.txt", "r");
-    if (file) {
-        fscanf(file, "%d", &playerCount);
-        for (int i = 0; i < playerCount; i++) {
-            fscanf(file, "%s %d", entries[i].name, &entries[i].score);
-        }
-        fclose(file);
-    }
-}
-
 void UpdateRanking() {
     if (IsKeyPressed(KEY_ENTER)) {
         ChangeScene(START);
@@ -68,6 +69,7 @@ void UpdateRanking() {
 void DrawRanking(int posX, int posY) {
     BeginDrawing();
     ClearBackground(BLACK);
+	DrawSelectMenuBackground();
     DrawText("Best Scores", posX, posY, 30, WHITE);
 
     int displayedEntries = 0;
