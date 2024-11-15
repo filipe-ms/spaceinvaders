@@ -229,6 +229,8 @@ void ThirdWave() {
         }
     }
 
+    wave_duration_s -= GetFrameTime();
+
     // Condition for next wave
     if (wave_completed) {
         victory = true;
