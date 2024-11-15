@@ -14,15 +14,11 @@
 #define THIRD_WAVE 2
 #define VICTORY 3
 
-// Wave Threshold
-#define FIRST_WAVE_THRESHOLD 10
-#define SECOND_WAVE_THRESHOLD 20
-#define THIRD_WAVE_THRESHOLD 50
-
 // GAME STATE
 static bool pause = false;
 static bool pause_flag = false;
 static bool victory = false;
+static bool wave_completed = true;
 
 static Player player = { 0 };
 static Enemy enemy[MAX_ENEMY_NUMBER] = { 0 };
@@ -36,7 +32,6 @@ float wave_message_alpha;
 bool wave_message_alpha_flag;
 
 // WAVE INFO
-bool wave_completed;
 float wave_duration_s = 60.0f;
 float wave_enemy_cooldown_s = 5.0f;
 float wave_enemy_charge_s = 0.0f;
@@ -54,6 +49,7 @@ void InitGame(int ship_id) {
     static bool pause = false;
     static bool pause_flag = false;
     static bool victory = false;
+    wave_completed = true;
 
     // Special Conditions
     pause = false;
@@ -62,13 +58,12 @@ void InitGame(int ship_id) {
 
     // Wave durations
     wave_duration_s = 60.0f;
-    wave_enemy_cooldown_s = 5.0f;
+    wave_enemy_cooldown_s = 4.5f;
     wave_enemy_charge_s = 0.0f;
 
     // Wave
     active_wave = FIRST_WAVE;
-    wave_completed = false;
-    wave_message_alpha = 0.0f;
+    wave_message_alpha = 0.1f;
     wave_message_alpha_flag = false;
 
     // Enemies
@@ -101,21 +96,25 @@ void UpdateWaveAlpha() {
     if (wave_message_alpha >= 1.0f) {
         wave_message_alpha_flag = true;
     }
-    if (!wave_message_alpha_flag && !wave_completed) {
+    if (!wave_message_alpha_flag && wave_message_alpha>0) {
         wave_message_alpha += 0.5f * GetFrameTime();
         if (wave_message_alpha > 1.0f) wave_message_alpha = 1.0f;
     }
-    else if (wave_message_alpha_flag || wave_completed) {
+    else if (wave_message_alpha_flag) {
         wave_message_alpha -= 0.5f * GetFrameTime();
-        if (wave_message_alpha < 0.0f) wave_message_alpha = 0.0f;
+        if (wave_message_alpha < 0.0f) {
+            wave_message_alpha = 0.0f;
+            wave_completed = false;
+        }
     }
 }
 
 void FirstWave() {
+    UpdateWaveAlpha();
 
     if (wave_duration_s > 52) {
         if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
-            SpawnEnemies(enemy, 1, 0, 3);
+            SpawnEnemies(enemy, 4, 0, 3);
             wave_enemy_cooldown_s -= 0.02f;
             wave_enemy_charge_s = -wave_enemy_cooldown_s;
         }
@@ -123,7 +122,7 @@ void FirstWave() {
 
 	else if (wave_duration_s > 37) {
 		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
-            SpawnEnemies(enemy, 1, 0, 3);
+            SpawnEnemies(enemy, 3, 0, 3);
             SpawnEnemies(enemy, 1, 1, 3);
             wave_enemy_cooldown_s -= 0.02f;
 			wave_enemy_charge_s = -wave_enemy_cooldown_s;
@@ -132,7 +131,7 @@ void FirstWave() {
 
 	else if (wave_duration_s > 20) {
 		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
-            SpawnEnemies(enemy, 1, 0, 3);
+            SpawnEnemies(enemy, 3, 0, 3);
             SpawnEnemies(enemy, 1, 1, 3);
 			SpawnEnemies(enemy, 1, 2, 3);
             wave_enemy_cooldown_s -= 0.02f;
@@ -142,25 +141,30 @@ void FirstWave() {
 
 	else if (wave_duration_s > 10) {
 		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 2, 0, 3);
 			SpawnEnemies(enemy, 1, 1, 3);
             SpawnRandomEnemies(enemy, 3, 3);
             wave_enemy_cooldown_s -= 0.02f;
 			wave_enemy_charge_s = -wave_enemy_cooldown_s;
 		}
 	}
-
+	wave_enemy_charge_s += GetFrameTime();
 	wave_duration_s -= GetFrameTime();
 
-    if (wave_duration_s >= 0) {
+    if (wave_duration_s <= 0) {
         active_wave = SECOND_WAVE;
 		wave_duration_s = 60.0f;
+        wave_completed = true;
+        wave_message_alpha = 0.1f;
     }
 }
 
 void SecondWave() {
+    UpdateWaveAlpha();
 
     if (wave_duration_s > 52) {
         if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 2, 0, 4);
             SpawnEnemies(enemy, 1, 1, 4);
             SpawnRandomEnemies(enemy, 3, 4);
             wave_enemy_cooldown_s -= 0.03f;
@@ -170,6 +174,7 @@ void SecondWave() {
 
     else if (wave_duration_s > 37) {
         if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 1, 0, 4);
             SpawnEnemies(enemy, 1, 1, 4);
             SpawnRandomEnemies(enemy, 3, 4);
             wave_enemy_cooldown_s -= 0.03f;
@@ -201,18 +206,20 @@ void SecondWave() {
         }
     }
 
+    wave_enemy_charge_s += GetFrameTime();
     wave_duration_s -= GetFrameTime();
 
-    if (wave_duration_s >= 0) {
+    if (wave_duration_s <= 0) {
         active_wave = THIRD_WAVE;
         wave_duration_s = 60.0f;
+        wave_completed = true;
+        wave_message_alpha = 0.1f;
     }
 }
 
-// WAVE COUNTERS
-
 
 void ThirdWave() {
+    UpdateWaveAlpha();
 
     if (wave_duration_s > 30) {
         if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
@@ -229,13 +236,16 @@ void ThirdWave() {
         }
     }
 
+    wave_enemy_charge_s += GetFrameTime();
     wave_duration_s -= GetFrameTime();
 
     // Condition for next wave
-    if (wave_completed) {
+    if (wave_duration_s<=0) {
         victory = true;
         active_wave = VICTORY;
         wave_completed = false;
+        wave_completed = true;
+        wave_message_alpha = 0.1f;
     }
 }
 

@@ -41,7 +41,7 @@
 #include "tutorial.h"
 #include "game.h"
 
-static Scene starting_scene = SELECT_SHIP;
+static Scene starting_scene = START;
 
 void LoadGame(void);
 void UnloadGame(void);

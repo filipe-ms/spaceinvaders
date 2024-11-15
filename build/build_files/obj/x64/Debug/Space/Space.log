@@ -1,6 +1,4 @@
-﻿  enemy.c
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c(45,73): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c(60,73): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c(87,42): warning C4013: 'sin' undefined; assuming extern returning int
-D:\Projects\Space Invaders\update\Space\spaceinvaders\include\enemy.c(121,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+﻿  game.c
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game.c(269,34): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+D:\Projects\Space Invaders\update\Space\spaceinvaders\include\game.c(328,13): warning C4013: 'printf' undefined; assuming extern returning int
   Space.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders\bin\Debug\Space.exe
