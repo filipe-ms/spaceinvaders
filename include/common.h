@@ -27,6 +27,9 @@
 #define SCREEN_WIDTH 640   // Largura
 #define SCREEN_HEIGHT 960  // Altura
 
+// Número de inimigos
+#define MAX_ENEMY_NUMBER 100
+
 
 //--------------------------------------------------------------
 //

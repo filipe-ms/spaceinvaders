@@ -5,7 +5,7 @@
 int exp_count;       // Declaração de xpForLevel como extern
 int level;              // Declaração de level como extern
 int exp_to_level_up;// Declaração de MaxXPForLevel como extern
-int exp_increment_per_level_up = 40;
+int exp_increment_per_level_up = 50;
 
 // Variáveis de desenho
 int exp_bar_width = 200;   // largura da barra

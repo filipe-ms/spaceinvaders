@@ -13,7 +13,7 @@ Texture enemy_texture;
 Vector2 enemy_vect = { 0, 0 };
 
 void InitEnemies(Enemy *enemy) {
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < MAX_ENEMY_NUMBER; i++)
     {
 		enemy[i].id = GetRandomValue(0, 4);
 
@@ -31,45 +31,48 @@ void InitEnemies(Enemy *enemy) {
 		enemy[i].action_flag = false;
     }
 }
-/* spawn paredão
 
-*/
-
-void SpawnEnemies(Enemy *enemy, int amount, int id) {
+void SpawnEnemies(Enemy *enemy, int amount, int id, int hp) {
 	for (int i = 0; i < amount; i++)
 	{
-		for (int j = 0; j < 50; j++){
+		for (int j = 0; j < MAX_ENEMY_NUMBER; j++){
 			if (enemy[j].active) continue;
 
             enemy[j].active = true;
             enemy[j].position.x = (float)GetRandomValue(0, SCREEN_WIDTH - enemy[j].position.width);
             enemy[j].position.y = (float)GetRandomValue(-200, 0);
             enemy[j].id = id;
-            enemy[j].hp = 3;
+            enemy[j].hp = hp;
             break;
 		}
 	}
 }
 
-void SpawnRandomEnemies(Enemy* enemy, int amount) {
+void SpawnRandomEnemies(Enemy* enemy, int amount, int hp) {
     for (int i = 0; i < amount; i++)
     {
-        for (int j = 0; j < 50; j++) {
+        for (int j = 0; j < MAX_ENEMY_NUMBER; j++) {
             if (enemy[j].active) continue;
             enemy[j].active = true;
             enemy[j].position.x = (float)GetRandomValue(0, SCREEN_WIDTH - enemy[j].position.width);
             enemy[j].position.y = (float)GetRandomValue(-200, 0);
             enemy[j].id = GetRandomValue(0, 3);
-            enemy[j].hp = 3;
+            enemy[j].hp = hp;
             break;
         }
     }
 }
 
+//--------------------------------------------------------------
+//
+//                         INIMIGOS
+// 
+//--------------------------------------------------------------
+
 void EnemyParedao(Enemy* enemy) {
-    //float amplitude = (float)GetRandomValue(0, 6);
-    //float velocidade = (float)GetRandomValue(1.6, 2.4);
+
     if(enemy->action_flag == false) {
+        enemy->exp = 15.0f;
         enemy->position.x = (float)GetRandomValue(SCREEN_WIDTH, SCREEN_WIDTH + 1000);
         enemy->position.y = (float)GetRandomValue(0, (int)(SCREEN_HEIGHT-150));
 		enemy->action_flag = true;
@@ -78,12 +81,11 @@ void EnemyParedao(Enemy* enemy) {
     static float f = 0;
     
     float amplitude = 6;
-    float velocidade = 16;
+    float velocidade = 20;
 
     if (enemy->speed.x == 0) enemy->speed.x = velocidade;
 
     if (enemy->active) {
-        //enemy->position.y += enemy->speed.y * GetFrameTime();
         enemy->position.x += amplitude * sin(f) * enemy->speed.x * GetFrameTime();
     }
 
@@ -98,6 +100,7 @@ void EnemyParedao(Enemy* enemy) {
 }
 
 void EnemyLeigo(Enemy* enemy) {
+    
     if (!enemy->active) return;
 	enemy->position.y += enemy->speed.y * GetFrameTime();
 
@@ -109,6 +112,11 @@ void EnemyLeigo(Enemy* enemy) {
 }
 
 void EnemyZigZag(Enemy* enemy) {
+    if (!enemy->action_flag) {
+        enemy->exp = 20.0f;
+        enemy->action_flag = true;
+    }
+
     if (!enemy->active) return;
 
     if (enemy->move_time <= 0) {
@@ -136,6 +144,7 @@ void EnemyBooster(Enemy* enemy, Player* player) {
     if (!enemy->active) return;
 
     if (enemy->position.y < 100) {
+        enemy->exp = 25.0f;
         enemy->position.y += 100 * GetFrameTime();
     }
     else {
@@ -173,7 +182,7 @@ void EnemyBooster(Enemy* enemy, Player* player) {
 
 
 void UpdateEnemies(Enemy *enemy, Player *player) {
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < MAX_ENEMY_NUMBER; i++)
     {
         if (!enemy[i].active) continue;
 
@@ -188,7 +197,6 @@ void UpdateEnemies(Enemy *enemy, Player *player) {
         case 2:
 			EnemyBooster(&enemy[i], player);
             break;
-
         case 3:
             EnemyParedao(&enemy[i]);
             break;
@@ -207,7 +215,7 @@ void UpdateEnemies(Enemy *enemy, Player *player) {
 }
 
 void DrawEnemies(Enemy *enemy) {
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < MAX_ENEMY_NUMBER; i++)
     {
         if (enemy[i].active) {
             DrawTexturePro(enemy_texture, enemy_rectangles[enemy[i].id], enemy[i].position, enemy_vect, 0, enemy[i].color);
@@ -216,7 +224,7 @@ void DrawEnemies(Enemy *enemy) {
 }
 
 bool CheckEnemyCollisionWithPlayer(Player player, Enemy *enemy) {
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < MAX_ENEMY_NUMBER; i++) {
 		if (!enemy[i].active) continue;
         if (CheckCollisionRecs(player.position, enemy[i].position)) {
             return true;

@@ -5,8 +5,11 @@
 #include "player.h"
 
 typedef enum {
-    LEIGO
-
+    LEIGO,
+    ZIGZAG,
+    BOOSTER,
+    PAREDAO,
+    BOSS
 } EnemyName;
 
 typedef struct Behavior {
@@ -37,8 +40,8 @@ void UpdateEnemies(Enemy* enemy, Player *player);
 void DrawEnemies(Enemy* enemy);
 bool CheckEnemyCollisionWithPlayer(Player player, Enemy* enemy);
 
-void SpawnEnemies(Enemy* enemy, int amount, int id);
-void SpawnRandomEnemies(Enemy* enemy, int amount);
+void SpawnEnemies(Enemy* enemy, int amount, int id, int hp);
+void SpawnRandomEnemies(Enemy* enemy, int amount, int hp);
 
 void LoadEnemyTextures();
 void UnloadEnemyTextures();

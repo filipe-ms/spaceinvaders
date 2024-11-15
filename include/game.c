@@ -25,22 +25,26 @@ static bool pause_flag = false;
 static bool victory = false;
 
 static Player player = { 0 };
-static Enemy enemy[50] = { 0 };
+static Enemy enemy[MAX_ENEMY_NUMBER] = { 0 };
 
 // BACKGROUND
 static Background background;
 
 // WAVE
 int active_wave;
-bool wave_completed;
 float wave_message_alpha;
 bool wave_message_alpha_flag;
 
-
+// WAVE INFO
+bool wave_completed;
+float wave_duration_s = 60.0f;
+float wave_enemy_cooldown_s = 5.0f;
+float wave_enemy_charge_s = 0.0f;
 
 // COUNTS
 int player_score;
 int enemies_killed;
+int enemy_hp;
 
 // BUFFS AND POWERS
 bool level_up_flag = false;
@@ -55,9 +59,14 @@ void InitGame(int ship_id) {
     pause = false;
     pause_flag = false;
     victory = false;
-    
+
+    // Wave durations
+    wave_duration_s = 60.0f;
+    wave_enemy_cooldown_s = 5.0f;
+    wave_enemy_charge_s = 0.0f;
+
     // Wave
-    active_wave = THIRD_WAVE;
+    active_wave = FIRST_WAVE;
     wave_completed = false;
     wave_message_alpha = 0.0f;
     wave_message_alpha_flag = false;
@@ -65,6 +74,7 @@ void InitGame(int ship_id) {
     // Enemies
     enemies_killed = 0;
     player_score = 0;
+    enemy_hp = 3;
 
     // Buffs
     level_up_flag = false;
@@ -91,7 +101,6 @@ void UpdateWaveAlpha() {
     if (wave_message_alpha >= 1.0f) {
         wave_message_alpha_flag = true;
     }
-
     if (!wave_message_alpha_flag && !wave_completed) {
         wave_message_alpha += 0.5f * GetFrameTime();
         if (wave_message_alpha > 1.0f) wave_message_alpha = 1.0f;
@@ -102,36 +111,122 @@ void UpdateWaveAlpha() {
     }
 }
 
-
 void FirstWave() {
 
-    // Condition for next wave
-    if (wave_completed) {
+    if (wave_duration_s > 52) {
+        if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 1, 0, 3);
+            wave_enemy_cooldown_s -= 0.02f;
+            wave_enemy_charge_s = -wave_enemy_cooldown_s;
+        }
+	}
+
+	else if (wave_duration_s > 37) {
+		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 1, 0, 3);
+            SpawnEnemies(enemy, 1, 1, 3);
+            wave_enemy_cooldown_s -= 0.02f;
+			wave_enemy_charge_s = -wave_enemy_cooldown_s;
+		}
+	}
+
+	else if (wave_duration_s > 20) {
+		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 1, 0, 3);
+            SpawnEnemies(enemy, 1, 1, 3);
+			SpawnEnemies(enemy, 1, 2, 3);
+            wave_enemy_cooldown_s -= 0.02f;
+			wave_enemy_charge_s = -wave_enemy_cooldown_s;
+		}
+	}
+
+	else if (wave_duration_s > 10) {
+		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+			SpawnEnemies(enemy, 1, 1, 3);
+            SpawnRandomEnemies(enemy, 3, 3);
+            wave_enemy_cooldown_s -= 0.02f;
+			wave_enemy_charge_s = -wave_enemy_cooldown_s;
+		}
+	}
+
+	wave_duration_s -= GetFrameTime();
+
+    if (wave_duration_s >= 0) {
         active_wave = SECOND_WAVE;
-        wave_completed = false;
+		wave_duration_s = 60.0f;
     }
 }
 
 void SecondWave() {
 
-    // Condition for next wave
-    if (wave_completed){
+    if (wave_duration_s > 52) {
+        if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 1, 1, 4);
+            SpawnRandomEnemies(enemy, 3, 4);
+            wave_enemy_cooldown_s -= 0.03f;
+            wave_enemy_charge_s = -wave_enemy_cooldown_s;
+        }
+    }
+
+    else if (wave_duration_s > 37) {
+        if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 1, 1, 4);
+            SpawnRandomEnemies(enemy, 3, 4);
+            wave_enemy_cooldown_s -= 0.03f;
+            wave_enemy_charge_s = -wave_enemy_cooldown_s;
+        }
+    }
+    else if (wave_duration_s > 32) {
+        if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnEnemies(enemy, 3, 3, 4);
+            SpawnRandomEnemies(enemy, 3, 4);
+            wave_enemy_cooldown_s -= 0.03f;
+            wave_enemy_charge_s = -wave_enemy_cooldown_s;
+        }
+    }
+
+    else if (wave_duration_s > 20) {
+        if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnRandomEnemies(enemy, 5, 4);
+            wave_enemy_cooldown_s -= 0.03f;
+            wave_enemy_charge_s = -wave_enemy_cooldown_s;
+        }
+    }
+
+    else if (wave_duration_s > 10) {
+        if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnRandomEnemies(enemy, 6, 4);
+            wave_enemy_cooldown_s -= 0.03f;
+            wave_enemy_charge_s = -wave_enemy_cooldown_s;
+        }
+    }
+
+    wave_duration_s -= GetFrameTime();
+
+    if (wave_duration_s >= 0) {
         active_wave = THIRD_WAVE;
-        wave_completed = false;
+        wave_duration_s = 60.0f;
     }
 }
 
 // WAVE COUNTERS
-float wave_3_enemy_cooldown_s = 1.0f;
-float wave_3_enemy_cooldown_charge_s = 0.0f;
+
 
 void ThirdWave() {
 
-    wave_3_enemy_cooldown_charge_s += GetFrameTime();
-    if (wave_3_enemy_cooldown_charge_s >= wave_3_enemy_cooldown_s) {
-        //SpawnEnemies(enemy, 10, 3);
-        SpawnRandomEnemies(enemy, 3);
-		wave_3_enemy_cooldown_charge_s =- wave_3_enemy_cooldown_s;
+    if (wave_duration_s > 30) {
+        if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnRandomEnemies(enemy, 7, 5);
+            wave_enemy_cooldown_s -= 0.03f;
+            wave_enemy_charge_s = -wave_enemy_cooldown_s;
+        }
+    }
+
+    else if (wave_duration_s > 0) {
+        if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
+            SpawnRandomEnemies(enemy, 10, 5);
+            wave_enemy_charge_s = -wave_enemy_cooldown_s;
+        }
     }
 
     // Condition for next wave
@@ -171,7 +266,7 @@ void CheckCollision(Shoot* shoot, Enemy* enemy) {
 
 // Function to check and handle bullet and enemy collisions
 void CheckBulletAndEnemyCollision(Enemy* enemy) {
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < MAX_ENEMY_NUMBER; i++) {
         if (!enemy[i].active) continue;
 
         for (int j = 0; j < 50; j++) {
