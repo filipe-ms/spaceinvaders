@@ -54,6 +54,9 @@
     <ClInclude Include="..\..\include\enter_name.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\winner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.c">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\include\enter_name.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\winner.c">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

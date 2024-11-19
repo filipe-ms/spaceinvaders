@@ -46,6 +46,11 @@ void ChangeSceneArgs(Scene scene, int id) {
     case ENTER_NAME:
         InitEnterName();
         break;
+
+    case WINNER:
+        InitWinner();
+        break;
+
     }
 }
 
@@ -77,6 +82,11 @@ void UpdateCurrentScene(void) {
     case ENTER_NAME:
         UpdateEnterName();
         break;
+
+    case WINNER:
+        UpdateWinner();
+        break;
+
     }
 }
 
@@ -107,6 +117,11 @@ void DrawCurrentScene(void) {
 	case ENTER_NAME:
         DrawEnterName();
         break;
+
+    case WINNER:
+        DrawWinner();
+        break;
+
     }
 }
 

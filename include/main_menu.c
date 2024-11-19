@@ -122,11 +122,10 @@ void DrawMenu() {
     Color colorCredits = (current_option == MENU_OPTION_CREDITS) ? Fade(RED, transition_alpha_text) : Fade(GRAY, transition_alpha_text);
     Color colorExit = (current_option == MENU_OPTION_EXIT) ? Fade(RED, transition_alpha_text) : Fade(GRAY, transition_alpha_text);
 
-    DrawText("Game Start", SCREEN_WIDTH / 2 - MeasureText("Game Start", 30) / 2, 400, 30, colorStart);
-    DrawText("Ranking", SCREEN_WIDTH / 2 - MeasureText("Ranking", 30) / 2, 450, 30, colorRanking);
-    DrawText("Credits", SCREEN_WIDTH / 2 - MeasureText("Credits", 30) / 2, 500, 30, colorCredits);
-    DrawText("DLC DISPONIVEL", SCREEN_WIDTH *0.85 - MeasureText("DLC DISPONIVEL", 20) / 2, 920, 20, WHITE);
-    DrawText("Exit", SCREEN_WIDTH / 2 - MeasureText("Exit", 30) / 2, 550, 30, colorExit);
+    DrawText("Iniciar Jogo", SCREEN_WIDTH / 2 - MeasureText("Iniciar Jogo", 30) / 2, 400, 30, colorStart);
+    DrawText("Placar", SCREEN_WIDTH / 2 - MeasureText("Placar", 30) / 2, 450, 30, colorRanking);
+    DrawText("Agradecimentos", SCREEN_WIDTH / 2 - MeasureText("Agradecimentos", 30) / 2, 500, 30, colorCredits);
+    DrawText("Sair", SCREEN_WIDTH / 2 - MeasureText("Sair", 30) / 2, 550, 30, colorExit);
 
     EndDrawing();
 }

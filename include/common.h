@@ -45,21 +45,4 @@ typedef struct Background {
     float alpha;
 } Background;
 
-//--------------------------------------------------------------
-//
-//                          LIST
-// 
-//--------------------------------------------------------------
-
-typedef struct List {
-	void* data;
-	struct List* next;
-} List;
-
-void AddFirst(List** head, void* value);
-void AddLast(List** head, void* value);
-void RemoveFirst(List** head);
-void RemoveLast(List** head);
-void RemoveAll(List** head);
-
 #endif // COMMON_H

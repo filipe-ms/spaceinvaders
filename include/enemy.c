@@ -1,6 +1,8 @@
 #include "enemy.h"
 #include "common.h"
 
+#include <math.h>
+
 Rectangle enemy_rectangles[5] = {
     { 32, 0, 8, 8 },
     { 32, 24, 8, 8 },
@@ -39,10 +41,10 @@ void SpawnEnemies(Enemy *enemy, int amount, int id, int hp) {
 			if (enemy[j].active) continue;
 
             enemy[j].active = true;
-            enemy[j].position.x = (float)GetRandomValue(0, SCREEN_WIDTH - enemy[j].position.width);
+            enemy[j].position.x = (float)GetRandomValue(0, (int)(SCREEN_WIDTH - enemy[j].position.width));
             enemy[j].position.y = (float)GetRandomValue(-200, 0);
             enemy[j].id = id;
-            enemy[j].hp = hp;
+            enemy[j].hp = (float)hp;
             break;
 		}
 	}
@@ -54,10 +56,10 @@ void SpawnRandomEnemies(Enemy* enemy, int amount, int hp) {
         for (int j = 0; j < MAX_ENEMY_NUMBER; j++) {
             if (enemy[j].active) continue;
             enemy[j].active = true;
-            enemy[j].position.x = (float)GetRandomValue(0, SCREEN_WIDTH - enemy[j].position.width);
+            enemy[j].position.x = (float)GetRandomValue(0, (int)(SCREEN_WIDTH - enemy[j].position.width));
             enemy[j].position.y = (float)GetRandomValue(-200, 0);
             enemy[j].id = GetRandomValue(0, 3);
-            enemy[j].hp = hp;
+            enemy[j].hp = (float)hp;
             break;
         }
     }
@@ -73,8 +75,8 @@ void EnemyParedao(Enemy* enemy) {
 
     if(enemy->action_flag == false) {
         enemy->exp = 15.0f;
-        enemy->position.x = GetRandomValue(0, 1) ? SCREEN_WIDTH : 0;
-        enemy->position.y = (float)GetRandomValue(0, SCREEN_HEIGHT+200);
+        enemy->position.x = (float)(GetRandomValue(0, 1) ? SCREEN_WIDTH : 0);
+        enemy->position.y = (float)(GetRandomValue(300, SCREEN_HEIGHT+300));
 		enemy->action_flag = true;
     }
 
@@ -86,7 +88,7 @@ void EnemyParedao(Enemy* enemy) {
     if (enemy->speed.x == 0) enemy->speed.x = velocidade;
 
     if (enemy->active) {
-        enemy->position.x += amplitude * sin(f) * enemy->speed.x * GetFrameTime();
+        enemy->position.x += amplitude * (float)(sin(f)) * enemy->speed.x * GetFrameTime();
     }
 
     f += GetFrameTime();
@@ -126,7 +128,7 @@ void EnemyZigZag(Enemy* enemy) {
 		else enemy->speed.x = -100;
     }
     
-    float boost = GetRandomValue(1, 5);
+    float boost = (float)(GetRandomValue(1, 5));
 
     enemy->position.y += enemy->speed.y * GetFrameTime();
     enemy->position.x += enemy->speed.x * boost * GetFrameTime();
@@ -240,65 +242,3 @@ void LoadEnemyTextures() {
 void UnloadEnemyTextures() {
     UnloadTexture(enemy_texture);
 }
-
-/*
-MOVIMENTO ALEATORIO
-
-void InitEnemy(Enemy* enemy) {
-    for (int i = 0; i < NUM_MAX_ENEMIES; i++) {
-        enemy->position.width = 48;
-        enemy->position.height = 48;
-        enemy->position.x = (float)GetRandomValue(0, SCREEN_WIDTH - (int)enemy->position.width);
-        enemy->position.y = (float)GetRandomValue(-200, -400);
-        enemy->speed.x = 0;
-        enemy->speed.y = (float)GetRandomValue(50, 150);
-        enemy->active = true;
-        enemy->color = GRAY;
-        enemy->hp = 3.0f;
-        enemy->ProLado = (float)GetRandomValue(1, 5); // tempo pra movimentar pro lado
-    }
-}
-void InitEnemies(Enemy enemy[]) { // funcao inutiu tirar dps
-    for (int i = 0; i < NUM_MAX_ENEMIES; i++) {
-        InitEnemy(&enemy[i]);
-    }
-}
-
-void EnemyMovement(Enemy* enemy) {
-    if (!enemy->active) return;
-
-    float booster = GetRandomValue(1, 10); // boosrter pra aumentar velocidade aleatoriamente
-
-    enemy->position.y += enemy->speed.y * GetFrameTime();
-
-    enemy->position.x += enemy->speed.x * GetFrameTime() * booster; // aumentando so pros lados pq pra frente ficou estranho
-
-    if (enemy->position.x < 0) {
-        enemy->position.x = 0;
-        enemy->speed.x *= -1; // inverte se chega em uma ponta
-    }
-    else if (enemy->position.x > SCREEN_WIDTH - enemy->position.width) {
-        enemy->position.x = SCREEN_WIDTH - enemy->position.width;
-        enemy->speed.x *= -1; // invertendo pra chegar na outra
-    }
-
-    enemy->ProLado -= GetFrameTime();
-
-    if (enemy->ProLado <= 0) {// quando tempo esgotar escolher outro aleatorio
-        enemy->speed.x = (float)GetRandomValue(-50, 50);
-        enemy->ProLado = (float)GetRandomValue(1, 5);
-    }
-}
-
-void UpdateEnemies(Enemy enemy[], int activeEnemies) {
-    for (int i = 0; i < activeEnemies; i++) {
-        EnemyMovement(&enemy[i]);
-
-        // Reseta a posição do inimigo se ele passar da borda inferior da tela
-        if (enemy[i].position.y > SCREEN_HEIGHT) {
-            enemy[i].position.x = (float)GetRandomValue(0, SCREEN_WIDTH - (int)(enemy[i].position.width));
-            enemy[i].position.y = (float)GetRandomValue(-200, -400);
-            enemy[i].speed.y = (float)GetRandomValue(50, 150); // Velocidade vertical randômica para nova queda
-        }
-    }
-}*/

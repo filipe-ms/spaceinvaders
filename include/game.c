@@ -62,7 +62,7 @@ void InitGame(int ship_id) {
     wave_enemy_charge_s = 0.0f;
 
     // Wave
-    active_wave = FIRST_WAVE;
+    active_wave = 2;
     wave_message_alpha = 0.1f;
     wave_message_alpha_flag = false;
 
@@ -124,7 +124,7 @@ void FirstWave() {
 
     if (wave_duration_s > 52) {
         if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
-            SpawnEnemies(enemy, 4, 0, 3);
+            SpawnEnemies(enemy, 6, 0, 3);
             wave_enemy_cooldown_s -= 0.02f;
             wave_enemy_charge_s = -wave_enemy_cooldown_s;
         }
@@ -132,7 +132,7 @@ void FirstWave() {
 
 	else if (wave_duration_s > 37) {
 		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
-            SpawnEnemies(enemy, 3, 0, 3);
+            SpawnEnemies(enemy, 5, 0, 3);
             SpawnEnemies(enemy, 1, 1, 3);
             wave_enemy_cooldown_s -= 0.02f;
 			wave_enemy_charge_s = -wave_enemy_cooldown_s;
@@ -142,7 +142,7 @@ void FirstWave() {
 	else if (wave_duration_s > 20) {
 		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
             SpawnEnemies(enemy, 3, 0, 3);
-            SpawnEnemies(enemy, 1, 1, 3);
+            SpawnEnemies(enemy, 2, 1, 3);
 			SpawnEnemies(enemy, 1, 2, 3);
             wave_enemy_cooldown_s -= 0.02f;
 			wave_enemy_charge_s = -wave_enemy_cooldown_s;
@@ -151,8 +151,8 @@ void FirstWave() {
 
 	else if (wave_duration_s > 10) {
 		if (wave_enemy_charge_s >= wave_enemy_cooldown_s) {
-            SpawnEnemies(enemy, 2, 0, 3);
-			SpawnEnemies(enemy, 1, 1, 3);
+            SpawnEnemies(enemy, 3, 0, 3);
+			SpawnEnemies(enemy, 2, 1, 3);
             SpawnRandomEnemies(enemy, 3, 3);
             wave_enemy_cooldown_s -= 0.02f;
 			wave_enemy_charge_s = -wave_enemy_cooldown_s;
@@ -246,10 +246,10 @@ void ThirdWave() {
     wave_duration_s -= GetFrameTime();
 
     // Condition for next wave
-    if (wave_duration_s<=0) {
+    if (wave_duration_s<=55) {
         victory = true;
         active_wave = VICTORY;
-        StartNewWave();
+        ChangeScene(WINNER);
     }
 }
 
@@ -273,7 +273,7 @@ void CheckCollision(Shoot* shoot, Enemy* enemy) {
 		if (enemy->hp <= 0) {
 			enemy->active = false;
 			enemies_killed++;
-			level_up_flag = AddToExp(enemy->exp);
+			level_up_flag = AddToExp(enemy->exp + 100);
             if (level_up_flag) PowerRandomizer();
 			player_score += 10;
 		}

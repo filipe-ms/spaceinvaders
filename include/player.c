@@ -42,9 +42,9 @@ void UpdatePlayerDirection(Player* player) {
 }
 
 void WallBehavior(Player* player) {
-    if (player->position.x <= 0) player->position.x = 0;
+    if (player->position.x <= player->position.width) player->position.x = player->position.width;
     if (player->position.x + player->position.width >= SCREEN_WIDTH) player->position.x = SCREEN_WIDTH - player->position.width;
-    if (player->position.y <= 0) player->position.y = 0;
+    if (player->position.y <= player->position.height) player->position.y = player->position.height;
     if (player->position.y + player->position.height >= SCREEN_HEIGHT) player->position.y = SCREEN_HEIGHT - player->position.height;
 }
 

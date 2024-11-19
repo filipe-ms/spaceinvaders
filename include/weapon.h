@@ -72,6 +72,7 @@ typedef struct Pulse {
 // Specific
 Shoot* GetPulseShoot(int index);
 bool IsPulseActive(void);
+void ActivatePulse(void);
 
 //--------------------------------------------------------------
 //
@@ -86,13 +87,14 @@ typedef struct Photon {
 
 Shoot* GetPhotonShoot(int index);
 bool IsPhotonActive(void);
-
+void ActivatePhoton(void);
 
 //--------------------------------------------------------------
 //
 //                         Shotgun
 // 
 //--------------------------------------------------------------
+
 typedef struct ShotgunShoot {
 	Shoot shoot;
     Rectangle source;
@@ -109,6 +111,7 @@ typedef struct Shotgun {
 
 Shoot* GetShotgunShoot(int index);
 bool IsShotgunActive(void);
+void ActivateShotgun(void);
 
 // General
 void InitWeapon(Player* player);

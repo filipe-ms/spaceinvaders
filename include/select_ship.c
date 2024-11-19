@@ -46,7 +46,7 @@ void InitSelectMenu() {
     select_ship_menu_transition_complete = false;
 
     // Init Aurea
-    aurea.destination = (Rectangle){ SCREEN_WIDTH * 0.25 - 22, 308, 64, 64 };
+    aurea.destination = (Rectangle){ SCREEN_WIDTH * 0.25 -32, 300, 64, 64 };
     aurea.direction = 0;
     aurea.thruster_cycle = 0;
     aurea.color = WHITE;

@@ -10,24 +10,13 @@
 #define degToRad(angleInDegrees) ((angleInDegrees) * M_PI / 180.0)
 #define radToDeg(angleInRadians) ((angleInRadians) * 180.0 / M_PI)
 
+// Power up textures
 Texture texture;
 
+// Power up values
 static float cooldown_modifier = 0.0f;
 static float damage_modifier = 0.0f;
 static float size_modifier = 1.0f;
-
-void IncrementCooldownModifier(float value) {
-	cooldown_modifier += value;
-}
-
-void IncrementDamageModifier(float value) {
-	damage_modifier += value;
-}
-
-void IncrementSizeModifier(float value) {
-	size_modifier += value;
-}
-
 
 //--------------------------------------------------------------
 //
@@ -147,6 +136,9 @@ bool IsPulseActive(void) {
 	return pulse.weapon.active;
 }
 
+void ActivatePulse(void) {
+    pulse.weapon.active = true;
+}
 
 //--------------------------------------------------------------
 //
@@ -240,12 +232,16 @@ static void UpdatePhoton(Player* player) {
     UpdatePhotonShootPosition();
 }
 
-bool IsPhotonActive() {
+Shoot* GetPhotonShoot(int index) {
+    return &photon.shoot[index];
+}
+
+bool IsPhotonActive(void) {
 	return photon.weapon.active;
 }
 
-Shoot* GetPhotonShoot(int index) {
-    return &photon.shoot[index];
+void ActivatePhoton(void) {
+    photon.weapon.active = true;
 }
 
 //--------------------------------------------------------------
@@ -375,7 +371,6 @@ static void UpdateShotgun(Player* player) {
 static void DrawShotgunShoot() {
     for (int i = 0; i < 50; i++) {
         if (!shotgun.shotgun_shoot[i].shoot.active) continue;
-		//DrawRectangleRec(shotgun.shotgun_shoot[i].shoot.position, WHITE);
         DrawTexturePro(texture, shotgun.shotgun_shoot[i].source, shotgun.shotgun_shoot[i].shoot.draw_position, shotgun.weapon.pivot, shotgun.shotgun_shoot[i].orientation, WHITE);
     }
 }
@@ -388,15 +383,34 @@ bool IsShotgunActive(void) {
     return shotgun.weapon.active;
 }
 
+void ActivateShotgun(void) {
+    shotgun.weapon.active = true;
+}
 
+
+//--------------------------------------------------------------
+//
+//                         POWER UPS
+// 
+//--------------------------------------------------------------
+
+void IncrementCooldownModifier(float value) {
+    cooldown_modifier += value;
+}
+
+void IncrementDamageModifier(float value) {
+    damage_modifier += value;
+}
+
+void IncrementSizeModifier(float value) {
+    size_modifier += value;
+}
 
 //--------------------------------------------------------------
 //
 //                         OTHERS
 // 
 //--------------------------------------------------------------
-
-
 
 static void InitAllWeapons(void) {
     InitPulse();

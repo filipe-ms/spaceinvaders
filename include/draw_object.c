@@ -118,27 +118,32 @@ void DrawNebula(Nebula *nebula) {
     Rectangle nebula_sprite = { 8, 24, 8, 8 };  // Ajustado para a posição da nave roxa
 
     // Coordenadas dos thrusters
-    Rectangle nebula_thruster_1 = { 64, 0, 8, 8 };
-    Rectangle nebula_thruster_2 = { 40, 0, 8, 8 };
+    Rectangle nebula_thruster_1 = { 96, 0, 8, 8 };
+    Rectangle nebula_thruster_2 = { 72, 0, 8, 8 };
+	Rectangle nebula_thruster_3 = { 80, 8, 8, 8 };
 
     Rectangle thruster_1_destination = nebula->destination;
     Rectangle thruster_2_destination = nebula->destination;
+    Rectangle thruster_3_destination = nebula->destination;
 
-    thruster_1_destination.y += 64;
-    thruster_1_destination.x += 16;
+    thruster_1_destination.y += 48;
+    thruster_1_destination.x += 24;
 
-    thruster_2_destination.y += 64;
-    thruster_2_destination.x -= 24;
+    thruster_2_destination.y += 48;
+    thruster_2_destination.x -= 32;
+
+    thruster_3_destination.y += 64;
+    thruster_3_destination.x -= 0;
 
     switch (nebula->direction) {
     case LEFT:
         nebula_sprite = (Rectangle){ 0, 24, 8, 8 };  // Ajuste para o sprite virado para a esquerda
         thruster_1_destination.x -= 16;
-        thruster_2_destination.x -= 8;
+        thruster_2_destination.x -= 0;
         break;
 
     case RIGHT:
-        thruster_1_destination.x += 8;
+        thruster_1_destination.x += 0;
         thruster_2_destination.x += 16;
         nebula_sprite = (Rectangle){ 16, 24, 8, 8 };  // Ajuste para o sprite virado para a direita
         break;
@@ -146,22 +151,26 @@ void DrawNebula(Nebula *nebula) {
 
     switch (nebula->thruster_cycle) {
     case 1:
-        nebula_thruster_1 = (Rectangle){ 40, 0, 8, 8 };
-        nebula_thruster_2 = (Rectangle){ 56, 0, 8, 8 };
+        nebula_thruster_1 = (Rectangle){ 72, 0, 8, 8 };
+        nebula_thruster_2 = (Rectangle){ 88, 0, 8, 8 };
+        nebula_thruster_3 = (Rectangle){ 96, 8, 8, 8 };
         break;
     case 2:
-        nebula_thruster_1 = (Rectangle){ 48, 0, 8, 8 };
-        nebula_thruster_2 = (Rectangle){ 64, 0, 8, 8 };
+        nebula_thruster_1 = (Rectangle){ 80, 0, 8, 8 };
+        nebula_thruster_2 = (Rectangle){ 96, 0, 8, 8 };
+        nebula_thruster_3 = (Rectangle){ 88, 8, 8, 8 };
         break;
     case 3:
-        nebula_thruster_1 = (Rectangle){ 56, 0, 8, 8 };
-        nebula_thruster_2 = (Rectangle){ 48, 0, 8, 8 };
+        nebula_thruster_1 = (Rectangle){ 88, 0, 8, 8 };
+        nebula_thruster_2 = (Rectangle){ 80, 0, 8, 8 };
+        nebula_thruster_3 = (Rectangle){ 72, 8, 8, 8 };
         break;
     }
 
     DrawTexturePro(ships, nebula_sprite, nebula->destination, (Vector2) { 9, 10 }, 0, Fade(nebula->color, nebula->alpha));
     DrawTexturePro(thrusters, nebula_thruster_1, thruster_1_destination, (Vector2) { 9, 10 }, 0, Fade(nebula->color, nebula->alpha));
     DrawTexturePro(thrusters, nebula_thruster_2, thruster_2_destination, (Vector2) { 9, 10 }, 0, Fade(nebula->color, nebula->alpha));
+    DrawTexturePro(thrusters, nebula_thruster_3, thruster_3_destination, (Vector2) { 9, 10 }, 0, Fade(nebula->color, nebula->alpha));
 }
 
 //--------------------------------------------------------------

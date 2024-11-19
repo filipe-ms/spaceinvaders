@@ -10,22 +10,24 @@
 #include "player.h"
 
 typedef enum {
+    // PowerUp effects
     SHOOT_COOLDOWN,
     SHOOT_DAMAGE,
     SHOOT_SIZE,
-    SHOOT_PIERCE,
-    SHOOT_SPEED,
 
-    WEAPON_BUFF,
-    NEW_WEAPON,
+    // New weapons
+    WEAPON_PULSE,
+    WEAPON_PHOTON,
+    WEAPON_SHOTGUN,
 
+    // None
     NONE = 99
 } PowerUpType;
 
 typedef struct PowerUp {
     int effect;
     float value;
-    
+
     Texture texture;
     char description_line_1[20];
     char description_line_2[20];
