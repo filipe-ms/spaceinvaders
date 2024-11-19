@@ -1,2 +1,7 @@
-﻿  winner.c
-  Space.vcxproj -> D:\Projects\Space Invaders\update\Space\spaceinvaders - Copy (2)\bin\Debug\Space.exe
+﻿  weapon.c
+D:\Projects\Space Invaders\update\Space\Space\include\weapon.c(309,32): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Projects\Space Invaders\update\Space\Space\include\weapon.c(310,33): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  winner.c
+  main.c
+  Generating Code...
+  Space.vcxproj -> D:\Projects\Space Invaders\update\Space\Space\bin\Debug\Space.exe

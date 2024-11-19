@@ -336,10 +336,6 @@ void UpdateGame(void)
         if (level_up_flag) {
             UpdateLevelUpSelectMenu(&level_up_flag);
         } else {
-
-            if (IsKeyPressed(KEY_SPACE)) {
-                printf("Aeeee\n");
-            }
             UpdateWave();
             UpdateBackground(&background);
 

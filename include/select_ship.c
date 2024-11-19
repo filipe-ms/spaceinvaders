@@ -13,9 +13,9 @@ SelectMenuOption selected_ship;
 
 bool select_ship_alpha_flag = true;
 
-Orion orion;
-Aurea aurea;
-Nebula nebula;
+Orion select_orion;
+Aurea select_aurea;
+Nebula select_nebula;
 float anim_cycle;
 
 Scene scene;
@@ -46,25 +46,25 @@ void InitSelectMenu() {
     select_ship_menu_transition_complete = false;
 
     // Init Aurea
-    aurea.destination = (Rectangle){ SCREEN_WIDTH * 0.25 -32, 300, 64, 64 };
-    aurea.direction = 0;
-    aurea.thruster_cycle = 0;
-    aurea.color = WHITE;
-    aurea.alpha = 0.0f;
+    select_aurea.destination = (Rectangle){ SCREEN_WIDTH * 0.25 -32, 300, 64, 64 };
+    select_aurea.direction = 0;
+    select_aurea.thruster_cycle = 0;
+    select_aurea.color = WHITE;
+    select_aurea.alpha = 0.0f;
 
 	// Init Orion
-    orion.destination = (Rectangle){ SCREEN_WIDTH / 2 - 23, 310, 64, 64 };
-    orion.direction = 0;
-    orion.thruster_cycle = 0;
-    orion.color = WHITE;
-    orion.alpha = 0.0f;
+    select_orion.destination = (Rectangle){ SCREEN_WIDTH / 2 - 23, 310, 64, 64 };
+    select_orion.direction = 0;
+    select_orion.thruster_cycle = 0;
+    select_orion.color = WHITE;
+    select_orion.alpha = 0.0f;
 
     // Init Nebula
-    nebula.destination = (Rectangle){ SCREEN_WIDTH * 0.75 - 22, 308, 64, 64 };
-    nebula.direction = 0;
-    nebula.thruster_cycle = 0;
-    nebula.color = WHITE;
-    nebula.alpha = 0.0f;
+    select_nebula.destination = (Rectangle){ SCREEN_WIDTH * 0.75 - 22, 308, 64, 64 };
+    select_nebula.direction = 0;
+    select_nebula.thruster_cycle = 0;
+    select_nebula.color = WHITE;
+    select_nebula.alpha = 0.0f;
 }
 
 void UpdateSelectShipMenuAnimationCycle() {
@@ -80,15 +80,15 @@ int GetSelectShipMenuThrusterAnimationCycle() {
 }
 
 void UpdateSelectShipMenuOrion() {
-    orion.thruster_cycle = GetSelectShipMenuThrusterAnimationCycle();
+    select_orion.thruster_cycle = GetSelectShipMenuThrusterAnimationCycle();
 }
 
 void UpdateSelectShipMenuAurea() {
-    aurea.thruster_cycle = GetSelectShipMenuThrusterAnimationCycle();
+    select_aurea.thruster_cycle = GetSelectShipMenuThrusterAnimationCycle();
 }
 
 void UpdateSelectShipMenuNebula() {
-    nebula.thruster_cycle = GetSelectShipMenuThrusterAnimationCycle();
+    select_nebula.thruster_cycle = GetSelectShipMenuThrusterAnimationCycle();
 }
 
 void UpdateShipSelectMenuTransition() {
@@ -100,24 +100,24 @@ void UpdateShipSelectMenuTransition() {
     select_ship_menu_background.alpha -= select_ship_transition_alpha_increment * GetFrameTime();
 
 	if (selected_ship == ORION) {
-		if (orion.destination.y >= -1 * SCREEN_HEIGHT) {
-			orion.destination.y -= 1000 * GetFrameTime();
-			aurea.alpha -= 1.0f * GetFrameTime();
-			nebula.alpha -= 1.0f * GetFrameTime();
+		if (select_orion.destination.y >= -1 * SCREEN_HEIGHT) {
+			select_orion.destination.y -= 1000 * GetFrameTime();
+			select_aurea.alpha -= 1.0f * GetFrameTime();
+			select_nebula.alpha -= 1.0f * GetFrameTime();
 		}
 	}
 	else if (selected_ship == AUREA) {
-		if (aurea.destination.y >= -1 * SCREEN_HEIGHT) {
-			aurea.destination.y -= 1000 * GetFrameTime();
-			orion.alpha -= 1.0f * GetFrameTime();
-			nebula.alpha -= 1.0f * GetFrameTime();
+		if (select_aurea.destination.y >= -1 * SCREEN_HEIGHT) {
+			select_aurea.destination.y -= 1000 * GetFrameTime();
+			select_orion.alpha -= 1.0f * GetFrameTime();
+			select_nebula.alpha -= 1.0f * GetFrameTime();
 		}
 	}
 	else if (selected_ship == NEBULA) {
-        if (nebula.destination.y >= -1 * SCREEN_HEIGHT) {
-			nebula.destination.y -= 1000 * GetFrameTime();
-            aurea.alpha -= 1.0f * GetFrameTime();
-			orion.alpha -= 1.0f * GetFrameTime();
+        if (select_nebula.destination.y >= -1 * SCREEN_HEIGHT) {
+			select_nebula.destination.y -= 1000 * GetFrameTime();
+            select_aurea.alpha -= 1.0f * GetFrameTime();
+			select_orion.alpha -= 1.0f * GetFrameTime();
 		}
 	}
 
@@ -145,9 +145,9 @@ void UpdateShipSelectMenu() {
     select_ship_menu_background.position_y = (float)fmod(select_ship_menu_background.position_y + 100 * GetFrameTime(), 1200);
     if (select_ship_menu_background.alpha < 0.8f) select_ship_menu_background.alpha += 0.25f * GetFrameTime();
 
-    if (orion.alpha < 1) orion.alpha += 0.75f * GetFrameTime();
-    if (aurea.alpha < 1) aurea.alpha += 0.75f * GetFrameTime();
-    if (nebula.alpha < 1) nebula.alpha += 0.75f * GetFrameTime();
+    if (select_orion.alpha < 1) select_orion.alpha += 0.75f * GetFrameTime();
+    if (select_aurea.alpha < 1) select_aurea.alpha += 0.75f * GetFrameTime();
+    if (select_nebula.alpha < 1) select_nebula.alpha += 0.75f * GetFrameTime();
 
     if (select_ship_transition_alpha_text < 1) select_ship_transition_alpha_text += 0.25f * GetFrameTime();
 
@@ -189,9 +189,9 @@ void DrawSelectMenu() {
     Color ship_2 = (select_ship_menu_option == MIDDLE_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
     Color ship_3 = (select_ship_menu_option == RIGHT_SHIP) ? Fade(RED, select_ship_transition_alpha_text) : Fade(GRAY, select_ship_transition_alpha_text);
 
-    DrawAurea(&aurea);
-    DrawOrion(&orion);
-	DrawNebula(&nebula);
+    DrawAurea(&select_aurea);
+    DrawOrion(&select_orion);
+	DrawNebula(&select_nebula);
 
     char* left_ship = "Aurea";
     char* middle_ship = "Orion";

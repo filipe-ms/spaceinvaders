@@ -1,14 +1,18 @@
 // weapon.c
 
+#define PI 3.14159265358979323846
+#define degToRad(angleInDegrees) ((angleInDegrees) * PI / 180.0)
+#define radToDeg(angleInRadians) ((angleInRadians) * 180.0 / PI)
+
+
 #include "weapon.h"
 #include "draw_object.h"
 #include "raymath.h"
 #include "player.h"
-#include <corecrt_math_defines.h>
 #include <math.h>
 
-#define degToRad(angleInDegrees) ((angleInDegrees) * M_PI / 180.0)
-#define radToDeg(angleInRadians) ((angleInRadians) * 180.0 / M_PI)
+
+
 
 // Power up textures
 Texture texture;
