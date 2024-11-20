@@ -11,32 +11,51 @@ Para executar este jogo em uma distribuição Linux, siga os passos abaixo para 
 Certifique-se de que você tenha acesso root (sudo) e uma conexão com a internet.
 
 ### Passos
+1. Clonar nosso repositório numa pasta chamada "Space" (case sensitive)
 
-1. **Atualize os pacotes do sistema**  
+Segue o diagrama de pastas:
+
+\Space
+├── .vscode/
+├── bin/
+├── build/
+├── include/
+├── resources/
+├── src/
+├── .gitignore
+├── build-MinGW-W64.bat
+├── build-VisualStudio2022.bat
+├── linux.sh
+├── Makefile
+├── New Text Document.txt
+├── README.md
+└── Space.sln
+
+2. **Atualize os pacotes do sistema**  
    Execute os seguintes comandos para garantir que seu sistema esteja atualizado:
    ```bash
    sudo apt-get upgrade && sudo apt-get update
    ```
 
-2. **Instale o `make`**  
+3. **Instale o `make`**  
    O `make` é necessário para compilar o jogo. Instale-o com o comando:
    ```bash
    sudo apt-get install make
    ```
 
-3. **Instale o `cmake` e outras ferramentas de build**  
+4. **Instale o `cmake` e outras ferramentas de build**  
    O `cmake` e o `build-essential` são usados para compilar o código do jogo. Instale-os com:
    ```bash
    sudo apt-get update && sudo apt-get install cmake build-essential
    ```
 
-4. **Instale as dependências gráficas**  
+5. **Instale as dependências gráficas**  
    Certifique-se de que as bibliotecas necessárias para gráficos estejam instaladas:
    ```bash
    sudo apt-get install libx11-dev xserver-xorg-dev xorg-dev
    ```
 
-5. **Execute o arquivo .sh**
+6. **Execute o arquivo .sh**
 
 
 Para facilitar a instalação e execução do jogo, você pode usar o script `linux.sh` disponível no diretório raiz do projeto.
