@@ -1,0 +1,7 @@
+sudo apt-get upgrade && sudo apt-get update
+sudo apt-get upgrade && sudo apt-get update
+sudo apt-get install make libx11-dev xserver-xorg-dev xorg-dev cmake build-essential
+
+folder name has to be Space due to the script
+
+run linux.sh to compile
