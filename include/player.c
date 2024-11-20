@@ -41,9 +41,15 @@ void UpdatePlayerDirection(Player* player) {
     else player->direction = CENTER;
 }
 
+float SI_Clamp(float value, float min, float max) {
+    if (value < min) return min;
+    if (value > max) return max;
+    return value;
+}
+
 void WallBehavior(Player* player) {
-    if (player->position.x <= player->position.width) player->position.x = player->position.width;
-    if (player->position.x + player->position.width >= SCREEN_WIDTH) player->position.x = SCREEN_WIDTH - player->position.width;
+    player->position.x = SI_Clamp(player->position.x, 16, SCREEN_WIDTH - player->position.width-16);
+    
     if (player->position.y <= player->position.height) player->position.y = player->position.height;
     if (player->position.y + player->position.height >= SCREEN_HEIGHT) player->position.y = SCREEN_HEIGHT - player->position.height;
 }

@@ -30,6 +30,7 @@ typedef struct List {
 
 static void AddToList(List* list, int val) {
 	Node *new_node = (Node*)malloc(sizeof(Node));
+	if (new_node == NULL) return;
 	new_node->val = val;
 	new_node->next = list->head;
 	list->head = new_node;
@@ -297,9 +298,9 @@ PowerUp UpdateLevelUpSelectMenu(bool *flag) {
 
 
 void DrawMultilineText(const char* line1, const char* line2, const char* line3, float x, float y, int fontSize, Color color, float alpha) {
-    DrawText(line1, (x + 32) - (float)(MeasureText(line1, fontSize)) / 2.0f, y, fontSize, Fade(color, alpha));
-    DrawText(line2, (x + 32) - (float)(MeasureText(line2, fontSize)) / 2.0f, y+30, fontSize, Fade(color, alpha));
-    DrawText(line3, (x + 32) - (float)(MeasureText(line3, fontSize)) / 2.0f, y+60, fontSize, Fade(color, alpha));
+    DrawText(line1, (int)((x + 32) - MeasureText(line1, fontSize) / 2.0f), (int)y, fontSize, Fade(color, alpha));
+    DrawText(line2, (int)((x + 32) - MeasureText(line2, fontSize) / 2.0f), (int)y+30, fontSize, Fade(color, alpha));
+    DrawText(line3, (int)((x + 32) - MeasureText(line3, fontSize) / 2.0f), (int)y+60, fontSize, Fade(color, alpha));
 }
 
 void DrawLevelUpSelectMenu(bool flag) {
@@ -320,9 +321,9 @@ void DrawLevelUpSelectMenu(bool flag) {
         Color card_2 = (current_option == 1) ? Fade(RED, power_up_alpha) : Fade(GRAY, power_up_alpha);
         Color card_3 = (current_option == 2) ? Fade(RED, power_up_alpha) : Fade(GRAY, power_up_alpha);
 
-        Rectangle border_1 = { texture_1_x_pos - 4, y_pos - 4, card_width * 2.5 + 8, (float)(card_height * 2.5 + 8) };
-        Rectangle border_2 = { texture_2_x_pos - 4, y_pos - 4, card_width * 2.5 + 8, (float)(card_height * 2.5 + 8) };
-        Rectangle border_3 = { texture_3_x_pos - 4, y_pos - 4, card_width * 2.5 + 8, (float)(card_height * 2.5 + 8) };
+        Rectangle border_1 = { texture_1_x_pos - 4, y_pos - 4, card_width * 2.5f + 8, (float)(card_height * 2.5 + 8) };
+        Rectangle border_2 = { texture_2_x_pos - 4, y_pos - 4, card_width * 2.5f + 8, (float)(card_height * 2.5 + 8) };
+        Rectangle border_3 = { texture_3_x_pos - 4, y_pos - 4, card_width * 2.5f + 8, (float)(card_height * 2.5 + 8) };
         
         DrawRectangleLinesEx(border_1, 16, card_1);
         DrawRectangleLinesEx(border_2, 16, card_2);

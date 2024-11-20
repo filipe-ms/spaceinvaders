@@ -1,9 +1,13 @@
 #pragma once
+
 #ifndef WINNER_H
 #define WINNER_H
 
-void InitWinner();
-void UpdateWinner();
-void DrawWinner();
+void InitScore(void);
+void InitWinner(void);
+void UpdateWinner(void);
+void DrawWinner(void);
+void AddToScore(int i);
+int GetScore(void);
 
-#endif
+#endif // WINNER_H

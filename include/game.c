@@ -5,6 +5,7 @@
 #include "xp_bar.h"
 #include "power_ups.h"
 #include "scene_manager.h"
+#include "winner.h"
 
 #include <math.h>
 
@@ -62,13 +63,12 @@ void InitGame(int ship_id) {
     wave_enemy_charge_s = 0.0f;
 
     // Wave
-    active_wave = 2;
+    active_wave = FIRST_WAVE;
     wave_message_alpha = 0.1f;
     wave_message_alpha_flag = false;
 
     // Enemies
     enemies_killed = 0;
-    player_score = 0;
     enemy_hp = 3;
 
     // Buffs
@@ -76,9 +76,10 @@ void InitGame(int ship_id) {
 
     // Other inits
     InitPlayer(&player, ship_id);
-    InitEnemies(enemy);                     // Initialize enemies
+    InitEnemies(enemy);            // Initialize enemies
     InitWeapon(&player);           // Initialize weapons
     InitExpBar();
+    InitScore();
 
 	// Background
     background.position_y = -1200;
@@ -245,10 +246,10 @@ void ThirdWave() {
     wave_enemy_charge_s += GetFrameTime();
     wave_duration_s -= GetFrameTime();
 
-    // Condition for next wave
-    if (wave_duration_s<=55) {
+    if (wave_duration_s<=0) {
         victory = true;
         active_wave = VICTORY;
+        AddToScore(1000);
         ChangeScene(WINNER);
     }
 }
@@ -265,7 +266,6 @@ void UpdateWave() {
 // 
 //--------------------------------------------------------------
 
-
 void CheckCollision(Shoot* shoot, Enemy* enemy) {
 	if (CheckCollisionRecs(shoot->position, enemy->position)) {
 		enemy->hp -= shoot->damage;
@@ -273,9 +273,9 @@ void CheckCollision(Shoot* shoot, Enemy* enemy) {
 		if (enemy->hp <= 0) {
 			enemy->active = false;
 			enemies_killed++;
-			level_up_flag = AddToExp(enemy->exp + 100);
+			level_up_flag = AddToExp(enemy->exp);
             if (level_up_flag) PowerRandomizer();
-			player_score += 10;
+            AddToScore(10);
 		}
 	}
 }
@@ -307,6 +307,7 @@ void CheckBulletAndEnemyCollision(Enemy* enemy) {
         }
     }
 }
+
 
 //--------------------------------------------------------------
 //
@@ -345,7 +346,7 @@ void UpdateGame(void)
             CheckBulletAndEnemyCollision(enemy); // Enemy, kills and score
             UpdateExpBar();
 
-            if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(RANKING);
+            if (CheckEnemyCollisionWithPlayer(player, enemy)) ChangeScene(GAME_OVER);
         }
     }
 }
@@ -379,7 +380,7 @@ void DrawGame(void)
     else if (active_wave == SECOND_WAVE) DrawText("SECOND WAVE", SCREEN_WIDTH / 2 - MeasureText("SECOND WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 100, 40, Fade(WHITE, wave_message_alpha));
     else if (active_wave == THIRD_WAVE) DrawText("THIRD WAVE", SCREEN_WIDTH / 2 - MeasureText("THIRD WAVE", 40) / 2, SCREEN_HEIGHT / 2 - 100, 40, Fade(WHITE, wave_message_alpha));
 
-    DrawText(TextFormat("%04i", player_score), 20, 20, 40, GRAY);
+    DrawText(TextFormat("%04i", GetScore()), 20, 20, 40, GRAY);
     
     if (victory) DrawText("YOU WIN", SCREEN_WIDTH / 2 - MeasureText("YOU WIN", 40) / 2, SCREEN_HEIGHT / 2 - 40, 40, WHITE);
     if (pause) DrawText("GAME PAUSED", SCREEN_WIDTH / 2 - MeasureText("GAME PAUSED", 40) / 2, SCREEN_HEIGHT / 2 - 40, 40, GRAY);

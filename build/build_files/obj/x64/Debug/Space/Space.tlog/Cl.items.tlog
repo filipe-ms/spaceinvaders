@@ -2,6 +2,7 @@ D:\Projects\Space Invaders\update\Space\Space\include\common.c;D:\Projects\Space
 D:\Projects\Space Invaders\update\Space\Space\include\draw_object.c;D:\Projects\Space Invaders\update\Space\Space\build\build_files\obj\x64\Debug\Space\draw_object.obj
 D:\Projects\Space Invaders\update\Space\Space\include\enemy.c;D:\Projects\Space Invaders\update\Space\Space\build\build_files\obj\x64\Debug\Space\enemy.obj
 D:\Projects\Space Invaders\update\Space\Space\include\enter_name.c;D:\Projects\Space Invaders\update\Space\Space\build\build_files\obj\x64\Debug\Space\enter_name.obj
+D:\Projects\Space Invaders\update\Space\Space\include\game_over.c;D:\Projects\Space Invaders\update\Space\Space\build\build_files\obj\x64\Debug\Space\game_over.obj
 D:\Projects\Space Invaders\update\Space\Space\include\main_menu.c;D:\Projects\Space Invaders\update\Space\Space\build\build_files\obj\x64\Debug\Space\main_menu.obj
 D:\Projects\Space Invaders\update\Space\Space\include\player.c;D:\Projects\Space Invaders\update\Space\Space\build\build_files\obj\x64\Debug\Space\player.obj
 D:\Projects\Space Invaders\update\Space\Space\include\power_ups.c;D:\Projects\Space Invaders\update\Space\Space\build\build_files\obj\x64\Debug\Space\power_ups.obj

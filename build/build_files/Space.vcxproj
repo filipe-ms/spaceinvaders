@@ -269,6 +269,7 @@
     <ClInclude Include="..\..\include\enemy.h" />
     <ClInclude Include="..\..\include\common.h" />
     <ClInclude Include="..\..\include\enter_name.h" />
+    <ClInclude Include="..\..\include\game_over.h" />
     <ClInclude Include="..\..\include\main_menu.h" />
     <ClInclude Include="..\..\include\ranking.h" />
     <ClInclude Include="..\..\include\scene_manager.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="..\..\include\draw_object.c" />
     <ClCompile Include="..\..\include\enemy.c" />
     <ClCompile Include="..\..\include\enter_name.c" />
+    <ClCompile Include="..\..\include\game_over.c" />
     <ClCompile Include="..\..\include\main_menu.c" />
     <ClCompile Include="..\..\include\player.c" />
     <ClCompile Include="..\..\include\power_ups.c" />

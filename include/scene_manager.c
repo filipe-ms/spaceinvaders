@@ -7,6 +7,8 @@
 #include "tutorial.h"
 #include "ranking.h"
 #include "enter_name.h"
+#include "winner.h"
+#include "game_over.h"
 
 Scene current_scene;
 Scene main_menu;
@@ -51,6 +53,9 @@ void ChangeSceneArgs(Scene scene, int id) {
         InitWinner();
         break;
 
+	case GAME_OVER:
+		InitGameOver();
+		break;
     }
 }
 
@@ -87,7 +92,11 @@ void UpdateCurrentScene(void) {
         UpdateWinner();
         break;
 
+    case GAME_OVER:
+        UpdateGameOver();
+        break;
     }
+
 }
 
 void DrawCurrentScene(void) {
@@ -122,6 +131,9 @@ void DrawCurrentScene(void) {
         DrawWinner();
         break;
 
+    case GAME_OVER:
+        DrawGameOver();
+        break;
     }
 }
 
