@@ -1,29 +1,64 @@
 # Space Invaders - Roguelike Edition
 
-## Descrição
 
-Este é um clássico **Space Invaders** desenvolvido por nossa equipe usando a biblioteca **raylib** (v1.3). O jogo é uma recriação moderna do clássico, com a adição de funcionalidades como waves progressivas de inimigos e disparos automáticos. O jogador controla uma nave espacial e deve derrotar os inimigos que aparecem em ondas, enquanto tenta evitar colisões.
 
-Os inimigos são gerados em **waves** (ondas), com cada wave aumentando a dificuldade.
+Este é um clássico desenvolvido por nossa equipe usando a biblioteca **raylib** (v1.3). O jogo é uma recriação moderna do clássico, com a adição de funcionalidades como waves progressivas de inimigos e disparos automáticos. O jogador controla uma nave espacial e deve derrotar os inimigos que aparecem em ondas, enquanto tenta evitar colisões.
+# Instruções para Configuração do Jogo
 
-## Objetivo
+Para executar este jogo em uma distribuição Linux, siga os passos abaixo para instalar as dependências necessárias:
 
-- **Sobreviver às ondas de inimigos**: Derrote todas as ondas sem deixar que os inimigos colidam com sua nave.
-- **Acumular pontos**: Ganhe pontos ao eliminar inimigos e sobreviver ao maior número de waves possível.
+### Pré-requisitos
+Certifique-se de que você tenha acesso root (sudo) e uma conexão com a internet.
 
-## Controles
+### Passos
 
-- **Setas direcionais**: Movimentam a nave do jogador (direita, esquerda, cima, baixo).
-- **[P]**: Pausar ou despausar o jogo.
-- **[Enter]**: Reinicia o jogo após a derrota.
+1. **Atualize os pacotes do sistema**  
+   Execute os seguintes comandos para garantir que seu sistema esteja atualizado:
+   ```bash
+   sudo apt-get upgrade && sudo apt-get update
+   ```
 
-### Jogabilidade
+2. **Instale o `make`**  
+   O `make` é necessário para compilar o jogo. Instale-o com o comando:
+   ```bash
+   sudo apt-get install make
+   ```
 
-- O jogo começa com o jogador controlando uma nave posicionada no centro da parte inferior da tela.
-- Inimigos são gerados no topo e descem pela tela em um movimento contínuo.
-- O jogador dispara automaticamente, e o objetivo é acertar os inimigos antes que colidam com a nave.
-- O jogo possui **3 waves**:
-  - **Wave 1**: 10 inimigos.
-  - **Wave 2**: 20 inimigos.
-  - **Wave 3**: 50 inimigos.
-- O jogo termina se todos os inimigos forem derrotados ou se um inimigo colidir com o jogador.
+3. **Instale o `cmake` e outras ferramentas de build**  
+   O `cmake` e o `build-essential` são usados para compilar o código do jogo. Instale-os com:
+   ```bash
+   sudo apt-get update && sudo apt-get install cmake build-essential
+   ```
+
+4. **Instale as dependências gráficas**  
+   Certifique-se de que as bibliotecas necessárias para gráficos estejam instaladas:
+   ```bash
+   sudo apt-get install libx11-dev xserver-xorg-dev xorg-dev
+   ```
+
+5. **Execute o arquivo .sh**
+
+
+Para facilitar a instalação e execução do jogo, você pode usar o script `linux.sh` disponível no diretório raiz do projeto.
+
+1. **Torne o script executável (apenas uma vez):**  
+   Execute o seguinte comando no terminal enquanto estiver no diretório raiz do projeto:
+   ```bash
+   chmod +x linux.sh
+   ```
+
+2. **Execute o script:**  
+   Após tornar o script executável, rode:
+   ```bash
+   ./linux.sh
+   ```
+
+3. **Caso prefira não usar o `chmod`:**  
+   Você pode executar o script diretamente com o comando:
+   ```bash
+   sh linux.sh
+   ```
+
+### Observações
+- Se você enfrentar algum problema, verifique se todas as dependências foram instaladas corretamente.
+- Certifique-se de ter permissões adequadas no diretório onde o jogo será executado.
