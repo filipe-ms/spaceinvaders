@@ -1,13 +1,10 @@
 /*******************************************************************************************
 *
-*   raylib - classic game: space invaders
+*   Space Invaders - Edição Roguelike
 *
-*   Sample game developed by Ian Eito, Albert Martos and Ramon Santamaria
+*   Jogo desenvolvido por Luís Filipe Macedo, Anderson Gabriel e Débora Souza
 *
-*   This game has been created using raylib v1.3 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
-*
-*   Copyright (c) 2015 Ramon Santamaria (@raysan5)
+*   Esse jogo foi criado usando Raylib (www.raylib.com)
 *
 ********************************************************************************************/
 
