@@ -15,6 +15,7 @@ Certifique-se de que você tenha acesso root (sudo) e uma conexão com a interne
 
 Segue o diagrama de pastas:
 
+```
 \Space
 ├── .vscode/
 ├── bin/
@@ -30,6 +31,8 @@ Segue o diagrama de pastas:
 ├── New Text Document.txt
 ├── README.md
 └── Space.sln
+
+```
 
 2. **Atualize os pacotes do sistema**  
    Execute os seguintes comandos para garantir que seu sistema esteja atualizado:
