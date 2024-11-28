@@ -1,6 +1,10 @@
-5
+9
+gyug 180
+Gabriel 170
 360 150
 Gabriel 30
+hjihiuhoui 20
+huiohuio 10
 -1 0
 Filipe 100
 Filipe 10

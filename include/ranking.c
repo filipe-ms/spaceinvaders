@@ -14,14 +14,14 @@ bool leave_transition = false;
 float rec_alpha = 1.0f;
 
 void LoadRanking(void) {
-	FILE* file = fopen("ranking.txt", "r");
-	if (file) {
-		fscanf(file, "%d", &playerCount);
-		for (int i = 0; i < playerCount; i++) {
-			fscanf(file, "%s %d", entries[i].name, &entries[i].score);
-		}
-		fclose(file);
-	}
+    FILE* file = fopen("ranking.txt", "r");
+    if (file) {
+        fscanf(file, "%d", &playerCount);
+        for (int i = 0; i < playerCount; i++) {
+            fscanf(file, "%s %d", entries[i].name, &entries[i].score);
+        }
+        fclose(file);
+    }
 }
 
 void InitRanking() {
@@ -30,50 +30,48 @@ void InitRanking() {
     leave_transition = false;
     rec_alpha = 0.0f;
 
-    // Inicializa o ranking e tenta carregar do arquivo
     for (int i = 0; i < MAX_ENTRIES; i++) {
         strcpy(entries[i].name, "");
         entries[i].score = -1;
     }
     playerCount = 0;
-    LoadRanking();  // Carrega o ranking salvo
+    LoadRanking();
 }
 
 void SaveRanking(void) {
-	FILE* file = fopen("ranking.txt", "w");
-	if (file) {
-		fprintf(file, "%d\n", playerCount);
-		for (int i = 0; i < playerCount; i++) {
-			fprintf(file, "%s %d\n", entries[i].name, entries[i].score);
-		}
-		fclose(file);
-	}
+    FILE* file = fopen("ranking.txt", "w");
+    if (file) {
+        fprintf(file, "%d\n", playerCount);
+        for (int i = 0; i < playerCount; i++) {
+            fprintf(file, "%s %d\n", entries[i].name, entries[i].score);
+        }
+        fclose(file);
+    }
 }
 
 void AddToRanking(const char* name, int score) {
     LoadRanking();
 
-	RankingEntry newEntry;
-	strncpy(newEntry.name, name, MAX_NAME_LENGTH - 1);
-	newEntry.name[MAX_NAME_LENGTH - 1] = '\0';
-	newEntry.score = score;
+    RankingEntry newEntry;
+    strncpy(newEntry.name, name, MAX_NAME_LENGTH - 1);
+    newEntry.name[MAX_NAME_LENGTH - 1] = '\0';
+    newEntry.score = score;
 
-	// Insere o novo score na posição correta
-	for (int i = 0; i < MAX_ENTRIES; i++) {
-		if (newEntry.score > entries[i].score || entries[i].score == -1) {
-			for (int j = MAX_ENTRIES - 1; j > i; j--) {
-				entries[j] = entries[j - 1];
-			}
-			entries[i] = newEntry;
-			if (playerCount < MAX_ENTRIES) playerCount++;
-			break;
-		}
-	}
-	SaveRanking();  // Salva o ranking atualizado
+    for (int i = 0; i < MAX_ENTRIES; i++) {
+        if (newEntry.score > entries[i].score || entries[i].score == -1) {
+            for (int j = MAX_ENTRIES - 1; j > i; j--) {
+                entries[j] = entries[j - 1];
+            }
+            entries[i] = newEntry;
+            if (playerCount < MAX_ENTRIES) playerCount++;
+            break;
+        }
+    }
+    SaveRanking();
 }
 
 void UpdateRanking() {
-    if (IsKeyPressed(KEY_ENTER)) {
+    if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
         leave_transition = true;
     }
 
@@ -98,7 +96,7 @@ void UpdateRanking() {
 void DrawRanking(int posX, int posY) {
     BeginDrawing();
     ClearBackground(BLACK);
-	DrawSelectMenuBackground();
+    DrawSelectMenuBackground();
     DrawText("Melhores jogadores", posX, posY, 30, WHITE);
 
     int displayedEntries = 0;

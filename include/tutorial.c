@@ -67,18 +67,23 @@ void UpdateTutorial(void) {
             tutorial_start_flag = false;
         }
     }
-    if (IsKeyPressed(KEY_ENTER)) {
+
+    // Adiciona suporte ao botão "A" para continuar
+    if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
         tutorial_transition_flag = true;
     }
-    if (tutorial_transition_flag) {
-		tutorial_transition_alpha -= 0.5 * GetFrameTime();
 
+    if (tutorial_transition_flag) {
+        tutorial_transition_alpha -= 0.5 * GetFrameTime();
     }
+
     if (tutorial_transition_alpha <= 0) {
         ChangeSceneArgs(GAME, id);
     }
+
     UpdateTutorialBackground();
 }
+
 
 float GetAlpha() {
     float time = GetTime();
@@ -134,7 +139,7 @@ void DrawTutorial() {
     DrawText("Pausar", SCREEN_WIDTH * 0.75 - MeasureText("Pausar", 30) / 2 + 72, GetScreenHeight() - 130, 30, FADE);
 
 
-    DrawText("Pressione enter para continuar...", SCREEN_WIDTH * 0.5 - MeasureText("Pressione enter para continuar", 30) / 2, GetScreenHeight() - 50, 30, Fade(WHITE, GetAlpha()*tutorial_transition_alpha));
+    DrawText("Pressione enter ou A para continuar...", SCREEN_WIDTH * 0.5 - MeasureText("Pressione enter ou A para continuar", 30) / 2, GetScreenHeight() - 50, 30, Fade(WHITE, GetAlpha()*tutorial_transition_alpha));
 
     
     EndDrawing();

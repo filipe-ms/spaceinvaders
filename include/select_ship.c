@@ -141,7 +141,6 @@ void UpdateShipSelectMenu() {
         return;
     }
 
-
     select_ship_menu_background.position_y = (float)fmod(select_ship_menu_background.position_y + 100 * GetFrameTime(), 1200);
     if (select_ship_menu_background.alpha < 0.8f) select_ship_menu_background.alpha += 0.25f * GetFrameTime();
 
@@ -151,18 +150,22 @@ void UpdateShipSelectMenu() {
 
     if (select_ship_transition_alpha_text < 1) select_ship_transition_alpha_text += 0.25f * GetFrameTime();
 
-    if (IsKeyPressed(KEY_LEFT)) {
+    // Navegação com teclado e gamepad
+    if (IsKeyPressed(KEY_LEFT) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_LEFT)) {
         select_ship_menu_option = (select_ship_menu_option - 1 + SELECT_MENU_OPTION_COUNT) % SELECT_MENU_OPTION_COUNT;
     }
-    else if (IsKeyPressed(KEY_RIGHT)) {
+    else if (IsKeyPressed(KEY_RIGHT) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_RIGHT)) {
         select_ship_menu_option = (select_ship_menu_option + 1) % SELECT_MENU_OPTION_COUNT;
     }
-    else if (IsKeyPressed(KEY_ENTER)) {
-		selected_ship = select_ship_menu_option;
+
+    // Seleção com Enter ou botão "A" do gamepad
+    else if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
+        selected_ship = select_ship_menu_option;
         select_ship_menu_is_transitioning = true;
         scene = TUTORIAL;
     }
 }
+
 
 void DrawSelectMenuBackground(void) {
     if (select_ship_alpha_flag) {

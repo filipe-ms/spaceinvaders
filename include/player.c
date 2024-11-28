@@ -10,7 +10,7 @@ Orion orion;
 Aurea aurea;
 Nebula nebula;
 
-void InitPlayer(Player *player, int ship_id) {
+void InitPlayer(Player* player, int ship_id) {
     player->ship_id = ship_id;
 
     player->center.x = player->position.x = SCREEN_WIDTH / 2;
@@ -18,7 +18,7 @@ void InitPlayer(Player *player, int ship_id) {
 
     player->position.width = 48;
     player->position.height = 48;
-  
+
     player->position.x = player->center.x + player->position.width / 2;
     player->position.y = player->center.y + player->position.height / 2;
 
@@ -48,18 +48,36 @@ float SI_Clamp(float value, float min, float max) {
 }
 
 void WallBehavior(Player* player) {
-    player->position.x = SI_Clamp(player->position.x, 16, SCREEN_WIDTH - player->position.width-16);
-    
+    player->position.x = SI_Clamp(player->position.x, 16, SCREEN_WIDTH - player->position.width - 16);
+
     if (player->position.y <= player->position.height) player->position.y = player->position.height;
     if (player->position.y + player->position.height >= SCREEN_HEIGHT) player->position.y = SCREEN_HEIGHT - player->position.height;
 }
 
 void UpdatePlayerPosition(Player* player) {
-    if (IsKeyDown(KEY_RIGHT)) player->position.x += player->speed.x * GetFrameTime();
-    if (IsKeyDown(KEY_LEFT)) player->position.x -= player->speed.x * GetFrameTime();
-    if (IsKeyDown(KEY_UP)) player->position.y -= player->speed.y * GetFrameTime();
-    if (IsKeyDown(KEY_DOWN)) player->position.y += player->speed.y * GetFrameTime();
+    float axisX = 0.0f;
+    float axisY = 0.0f;
+
+    // Detecta movimento pelo teclado
+    if (IsKeyDown(KEY_RIGHT)) axisX += 1.0f;
+    if (IsKeyDown(KEY_LEFT)) axisX -= 1.0f;
+    if (IsKeyDown(KEY_UP)) axisY -= 1.0f;
+    if (IsKeyDown(KEY_DOWN)) axisY += 1.0f;
+
+    // Detecta movimento pelo analógico esquerdo do gamepad (se disponível)
+    if (IsGamepadAvailable(0)) {
+        axisX += GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_X);
+        axisY += GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y);
+    }
+
+    // Atualiza a posição do player baseada na direção e velocidade
+    player->position.x += axisX * player->speed.x * GetFrameTime();
+    player->position.y += axisY * player->speed.y * GetFrameTime();
+
+    // Limita o movimento à área da tela
     WallBehavior(player);
+
+    // Atualiza o centro do player
     player->center.x = (player->position.x + player->position.width / 2);
     player->center.y = (player->position.y + player->position.height / 2);
 }
@@ -69,7 +87,7 @@ void UpdatePlayerAnimationCycle(Player* player) {
     if (player->animation_cycle > 1.0f) player->animation_cycle -= 1.0f;
 }
 
-int GetThrusterAnimationCycle(Player *player) {
+int GetThrusterAnimationCycle(Player* player) {
     if (IsKeyDown(KEY_RIGHT)) {
         if (player->animation_cycle < 0.25f) return 4;
         if (player->animation_cycle < 0.5f) return 3;
@@ -95,7 +113,6 @@ void UpdateAurea(Player* player) {
     aurea.destination.x = player->position.x - 8;
     aurea.destination.y = player->position.y - 8;
 
-
     aurea.destination.height = 64;
     aurea.destination.width = 64;
     aurea.direction = player->direction;
@@ -104,7 +121,7 @@ void UpdateAurea(Player* player) {
     aurea.alpha = player->alpha;
 }
 
-void UpdateOrion(Player *player) {
+void UpdateOrion(Player* player) {
     orion.destination = player->position;
     orion.destination.height = 64;
     orion.destination.width = 64;
@@ -115,16 +132,16 @@ void UpdateOrion(Player *player) {
 }
 
 void UpdateNebula(Player* player) {
-	nebula.destination = player->position;
-	nebula.destination.height = 64;
-	nebula.destination.width = 64;
-	nebula.direction = player->direction;
-	nebula.thruster_cycle = GetThrusterAnimationCycle(player);
-	nebula.color = player->color;
-	nebula.alpha = player->alpha;
+    nebula.destination = player->position;
+    nebula.destination.height = 64;
+    nebula.destination.width = 64;
+    nebula.direction = player->direction;
+    nebula.thruster_cycle = GetThrusterAnimationCycle(player);
+    nebula.color = player->color;
+    nebula.alpha = player->alpha;
 }
 
-void UpdatePlayer(Player *player) {
+void UpdatePlayer(Player* player) {
     // General updates
     UpdatePlayerDirection(player);
     UpdatePlayerPosition(player);
@@ -133,8 +150,7 @@ void UpdatePlayer(Player *player) {
     // Ship updates
     if (player->ship_id == AUREA) UpdateAurea(player);
     if (player->ship_id == ORION) UpdateOrion(player);
-	if (player->ship_id == NEBULA) UpdateNebula(player);
-
+    if (player->ship_id == NEBULA) UpdateNebula(player);
 }
 
 // Draw related

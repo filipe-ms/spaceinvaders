@@ -322,11 +322,12 @@ void UpdateBackground(Background* background) {
 
 void UpdateGame(void)
 {
-    if (IsKeyPressed('P') && !pause_flag) {
+    // Verifica se o botão Start do gamepad ou a tecla 'P' foi pressionada para pausar
+    if ((IsKeyPressed('P') || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_MIDDLE_RIGHT)) && !pause_flag) {
         pause = !pause;
         pause_flag = true;
     }
-    if (IsKeyReleased('P')) {
+    if (IsKeyReleased('P') || !IsGamepadButtonDown(0, GAMEPAD_BUTTON_MIDDLE_RIGHT)) {
         pause_flag = false;
     }
 
@@ -336,7 +337,8 @@ void UpdateGame(void)
 
         if (level_up_flag) {
             UpdateLevelUpSelectMenu(&level_up_flag);
-        } else {
+        }
+        else {
             UpdateWave();
             UpdateBackground(&background);
 
@@ -350,6 +352,7 @@ void UpdateGame(void)
         }
     }
 }
+
 
 
 //--------------------------------------------------------------

@@ -2,16 +2,15 @@
 #include "raylib.h"
 #include "scene_manager.h"
 
-static float fadeAlpha = 0.0f; 
-
+static float fadeAlpha = 0.0f;
 
 void InitCredits(void) {
     fadeAlpha = 0.0f;
 }
 
 void UpdateCredits(void) {
-    if (IsKeyPressed(KEY_ENTER)) {
-        ChangeScene(START);  
+    if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
+        ChangeScene(START);
     }
 
     if (fadeAlpha < 1.0f) {
@@ -46,14 +45,7 @@ void DrawCredits(void) {
     DrawText("Confira os assets em:", (screenWidth - MeasureText("Confira os assets em:", 18)) / 2, 710, 18, Fade(GRAY, fadeAlpha));
     DrawText("https://gvituri.itch.io/space-shooter", (screenWidth - MeasureText("https://gvituri.itch.io/space-shooter", 18)) / 2, 740, 18, Fade(LIGHTBLUE, fadeAlpha));
 
-    DrawText("Pressione ENTER para voltar ao menu", (screenWidth - MeasureText("Pressione ENTER para voltar ao menu", 22)) / 2, 800, 22, Fade(LIGHTGRAY, fadeAlpha));
+    DrawText("Pressione ENTER ou A para voltar ao menu", (screenWidth - MeasureText("Pressione ENTER ou A para voltar ao menu", 22)) / 2, 800, 22, Fade(LIGHTGRAY, fadeAlpha));
 
     EndDrawing();
 }
-
-
-
-
-
-
-

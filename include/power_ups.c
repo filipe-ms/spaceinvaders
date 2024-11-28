@@ -263,32 +263,31 @@ void PickPowerUp() {
 
 }
 
-PowerUp UpdateLevelUpSelectMenu(bool *flag) {
+PowerUp UpdateLevelUpSelectMenu(bool* flag) {
 	if (*flag) {
-
 		if (power_up_alpha < 1.0f) power_up_alpha += 0.5f * GetFrameTime();
 
-		if (IsKeyPressed(KEY_RIGHT)) {
+		// Navegação no teclado ou no gamepad
+		if (IsKeyPressed(KEY_RIGHT) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_RIGHT)) {
 			current_option++;
 			if (current_option > 2) current_option = 0;
 		}
-
-		else if (IsKeyPressed(KEY_LEFT)) {
+		else if (IsKeyPressed(KEY_LEFT) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_LEFT)) {
 			current_option--;
 			if (current_option < 0) current_option = 2;
 		}
-
-		else if (IsKeyPressed(KEY_ENTER)) {
+		// Seleção no teclado ou no gamepad
+		else if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
 			*flag = false;
-            PickPowerUp();
+			PickPowerUp();
 		}
-    }
-    else {
+	}
+	else {
 		power_up_alpha = 0.0f;
-    }
-    return (PowerUp) { NONE, 0.0f, { 0 }, { 0 }, { 0 }, { 0 }, WHITE };
-
+	}
+	return (PowerUp) { NONE, 0.0f, { 0 }, { 0 }, { 0 }, { 0 }, WHITE };
 }
+
 
 //--------------------------------------------------------------
 //

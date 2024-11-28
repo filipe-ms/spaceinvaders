@@ -78,15 +78,17 @@ void UpdateMenu() {
 
     background.position_y = (float)fmod(background.position_y + 100 * GetFrameTime(), 1200);
 
-    if (IsKeyPressed(KEY_UP)) {
+    // Navegação com teclado e gamepad
+    if (IsKeyPressed(KEY_UP) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_UP)) {
         current_menu_option = (current_menu_option - 1 + MENU_OPTION_COUNT) % MENU_OPTION_COUNT;
     }
 
-    else if (IsKeyPressed(KEY_DOWN)) {
+    if (IsKeyPressed(KEY_DOWN) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_LEFT_FACE_DOWN)) {
         current_menu_option = (current_menu_option + 1) % MENU_OPTION_COUNT;
     }
 
-    else if (IsKeyPressed(KEY_ENTER)) {
+    // Seleção com Enter ou botão "A" do gamepad
+    if (IsKeyPressed(KEY_ENTER) || IsGamepadButtonPressed(0, GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) {
         if (current_menu_option == MENU_OPTION_START) {
             menu_scene = SELECT_SHIP;
             is_transitioning = true;
@@ -105,6 +107,7 @@ void UpdateMenu() {
         }
     }
 }
+
 
 void DrawMenuBackground() {
     DrawTexture(background.texture, 0, (int)background.position_y, Fade(WHITE, background.alpha));
