@@ -24,6 +24,7 @@ typedef enum {
     GAME_OVER,
     ENTER_NAME,
     RANKING,
+    CREDITS,
     EXIT
 } Scene;
 

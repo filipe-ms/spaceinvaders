@@ -265,6 +265,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\credits.h" />
     <ClInclude Include="..\..\include\draw_object.h" />
     <ClInclude Include="..\..\include\enemy.h" />
     <ClInclude Include="..\..\include\common.h" />
@@ -285,6 +286,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\include\common.c" />
+    <ClCompile Include="..\..\include\credits.c" />
     <ClCompile Include="..\..\include\draw_object.c" />
     <ClCompile Include="..\..\include\enemy.c" />
     <ClCompile Include="..\..\include\enter_name.c" />
